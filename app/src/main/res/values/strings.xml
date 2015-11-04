@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">BuyNutsProto</string>
+    <string name="lbl_username">Username</string>
+    <string name="lbl_password">Password</string>
+    <string name="btn_login">Log In</string>
+    <string name="btn_register">Register New User</string>
+    <string name="chk_remember_my_info">Remember my information</string>
+    <string name="btn_refresh_news">Refresh News</string>
+    <string name="btn_set_filter">Set Search</string>
+    <string name="btn_my_offers">New Offer</string>
+    <string name="tv_ppu">Price Per Unit Wt</string>
+    <string name="tv_min_weight">Min Weight</string>
+    <string name="tv_max_weight">Max Weight</string>
+    <string name="tv_terms">Terms/Spec</string>
+    <string name="btn_make_offer">Make New Offer</string>
+    <string name="btn_set_search_filter">Set Search Filter</string>
+    <string name="tv_min_ppu">Min PPU</string>
+    <string name="tv_max_ppu">Max PPU</string>
+    <string name="tv_weights">Weight Units</string>
+    <string name="tvCommodType">Commodity Type</string>
+
+    <string-array name="commodities_array">
+        <item>Walnut</item>
+        <item>Pecan</item>
+        <item>Almond</item>
+        <item>Cashew</item>
+    </string-array>
+    <string-array name="wt_units_array">
+        <item>lb</item>
+        <item>kg</item>
+        <item>gross ton (2240lb)</item>
+        <item>net ton (2000lb)</item>
+        <item>metric tonne (1000kg)</item>
+    </string-array>
+
+</resources>
