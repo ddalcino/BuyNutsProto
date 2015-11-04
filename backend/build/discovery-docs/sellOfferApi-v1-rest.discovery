@@ -1,0 +1,493 @@
+{
+ "kind": "discovery#restDescription",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/czZHjsJJnmssIRlTz5UV9ZsqSZs\"",
+ "discoveryVersion": "v1",
+ "id": "sellOfferApi:v1",
+ "name": "sellOfferApi",
+ "version": "v1",
+ "description": "This is an API",
+ "ownerDomain": "backend.myapplication.Mike.example.com",
+ "ownerName": "backend.myapplication.Mike.example.com",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rest",
+ "baseUrl": "https://eponly-1114.appspot.com/_ah/api/sellOfferApi/v1/",
+ "basePath": "/_ah/api/sellOfferApi/v1/",
+ "rootUrl": "https://eponly-1114.appspot.com/_ah/api/",
+ "servicePath": "sellOfferApi/v1/",
+ "batchPath": "batch",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "Calendar": {
+   "id": "Calendar",
+   "type": "object",
+   "properties": {
+    "fieldsComputed": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "fieldsNormalized": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "firstDayOfWeek": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "lenient": {
+     "type": "boolean"
+    },
+    "minimalDaysInFirstWeek": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "time": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "timeInMillis": {
+     "type": "string",
+     "format": "int64"
+    },
+    "timeZone": {
+     "$ref": "TimeZone"
+    },
+    "weekCountData": {
+     "$ref": "Locale"
+    },
+    "weekDateSupported": {
+     "type": "boolean"
+    },
+    "weekYear": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "weeksInWeekYear": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "zoneShared": {
+     "type": "boolean"
+    }
+   }
+  },
+  "CollectionResponse_SellOffer": {
+   "id": "CollectionResponse_SellOffer",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "SellOffer"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "Locale": {
+   "id": "Locale",
+   "type": "object",
+   "properties": {
+    "country": {
+     "type": "string"
+    },
+    "displayCountry": {
+     "type": "string"
+    },
+    "displayLanguage": {
+     "type": "string"
+    },
+    "displayName": {
+     "type": "string"
+    },
+    "displayScript": {
+     "type": "string"
+    },
+    "displayVariant": {
+     "type": "string"
+    },
+    "extensionKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "iso3Country": {
+     "type": "string"
+    },
+    "iso3Language": {
+     "type": "string"
+    },
+    "language": {
+     "type": "string"
+    },
+    "script": {
+     "type": "string"
+    },
+    "unicodeLocaleAttributes": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "unicodeLocaleKeys": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "variant": {
+     "type": "string"
+    }
+   }
+  },
+  "SellOffer": {
+   "id": "SellOffer",
+   "type": "object",
+   "properties": {
+    "commodity": {
+     "type": "string"
+    },
+    "expired": {
+     "type": "boolean"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "max_weight": {
+     "type": "number",
+     "format": "double"
+    },
+    "min_weight": {
+     "type": "number",
+     "format": "double"
+    },
+    "offerBirthday": {
+     "$ref": "Calendar"
+    },
+    "price_per_unit": {
+     "type": "number",
+     "format": "double"
+    },
+    "seller_id": {
+     "type": "string"
+    },
+    "specification": {
+     "type": "string"
+    },
+    "terms": {
+     "type": "string"
+    }
+   }
+  },
+  "TimeZone": {
+   "id": "TimeZone",
+   "type": "object",
+   "properties": {
+    "displayName": {
+     "type": "string"
+    },
+    "dstsavings": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "id": {
+     "type": "string"
+    },
+    "rawOffset": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  }
+ },
+ "methods": {
+  "fullQueryOffers": {
+   "id": "sellOfferApi.fullQueryOffers",
+   "path": "sellOffer/fullQuery",
+   "httpMethod": "GET",
+   "parameters": {
+    "commodity": {
+     "type": "string",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "limit": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "max_weight": {
+     "type": "number",
+     "format": "double",
+     "location": "query"
+    },
+    "min_weight": {
+     "type": "number",
+     "format": "double",
+     "location": "query"
+    },
+    "seller_id": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "get": {
+   "id": "sellOfferApi.get",
+   "path": "sellOffer/{id}",
+   "httpMethod": "GET",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "insert": {
+   "id": "sellOfferApi.insert",
+   "path": "sellOffer",
+   "httpMethod": "PUT",
+   "request": {
+    "$ref": "SellOffer",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "list": {
+   "id": "sellOfferApi.list",
+   "path": "sellOffer",
+   "httpMethod": "GET",
+   "parameters": {
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "limit": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "listCommodityOffers": {
+   "id": "sellOfferApi.listCommodityOffers",
+   "path": "sellOffer/commodity/{commodity}/offers",
+   "httpMethod": "GET",
+   "parameters": {
+    "commodity": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "limit": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "commodity"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "listSellerCommodities": {
+   "id": "sellOfferApi.listSellerCommodities",
+   "path": "sellOffer/sellers/{seller_id}/offers",
+   "httpMethod": "GET",
+   "parameters": {
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "limit": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "seller_id": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "seller_id"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "patch": {
+   "id": "sellOfferApi.patch",
+   "path": "sellOffer/{id}",
+   "httpMethod": "PATCH",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "request": {
+    "$ref": "SellOffer"
+   },
+   "response": {
+    "$ref": "SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "remove": {
+   "id": "sellOfferApi.remove",
+   "path": "sellOffer/{id}",
+   "httpMethod": "DELETE",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "update": {
+   "id": "sellOfferApi.update",
+   "path": "sellOffer/{id}",
+   "httpMethod": "PUT",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "request": {
+    "$ref": "SellOffer",
+    "parameterName": "resource"
+   },
+   "response": {
+    "$ref": "SellOffer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  }
+ }
+}
