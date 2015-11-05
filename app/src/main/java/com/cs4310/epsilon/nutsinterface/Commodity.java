@@ -1,14 +1,15 @@
 package com.cs4310.epsilon.nutsinterface;
 
 /**
- * Types of commodities.
+ * Contains an enum for types of commodities, and provides helper functions for using them.
  *
- * Usage:
- * Commodity.Type.WALNUT    // gets you the value that corresponds to Walnut;
- *                          // datatype is Commodity.Type
- * Commodity.toType("Pecan")    // gets you a Commodity.Type object equivalent
- *                              // to Commodity.Type.PECAN
- * Commodity.toString(Commodity.Type.ALMOND)    //returns the String "Almond"
+ * <p>Usage:</p>
+ *
+ * Commodity.Type.WALNUT &emsp;&emsp;// gets you the value that corresponds to Walnut;
+ *                                     datatype is Commodity.Type <br/>
+ * Commodity.toType("Pecan") &emsp;&emsp;// gets you a Commodity.Type object equivalent
+ *                                          to Commodity.Type.PECAN <br/>
+ * Commodity.toString(Commodity.Type.ALMOND) &emsp;//returns the String "Almond"
  *
  *
  * Created by dave on 11/3/15.
@@ -39,12 +40,12 @@ public class Commodity {
     }
 
     /**
-     * Returns a string version of the commodity type.
-     *
+     * Returns a string version of the Commodity.Type enum passed as a parameter.<br/>
+     * <br/>
      * This method is actually unnecessary; if you just try to use Commodity.Type.WALNUT
      * as a string, you get the string "WALNUT" -- this is a property of Enums.
-     * @param t the commodity type you would like to turn into a string
-     * @return  the string version of the commodity type
+     * @param t The Commodity.Type object you would like to turn into a string
+     * @return  The string version of the Commodity.Type object
      */
     public static String toString(Type t){
         if(t.equals(Type.WALNUT)) return "Walnut";

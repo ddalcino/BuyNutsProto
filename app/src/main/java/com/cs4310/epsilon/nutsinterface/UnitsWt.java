@@ -28,7 +28,7 @@ public class UnitsWt {
      * A hashtable that maps UnitsWt.Type objects to a Double that represents
      * the weight in pounds for one unit.
      */
-    public static HashMap<Type, Double> numLbs = new HashMap<Type, Double>();
+    public static HashMap<Type, Double> numLbs = new HashMap< /*Type, Double*/ >();
     static{
         numLbs.put(Type.LB, 1.0);
         numLbs.put(Type.KG, 2.204623);
@@ -41,12 +41,25 @@ public class UnitsWt {
      * This is a bit sloppy right now, but the idea is that if you send it a
      * string, you get back a UnitWt.Type object equivalent to that string.
      * Not case sensitive.
-     * @param in    Input string that starts with:
-     *                  "lb" --> UnitWt.Type.LB
-     *                  "kg" --> UnitWt.Type.KG
-     *                  "gross ton" --> UnitWt.Type.GROSS_TON
-     *                  "net ton" --> UnitWt.Type.NET_TON
-     *                  "metric ton" --> UnitWt.Type.METRIC_TON
+     * <p>
+     *     Note: This code SHOULD just check if the input string EQUALS "lb" or
+     *     "kg" etc., but right now it's checking if the input string STARTS WITH
+     *     "lb" or "kg". This is bad programming and should eventually be changed.
+     *     The reason I did this is because of the way I'm using this function
+     *     when I read user input from the Units of Weight Spinner objects
+     *     (R.id.spinnerWeightUnits_MO and R.id.spinnerWeightUnits_SF). These
+     *     objects are filled with strings that don't just say things like
+     *     "Gross Ton"; they say things like "gross ton (2240lb)", and I want to
+     *     be able to pass that string into a function that recognizes what
+     *     UnitsWt.Type enum corresponds to it. This is bad programming, and
+     *     should be changed, but for the moment I don't know how to fix it.
+     * </p>
+     * @param in    Input string that starts with:<br/>
+     *                  &emsp;&emsp;"lb" --> UnitWt.Type.LB<br/>
+     *                  &emsp;&emsp;"kg" --> UnitWt.Type.KG<br/>
+     *                  &emsp;&emsp;"gross ton" --> UnitWt.Type.GROSS_TON<br/>
+     *                  &emsp;&emsp;"net ton" --> UnitWt.Type.NET_TON<br/>
+     *                  &emsp;&emsp;"metric ton" --> UnitWt.Type.METRIC_TON<br/>
      * @return      UnitWt.Type equivalent to input string
      */
     public static Type toType(String in){
@@ -63,7 +76,7 @@ public class UnitsWt {
     }
 
     /**
-     * Returns a string version of the UnitWt.Type enum
+     * Returns a string version of the UnitWt.Type enum passed as a parameter
      * @param t UnitWt.Type object
      * @return  String version of input UnitWt.Type object
      */
@@ -78,7 +91,7 @@ public class UnitsWt {
 
     /**
      * Returns a number you can use to convert one weight measurement to another.
-     * <p>
+     * <p>&emsp;
      *     Usage:
      *     </p>
      * <p>

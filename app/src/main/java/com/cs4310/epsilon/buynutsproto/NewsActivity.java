@@ -9,32 +9,35 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.cs4310.epsilon.buynutsproto.R;
 
+/**
+ * Activity that displays a list of SellOffers in a ListView that occupies
+ * most of the screen.
+ */
 public class NewsActivity extends AppCompatActivity {
     static final String TAG = "myTag";
     static final int REQUEST_CODE_SEARCH_FILTER = 0;
-    private long uid;
+    private long mUid = MainLoginActivity.INVALID_USERID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        //get uid from intent
-        uid = this.getIntent().getLongExtra("uid", -1);
-        Log.i(TAG, (uid==-1 ? "Didn't receive uid" : "Received uid="+uid));
+        //get mUid from intent
+        mUid = this.getIntent().getLongExtra("mUid", MainLoginActivity.INVALID_USERID);
+        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid="+ mUid));
 
-        // set onclick listeners:
+        // set OnClickListeners:
         Button btnMakeNewOffer = (Button) findViewById(R.id.btnMakeOffer_News);
         btnMakeNewOffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClickMakeNewOffer()");
+                Log.i(TAG, "onClick btnMakeOffer_News");
 
                 //create and launch MakeOfferActivity
                 Intent intent = new Intent(NewsActivity.this, MakeOfferActivity.class);
-                intent.putExtra("uid", uid);
+                intent.putExtra("mUid", mUid);
                 NewsActivity.this.startActivity(intent);
             }
         });
@@ -42,7 +45,7 @@ public class NewsActivity extends AppCompatActivity {
         btnSetSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClickSetSearch()");
+                Log.i(TAG, "onClick btnSetFilter_News");
 
                 //create and launch SetSearchFilterActivity
                 NewsActivity.this.startActivityForResult(
@@ -54,7 +57,7 @@ public class NewsActivity extends AppCompatActivity {
         btnRefreshNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClickRefreshNews()");
+                Log.i(TAG, "onClick btnRefreshNews_News");
                 Toast.makeText(NewsActivity.this.getApplicationContext(),
                         "Not yet implemented. Hahaha no news for you",
                         Toast.LENGTH_SHORT).show();
@@ -67,12 +70,12 @@ public class NewsActivity extends AppCompatActivity {
         Log.i(TAG, "onActivityResult()");
         if(resultCode != Activity.RESULT_OK) {
             Log.i(TAG, "didn't get an intent from SetSearchFilterActivity");
-            return;
         } else if(requestCode == REQUEST_CODE_SEARCH_FILTER) {
             // now we know that a SetSearchFilterActivity has sent us this intent
             Log.i(TAG, "successfully obtained intent from SetSearchFilterActivity");
             // we can retrieve info from intent 'data' here
         } else {
+            // handle other requestCode values here
         }
     }
 }

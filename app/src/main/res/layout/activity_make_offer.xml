@@ -94,7 +94,7 @@
                 android:ems="10"
                 android:id="@+id/etMinWeight_MO"
                 android:layout_weight="1"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -112,7 +112,7 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:ems="10"
                 android:id="@+id/etMaxWeight_MO"
                 android:layout_weight="1" />

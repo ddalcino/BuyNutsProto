@@ -5,6 +5,8 @@ import java.util.Calendar;
 /**
  * Created by Mike on 10/23/2015.
  */
+
+//TODO: make this class implement the Parcelable interface
 public class RequestFilteredSellOffer {
     Double min_weight;
     Double max_weight;
@@ -18,8 +20,8 @@ public class RequestFilteredSellOffer {
 
     public RequestFilteredSellOffer(Double min_weight, Double max_weight,
                                     Double min_price_per_unit, Double max_price_per_unit,
-                                    Commodity.Type commodity, Boolean expired, Calendar earliest,
-                                    UnitsWt.Type units) {
+                                    Commodity.Type commodity, Boolean expired,
+                                    Calendar earliest, UnitsWt.Type units) {
         this.min_weight = min_weight;
         this.max_weight = max_weight;
         this.max_price_per_unit = max_price_per_unit;
@@ -31,7 +33,8 @@ public class RequestFilteredSellOffer {
     }
     public RequestFilteredSellOffer(Double min_weight, Double max_weight,
                                     Double min_price_per_unit, Double max_price_per_unit,
-                                    Commodity.Type commodity, Boolean expired, UnitsWt.Type units) {
+                                    Commodity.Type commodity, Boolean expired,
+                                    UnitsWt.Type units) {
         this.min_weight = min_weight;
         this.max_weight = max_weight;
         this.max_price_per_unit = max_price_per_unit;
@@ -45,13 +48,13 @@ public class RequestFilteredSellOffer {
         this.units=units;
     }
 
+    @Override
     public String toString(){
-        String result = "PPU: " + min_price_per_unit + " to " + max_price_per_unit +
-                "\nbetween " + min_weight + " and " + max_weight + " in units " + units.toString() +
+        return  "PPU: " + min_price_per_unit + " to " + max_price_per_unit +
+                "\nbetween " + min_weight + " and " + max_weight +
+                    " in units " + units.toString() +
                 "\nType: " + commodity.toString() +
                 "\nExpired: " + expired +
                 "\nEarliest: " + earliest.getTime();
-
-        return result;
     }
 }
