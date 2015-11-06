@@ -2,12 +2,11 @@ package com.cs4310.epsilon.buynutsproto;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 
 /**
@@ -26,7 +25,7 @@ public class NewsActivity extends AppCompatActivity {
 
         //get mUid from intent
         mUid = this.getIntent().getLongExtra("mUid", MainLoginActivity.INVALID_USERID);
-        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid="+ mUid));
+        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid=" + mUid));
 
         // set OnClickListeners:
         Button btnMakeNewOffer = (Button) findViewById(R.id.btnMakeOffer_News);
@@ -58,9 +57,11 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick btnRefreshNews_News");
-                Toast.makeText(NewsActivity.this.getApplicationContext(),
+
+                new SellOfferAsyncTask(NewsActivity.this).execute();
+                /*Toast.makeText(NewsActivity.this.getApplicationContext(),
                         "Not yet implemented. Hahaha no news for you",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
             }
         });
     }
