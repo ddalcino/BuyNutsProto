@@ -1,6 +1,8 @@
 // If you would like more information on the gradle-appengine-plugin please refer to the github page
 // https://github.com/GoogleCloudPlatform/gradle-appengine-plugin
 
+def appEmail = "archangel.associate@gmail.com"
+
 buildscript {
     repositories {
         jcenter()
@@ -33,6 +35,8 @@ appengine {
     downloadSdk = true
     appcfg {
         oauth2 = true
+            email = "${appEmail}"
+
     }
     endpoints {
         getClientLibsOnBuild = true

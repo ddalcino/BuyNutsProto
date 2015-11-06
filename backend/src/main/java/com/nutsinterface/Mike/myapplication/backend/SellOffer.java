@@ -4,8 +4,6 @@ package com.nutsinterface.Mike.myapplication.backend;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-
-import java.util.Calendar;
 /**
  * Created by Mike on 10/28/2015.
  */
@@ -16,8 +14,7 @@ public class SellOffer {
     //static long curr_id = 0;
     @Id
     Long id;
-    @Index
-    Calendar offerBirthday;
+    String offerBirthday;
     @Index
     Double price_per_unit;
     @Index
@@ -48,11 +45,11 @@ public class SellOffer {
         return id;
     }
 
-    public Calendar getOfferBirthday() {
-        return offerBirthday;
+    public String getOfferBirthday() {
+       return offerBirthday;
     }
 
-    public void setOfferBirthday(Calendar offerBirthday) {
+    public void setOfferBirthday(String offerBirthday) {
         this.offerBirthday = offerBirthday;
     }
 
