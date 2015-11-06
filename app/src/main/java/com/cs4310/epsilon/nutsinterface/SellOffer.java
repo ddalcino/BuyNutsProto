@@ -11,7 +11,7 @@ import java.util.Calendar;
 public class SellOffer {
     // REMOVE IN RELEASE CANDIDATE
     // ONLY USED FOR PROTOTYPE
-    static long curr_id = 0;
+    //static long curr_id = 0;
 
     // Instance Data Members:
     /**
