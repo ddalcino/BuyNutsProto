@@ -1,4 +1,4 @@
-package com.cs4310.epsilon.buynutsproto;
+package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.buynutsproto.guiHelpers.MyArrayAdapter;
+import com.cs4310.epsilon.nutsinterface.SellOfferFront;
+
+import java.util.ArrayList;
 
 
 /**
@@ -17,6 +25,9 @@ public class NewsActivity extends AppCompatActivity {
     static final String TAG = "myTag";
     static final int REQUEST_CODE_SEARCH_FILTER = 0;
     private long mUid = MainLoginActivity.INVALID_USERID;
+    private ListView listView;
+    private MyArrayAdapter myArrayAdapter;
+    private ArrayList<SellOfferFront> sellOffers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +37,10 @@ public class NewsActivity extends AppCompatActivity {
         //get mUid from intent
         mUid = this.getIntent().getLongExtra("mUid", MainLoginActivity.INVALID_USERID);
         Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid=" + mUid));
+
+        //get listView
+        listView = (ListView) findViewById(R.id.listView);
+        updateListView();
 
         // set OnClickListeners:
         Button btnMakeNewOffer = (Button) findViewById(R.id.btnMakeOffer_News);
@@ -78,5 +93,20 @@ public class NewsActivity extends AppCompatActivity {
         } else {
             // handle other requestCode values here
         }
+    }
+
+    public void fillListView(ArrayList<SellOfferFront> sellOffers){
+        this.sellOffers = sellOffers;
+    }
+    public void updateListView() {
+        if(sellOffers != null) {
+            myArrayAdapter = new MyArrayAdapter(this,
+                    R.layout.list_item_news, sellOffers);
+            listView.setAdapter(myArrayAdapter);
+        }
+    }
+    public void setStatusMsg(String s) {
+        TextView tv = (TextView) findViewById(R.id.tvStatus_News);
+        tv.setText(s);
     }
 }

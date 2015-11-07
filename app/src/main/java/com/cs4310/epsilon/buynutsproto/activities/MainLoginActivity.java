@@ -1,4 +1,4 @@
-package com.cs4310.epsilon.buynutsproto;
+package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cs4310.epsilon.buynutsproto.R;
 
 /**
  * The entry point of the app: The first thing the app does is create a

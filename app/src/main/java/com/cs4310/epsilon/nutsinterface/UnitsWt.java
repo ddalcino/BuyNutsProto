@@ -81,12 +81,14 @@ public class UnitsWt {
      * @return  String version of input UnitWt.Type object
      */
     public static String toString(Type t){
-        if(t.equals(Type.LB)) return "lb";
-        else if(t.equals(Type.KG)) return "kg";
-        else if(t.equals(Type.GROSS_TON)) return "gross ton";
-        else if(t.equals(Type.NET_TON)) return "net ton";
-        else if(t.equals(Type.METRIC_TON)) return "metric ton";
-        else return "";
+        if(t != null) {
+            if (t.equals(Type.LB)) return "lb";
+            else if (t.equals(Type.KG)) return "kg";
+            else if (t.equals(Type.GROSS_TON)) return "gross ton";
+            else if (t.equals(Type.NET_TON)) return "net ton";
+            else if (t.equals(Type.METRIC_TON)) return "metric ton";
+        }
+        return "";
     }
 
     /**

@@ -32,10 +32,11 @@ public class Commodity {
      *              or null if it's not on the list.
      */
     public static Type toType(String in){
-        if(in.toLowerCase().equals("walnut")) return Type.WALNUT;
-        else if (in.toLowerCase().equals("pecan")) return Type.PECAN;
-        else if (in.toLowerCase().equals("almond")) return Type.ALMOND;
-        else if (in.toLowerCase().equals("cashew")) return Type.CASHEW;
+        in = in.toLowerCase();
+        if(in.startsWith("walnut")) return Type.WALNUT;
+        else if (in.startsWith("pecan")) return Type.PECAN;
+        else if (in.startsWith("almond")) return Type.ALMOND;
+        else if (in.startsWith("cashew")) return Type.CASHEW;
         else return null;
     }
 
@@ -48,10 +49,12 @@ public class Commodity {
      * @return  The string version of the Commodity.Type object
      */
     public static String toString(Type t){
-        if(t.equals(Type.WALNUT)) return "Walnut";
-        else if(t.equals(Type.PECAN)) return "Pecan";
-        else if(t.equals(Type.ALMOND)) return "Almond";
-        else if(t.equals(Type.CASHEW)) return "Cashew";
-        else return "";
+        if(t != null) {
+            if (t.equals(Type.WALNUT)) return "Walnut";
+            else if (t.equals(Type.PECAN)) return "Pecan";
+            else if (t.equals(Type.ALMOND)) return "Almond";
+            else if (t.equals(Type.CASHEW)) return "Cashew";
+        }
+        return "";
     }
 }

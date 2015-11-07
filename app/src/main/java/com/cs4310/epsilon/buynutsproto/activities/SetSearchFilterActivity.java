@@ -1,4 +1,4 @@
-package com.cs4310.epsilon.buynutsproto;
+package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
 import com.cs4310.epsilon.nutsinterface.Commodity;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
@@ -43,7 +45,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                 //create RequestFilteredSellOffer
                 RequestFilteredSellOffer newFilter = getRequestFilteredSellOffer();
 
-                // Send SellOffer object to the server
+                // Send SellOfferFront object to the server
                 Toast.makeText(
                         SetSearchFilterActivity.this.getApplicationContext(),
                         "RequestFilteredSellOffer is: " + newFilter.toString(),
@@ -74,8 +76,8 @@ public class SetSearchFilterActivity extends AppCompatActivity {
      * Reads all the input fields in the UI and generates a new
      * RequestFilteredSellOffer object. Also performs input validation
      * and returns null for invalid offers.
-     * @return  A new SellOffer object made from UI input fields. If the
-     *          SellOffer is invalid in some way, returns null.
+     * @return  A new SellOfferFront object made from UI input fields. If the
+     *          SellOfferFront is invalid in some way, returns null.
      */
     public RequestFilteredSellOffer getRequestFilteredSellOffer(){
         double minPpu=-1, maxPpu=-1;

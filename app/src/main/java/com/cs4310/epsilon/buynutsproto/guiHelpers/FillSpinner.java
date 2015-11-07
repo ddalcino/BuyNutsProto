@@ -1,4 +1,4 @@
-package com.cs4310.epsilon.buynutsproto;
+package com.cs4310.epsilon.buynutsproto.guiHelpers;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
@@ -23,7 +23,7 @@ public class FillSpinner {
      * @return  Whether or not the fill operation succeeded. Right now, it only
      *          returns true; I haven't yet figured out how to detect a failure.
      */
-    static boolean fill(Context context, int resourceStringArray, Spinner spinner){
+    public static boolean fill(Context context, int resourceStringArray, Spinner spinner){
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                 resourceStringArray, android.R.layout.simple_spinner_item);

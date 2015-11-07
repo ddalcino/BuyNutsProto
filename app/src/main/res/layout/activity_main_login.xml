@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayout3"
+        android:layout_above="@+id/linearLayoutLoginForm"
         android:layout_centerHorizontal="true">
 
         <ImageView
@@ -27,13 +27,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout3">
+        android:id="@+id/linearLayoutLoginForm">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout">
+            android:id="@+id/linearLayoutUsername">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout2">
+            android:id="@+id/linearLayoutPassword">
 
             <TextView
                 android:layout_width="wrap_content"

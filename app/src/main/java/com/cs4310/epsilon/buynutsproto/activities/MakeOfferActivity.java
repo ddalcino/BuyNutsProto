@@ -1,4 +1,4 @@
-package com.cs4310.epsilon.buynutsproto;
+package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,12 +9,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
 import com.cs4310.epsilon.nutsinterface.Commodity;
-import com.cs4310.epsilon.nutsinterface.SellOffer;
+import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 /**
- * An activity that allows a user to create a new SellOffer object and send
+ * An activity that allows a user to create a new SellOfferFront object and send
  * it to the backend
  */
 public class MakeOfferActivity extends AppCompatActivity {
@@ -45,25 +47,25 @@ public class MakeOfferActivity extends AppCompatActivity {
         btnMakeOffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //create SellOffer
-                SellOffer newOffer = getSellOfferFromUI(); // new SellOffer(mUid, ppu, minWt, maxWt, terms, cType, unitsWeight);
+                //create SellOfferFront
+                SellOfferFront newOffer = getSellOfferFromUI(); // new SellOfferFront(mUid, ppu, minWt, maxWt, terms, cType, unitsWeight);
 
 
-                // Send SellOffer object to the server
+                // Send SellOfferFront object to the server
 
-                Toast.makeText(MakeOfferActivity.this, "SellOffer is: " + newOffer, Toast.LENGTH_LONG).show();
+                Toast.makeText(MakeOfferActivity.this, "SellOfferFront is: " + newOffer, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     /**
-     * Reads all the input fields in the UI and generates a new SellOffer
+     * Reads all the input fields in the UI and generates a new SellOfferFront
      * object. Also performs input validation and returns null for invalid
      * offers.
-     * @return  A new SellOffer object made from UI input fields. If the
-     *          SellOffer is invalid in some way, returns null.
+     * @return  A new SellOfferFront object made from UI input fields. If the
+     *          SellOfferFront is invalid in some way, returns null.
      */
-    SellOffer getSellOfferFromUI() {
+    SellOfferFront getSellOfferFromUI() {
         // set default (invalid) values
         double ppu=-1, minWt=-1, maxWt=-1;
         try {
@@ -82,7 +84,7 @@ public class MakeOfferActivity extends AppCompatActivity {
                     "Non-numeric input", Toast.LENGTH_SHORT).show();
             return null;
         }
-        // If the numeric input doesn't make sense, don't make a SellOffer
+        // If the numeric input doesn't make sense, don't make a SellOfferFront
         if (ppu < 0 || minWt < 0 || maxWt < minWt) {
             Toast.makeText(MakeOfferActivity.this.getApplicationContext(),
                     "Invalid numeric input", Toast.LENGTH_SHORT).show();
@@ -107,7 +109,7 @@ public class MakeOfferActivity extends AppCompatActivity {
                     "Invalid spinner input", Toast.LENGTH_SHORT).show();
             return null;
         }
-        //make the new SellOffer and return it
-        return new SellOffer(mUid, ppu, minWt, maxWt, terms, cType, unitsWeight);
+        //make the new SellOfferFront and return it
+        return new SellOfferFront(""+mUid, ppu, minWt, maxWt, terms, cType, unitsWeight);
     }
 }

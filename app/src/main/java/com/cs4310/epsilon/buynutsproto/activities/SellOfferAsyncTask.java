@@ -1,15 +1,16 @@
-package com.cs4310.epsilon.buynutsproto;
+package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
+import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.SellOfferEndpoint;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,8 +27,10 @@ public class SellOfferAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
     @Override
     protected List<SellOffer> doInBackground(Void... Params) {
         if (sellOfferEndpoint == null) {
-            SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
+            SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
+                    AndroidHttp.newCompatibleTransport(),
+                    new AndroidJsonFactory(), null
+            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
 
 
 
@@ -39,25 +42,17 @@ public class SellOfferAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
             return Collections.EMPTY_LIST;
         }
     }
-        @Override
-        protected void onPostExecute(List<SellOffer> result) {
-            for (SellOffer s : result) {
-                //Double ppu  = s.
-                //double ppu_val = ppu.doubleValue();
-                String disp = s.getCommodity();
-                Double ppu = s.getPricePerUnit();
-                Double w_max = s.getMaxWeight();
-                Double w_min = s.getMinWeight();
-                disp+=",";
-                disp+=Double.toString(w_max);
-                disp+=",";
-                disp+=Double.toString(w_min);
-                disp+=",";
-                disp+=Double.toString(ppu);
+    @Override
+    protected void onPostExecute(List<SellOffer> result) {
+        ArrayList<SellOfferFront> sellOffers = new ArrayList<SellOfferFront>();
+        for (SellOffer s : result) {
+            sellOffers.add(new SellOfferFront(s));
+        }
 
-                Toast.makeText(context, disp, Toast.LENGTH_SHORT).show();
-            }
-
+        NewsActivity newsActivity = (NewsActivity) context;
+        newsActivity.setStatusMsg("Received " + sellOffers.size() + " SellOffers from backend");
+        newsActivity.fillListView(sellOffers);
+        newsActivity.updateListView();
     }
-    }
+}
 
