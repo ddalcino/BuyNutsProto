@@ -23,6 +23,8 @@
         </activity>
         <activity android:name=".activities.SetSearchFilterActivity" >
         </activity>
+        <activity android:name=".activities.ViewSellOfferActivity" >
+        </activity>
     </application>
 
 </manifest>

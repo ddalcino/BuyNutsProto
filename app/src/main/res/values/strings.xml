@@ -17,7 +17,10 @@
     <string name="tv_min_ppu">Min PPU</string>
     <string name="tv_max_ppu">Max PPU</string>
     <string name="tv_weights">Weight Units</string>
-    <string name="tvCommodType">Commodity Type</string>
+    <string name="tv_commod_type">Commodity Type</string>
+    <string name="lbl_terms_VSO">Terms: </string>
+    <string name="terms_not_specified">No terms specified</string>
+    <string name="btnContactSeller">Contact Seller For Purchase</string>
 
     <string-array name="commodities_array">
         <item>Walnut</item>

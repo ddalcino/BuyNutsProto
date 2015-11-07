@@ -8,9 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cs4310.epsilon.buynutsproto.R;
-import com.cs4310.epsilon.nutsinterface.Commodity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
-import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +64,7 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
 
             //put column values in the textviews of the inflated file
             if (tvCommod != null){
-                tvCommod.setText(Commodity.toString(i.getcType()));
+                tvCommod.setText(i.getcType());
             }
             if (tvPPU != null){
                 tvPPU.setText(String.format("%.02f", i.getPricePerUnit()));

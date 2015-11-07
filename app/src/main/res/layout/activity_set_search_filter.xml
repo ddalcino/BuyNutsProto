@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/tvCommodType"
+                android:text="@string/tv_commod_type"
                 android:id="@+id/tvCommodType_SF" />
 
             <Spinner

@@ -3,9 +3,11 @@ package com.cs4310.epsilon.buynutsproto.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -79,6 +81,25 @@ public class NewsActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();*/
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //anonymous inner class that implements OnItemClickListener
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                SellOfferFront choice = NewsActivity.this.myArrayAdapter.getItem(position);
+                //intent is the only parameter passed to the new activity
+                Intent intent = new Intent(NewsActivity.this, ViewSellOfferActivity.class);
+                intent.putExtra("SellOffer", (Parcelable) choice);
+
+                Log.i(TAG, "User clicked SellOffer at position=" + position + ", id=" + id);
+                //create another activity
+                NewsActivity.this.startActivity(intent);
+                //refer to parent reference - can't just say "this", that's the inner class
+            }
+        });
+
     }
 
     @Override

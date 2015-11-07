@@ -12,16 +12,16 @@ public class RequestFilteredSellOffer {
     Double max_weight;
     Double max_price_per_unit;
     Double min_price_per_unit;
-    Commodity.Type commodity;
-    Calendar earliest;
-    Calendar latest;
+    String commodity;
+    Long earliest;
+    Long latest;
     Boolean expired;
     UnitsWt.Type units;
 
     public RequestFilteredSellOffer(Double min_weight, Double max_weight,
                                     Double min_price_per_unit, Double max_price_per_unit,
-                                    Commodity.Type commodity, Boolean expired,
-                                    Calendar earliest, UnitsWt.Type units) {
+                                    String commodity, Boolean expired,
+                                    Long earliest, UnitsWt.Type units) {
         this.min_weight = min_weight;
         this.max_weight = max_weight;
         this.max_price_per_unit = max_price_per_unit;
@@ -33,7 +33,7 @@ public class RequestFilteredSellOffer {
     }
     public RequestFilteredSellOffer(Double min_weight, Double max_weight,
                                     Double min_price_per_unit, Double max_price_per_unit,
-                                    Commodity.Type commodity, Boolean expired,
+                                    String commodity, Boolean expired,
                                     UnitsWt.Type units) {
         this.min_weight = min_weight;
         this.max_weight = max_weight;
@@ -41,10 +41,11 @@ public class RequestFilteredSellOffer {
         this.min_price_per_unit = min_price_per_unit;
         this.commodity = commodity;
         this.expired = expired;
-        //default for earliest: 1 week ago
-        this.earliest = Calendar.getInstance();
-        earliest.add(Calendar.DAY_OF_MONTH, -7);
 
+        //default for earliest: 1 week ago
+        Calendar oneWeekAgo = Calendar.getInstance();
+        oneWeekAgo.add(Calendar.DAY_OF_MONTH, -7);
+        this.earliest = oneWeekAgo.getTimeInMillis();
         this.units=units;
     }
 
@@ -53,8 +54,8 @@ public class RequestFilteredSellOffer {
         return  "PPU: " + min_price_per_unit + " to " + max_price_per_unit +
                 "\nbetween " + min_weight + " and " + max_weight +
                     " in units " + units.toString() +
-                "\nType: " + commodity.toString() +
+                "\nType: " + commodity +
                 "\nExpired: " + expired +
-                "\nEarliest: " + earliest.getTime();
+                "\nEarliest: " + earliest;
     }
 }

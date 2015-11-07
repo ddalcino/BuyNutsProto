@@ -1,5 +1,8 @@
 package com.cs4310.epsilon.nutsinterface;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
 /**
@@ -8,7 +11,7 @@ import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.Sell
  *
  * Created by dave on 11/2/15.
  */
-public class SellOfferFront {
+public class SellOfferFront implements Parcelable{
 
     // Instance Data Members:
     /**
@@ -48,15 +51,10 @@ public class SellOfferFront {
     String terms;
 
     /**
-     * The type of nuts: Commodity.Type.ALMONDS, WALNUTS, PECANS, or CASHEWS
+     * The type of nuts: ALMONDS, WALNUTS, PECANS, or CASHEWS
      */
-    Commodity.Type cType;
-    /**
-     * The units of weight; helps to define pricePerUnit, minWeight, and
-     * maxWeight in concrete terms.,br/>
-     * UnitsWt.LB, KG, NET_TON etc.
-     */
-    //UnitsWt.Type units;
+    String cType;
+
     /**
      * If the SellOfferFront is a record of an offer that is sold out or no longer
      * available, expired is set to true. If it's still available, it's false.
@@ -78,12 +76,11 @@ public class SellOfferFront {
      * @param terms         any other terms or specifications defined by the
      *                      seller; this is a chance for the seller to write
      *                      whatever they want to say about their nuts
-     * @param cType         Commodity.Type.ALMONDS, WALNUTS, PECANS, or CASHEWS
-     * @param units         UnitsWt.LB, KG, NET_TON etc.
+     * @param cType         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
      */
     public SellOfferFront(Long id, String sellerId, Long offerBirthday,
                           Double pricePerUnit, Double minWeight, Double maxWeight,
-                          String terms, Commodity.Type cType, UnitsWt.Type units,
+                          String terms, String cType,
                           Boolean expired) {
         this.id = id;
         this.sellerId = sellerId;
@@ -112,12 +109,10 @@ public class SellOfferFront {
      * @param terms         any other terms or specifications defined by the
      *                      seller; this is a chance for the seller to write
      *                      whatever they want to say about their nuts
-     * @param cType         Commodity.Type.ALMONDS, WALNUTS, PECANS, or CASHEWS
-     * @param units         UnitsWt.LB, KG, NET_TON etc.
+     * @param cType         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
      */
     public SellOfferFront(String sellerId, Double pricePerUnit, Double minWeight,
-                          Double maxWeight, String terms, Commodity.Type cType,
-                          UnitsWt.Type units) {
+                          Double maxWeight, String terms, String cType) {
         this.sellerId = sellerId;
         this.pricePerUnit = pricePerUnit;
         this.minWeight = minWeight;
@@ -148,11 +143,11 @@ public class SellOfferFront {
         this.minWeight = s.getMinWeight();
         this.maxWeight = s.getMaxWeight();
         this.terms = s.getTerms();
-        this.cType = Commodity.toType(s.getCommodity());
+        this.cType = s.getCommodity();
         //this.units = null;
 
         this.id = s.getId(); // null; //can't be known by app yet
-        this.offerBirthday = null; // Calendar.getInstance();
+        this.offerBirthday = -1l; // Calendar.getInstance();
         this.expired = s.getExpired(); //if it's new it's not expired
     }
 
@@ -166,7 +161,7 @@ public class SellOfferFront {
                 "\nPPU=" + pricePerUnit +
                 "\nbetween " + minWeight + " and " + maxWeight +
                 //    " in units " + units.toString() +
-                "\nType: " + cType.toString() +
+                "\nType: " + cType +
                 "\nTerms: " + terms;
     }
 
@@ -184,13 +179,9 @@ public class SellOfferFront {
         return terms;
     }
 
-    public Commodity.Type getcType() {
+    public String getcType() {
         return cType;
     }
-
-//    public UnitsWt.Type getUnits() {
-//        return units;
-//    }
 
     public Boolean getExpired() {
         return expired;
@@ -212,5 +203,85 @@ public class SellOfferFront {
 
         return pricePerUnit;
     }
+
+    // Setters:
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public void setOfferBirthday(Long offerBirthday) {
+        this.offerBirthday = offerBirthday;
+    }
+
+    public void setExpired(Boolean expired) {
+        this.expired = expired;
+    }
+
+
+    /**
+     * Describe the kinds of special objects contained in this Parcelable's
+     * marshalled representation.
+     *
+     * @return a bitmask indicating the set of special object types marshalled
+     * by the Parcelable.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param dest  The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(sellerId);
+        dest.writeLong(offerBirthday);
+        dest.writeDouble(pricePerUnit);
+        dest.writeDouble(minWeight);
+        dest.writeDouble(maxWeight);
+        dest.writeString(terms);
+        dest.writeString(cType);
+        dest.writeByte((byte) (expired ? 1 : 0));
+    }
+
+    /**
+     * Constructor that generates a SellOfferFront from a Parcel
+     * @param in    The input Parcel
+     */
+    private SellOfferFront(Parcel in){
+        id = in.readLong();
+        sellerId = in.readString();
+        offerBirthday = in.readLong();
+        pricePerUnit = in.readDouble();
+        minWeight = in.readDouble();
+        maxWeight = in.readDouble();
+        terms = in.readString();
+        cType = in.readString();
+        expired = in.readByte() != 0;
+    }
+
+    /**
+     * Required by Android to create new SellOfferFront objects from parcel
+     */
+    public static final Parcelable.Creator<SellOfferFront> CREATOR
+            = new Parcelable.Creator<SellOfferFront>() {
+        public SellOfferFront createFromParcel(Parcel in) {
+            return new SellOfferFront(in);
+        }
+
+        public SellOfferFront[] newArray(int size) {
+            return new SellOfferFront[size];
+        }
+    };
 
 }

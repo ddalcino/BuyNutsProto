@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
-import com.cs4310.epsilon.nutsinterface.Commodity;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
@@ -45,28 +44,31 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                 //create RequestFilteredSellOffer
                 RequestFilteredSellOffer newFilter = getRequestFilteredSellOffer();
 
-                // Send SellOfferFront object to the server
-                Toast.makeText(
-                        SetSearchFilterActivity.this.getApplicationContext(),
-                        "RequestFilteredSellOffer is: " + newFilter.toString(),
-                        Toast.LENGTH_LONG).show();
+                // If we have a real RequestFilteredSellOffer object, send it to the server
+                if(newFilter != null) {
+                   Toast.makeText(
+                            SetSearchFilterActivity.this.getApplicationContext(),
+                            "RequestFilteredSellOffer is: " + newFilter.toString(),
+                            Toast.LENGTH_LONG).show();
 
-                // make new Intent to send back to NewsActivity
-                Intent data = new Intent();
+                    // make new Intent to send back to NewsActivity
+                    Intent data = new Intent();
 
-                // FIXME: 11/4/15
-                // fill data with search filter criteria - NOT IMPLEMENTED YET
-                /*
-                data.putExtra((Parcelable) newFilter);
-                // this call requires that RequestFilteredSellOffer implements
-                // the Parcelable interface, but it doesn't do that yet
-                */
+                    // FIXME: 11/4/15
+                    // fill data with search filter criteria - NOT IMPLEMENTED YET
 
-                setResult(RESULT_OK, data);
-                // now NewsActivity has an idea of what's in the search filter
+                    //data.putExtra("filter", (Parcelable) newFilter);
+                    // this call requires that RequestFilteredSellOffer implements
+                    // the Parcelable interface, but it doesn't do that yet
 
-                //FIXME: 11/4/15
-                //Also, send a RequestFilteredSellOffer object to the server
+
+                    setResult(RESULT_OK, data);
+                    // now NewsActivity has an idea of what's in the search filter
+
+                    //FIXME: 11/4/15
+                    //Also, send a RequestFilteredSellOffer object to the server
+            }
+
             }
         });
 
@@ -104,8 +106,8 @@ public class SetSearchFilterActivity extends AppCompatActivity {
             return null;
         }
 
-        Commodity.Type cType = Commodity.toType(
-                spinCommodityType.getSelectedItem().toString());
+        String cType = spinCommodityType.getSelectedItem().toString();
+        Log.i(TAG, "User selected " + cType +" from spinner");
         UnitsWt.Type unitsWeight = UnitsWt.toType(
                 spinUnitWt.getSelectedItem().toString());
         if(cType == null || unitsWeight == null){
