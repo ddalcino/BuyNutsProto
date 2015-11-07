@@ -1,9 +1,15 @@
 package com.cs4310.epsilon.nutsinterface;
 
+// Used to allow Android OS to package the object and send it between activities
 import android.os.Parcel;
 import android.os.Parcelable;
 
+// Used to convert between backend objects and frontend objects
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
+
+//import com.googlecode.objectify.annotation.Entity;
+//import com.googlecode.objectify.annotation.Id;
+//import com.googlecode.objectify.annotation.Index;
 
 /**
  * Holds all pertinent data that a user or seller could want regarding an
@@ -11,7 +17,10 @@ import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.Sell
  *
  * Created by dave on 11/2/15.
  */
+//@Entity
 public class SellOfferFront implements Parcelable{
+
+    static final long INVALID_OFFER_BIRTHDAY = -1l;
 
     // Instance Data Members:
     /**
@@ -19,30 +28,44 @@ public class SellOfferFront implements Parcelable{
      * when it is added to the database. No two SellOfferFront objects can have
      * the same id.
      */
+    //@Id
     Long id;
-    /** that the frontend can determine on its own
-     * An identifier that indicates a unique seller. Many SellOfferFront objects
-     * can have the same sellerId, but only one Seller can have that id.
-     */
-    String sellerId;
     /**
-     * The date/time at which the offer was created. Should probably be set by
-     * the backend as soon as the SellOfferFront is received, not by the frontend.
+     * The date/time at which the offer was created, measured in milliseconds
+     * since 12:00AM January 1, 1970, in Universal Coordinated Time (UTC).
+     * Because we're using UTC, this value should not be affected by timezone
+     * differences. The current UTC time in milliseconds can be accessed by
+     * calling System.currentTimeMillis() or Date.getTime(). We cannot be
+     * certain that every Android device's system clock will be synchronized
+     * and report the same UTC time, so we will rely on the backend to set this
+     * value.
      */
     Long offerBirthday;
     /**
-     * Price (in USD) per unit weight, which is defined by this.units
+     * An identifier that indicates a unique seller. Many SellOfferFront objects
+     * can have the same sellerId, but only one Seller can have that id.
      */
+    //@Index
+    String sellerId;
+    /**
+     * Price in USD per pound. Users using different weight units will be
+     * allowed to view this figure in different units on the frontend, because
+     * the frontend will use the code in UnitsWt to convert this value to their
+     * preferred unit types. Alternate currency types are not supported.
+     */
+    //@Index
     Double pricePerUnit;
     /**
-     * Minimum weight for a shipment. The seller will not sell less than this
-     * amount for this price.
+     * Minimum weight, in lbs, for a shipment. The seller will not sell less
+     * than this amount for this price.
      */
+    //@Index
     Double minWeight;
     /**
-     * Maximum weight for a shipment. The seller is unwilling to sell more than
-     * this amount in one shipment.
+     * Maximum weight, in lbs, for a shipment. The seller is unwilling to sell
+     * more than this amount in one shipment.
      */
+    //@Index
     Double maxWeight;
     /**
      * Any other terms or specifications defined by the seller; this is a
@@ -53,7 +76,8 @@ public class SellOfferFront implements Parcelable{
     /**
      * The type of nuts: ALMONDS, WALNUTS, PECANS, or CASHEWS
      */
-    String cType;
+    //@Index
+    String commodity;
 
     /**
      * If the SellOfferFront is a record of an offer that is sold out or no longer
@@ -76,12 +100,11 @@ public class SellOfferFront implements Parcelable{
      * @param terms         any other terms or specifications defined by the
      *                      seller; this is a chance for the seller to write
      *                      whatever they want to say about their nuts
-     * @param cType         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
+     * @param commodity         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
      */
     public SellOfferFront(Long id, String sellerId, Long offerBirthday,
                           Double pricePerUnit, Double minWeight, Double maxWeight,
-                          String terms, String cType,
-                          Boolean expired) {
+                          String terms, String commodity, Boolean expired) {
         this.id = id;
         this.sellerId = sellerId;
         this.offerBirthday = offerBirthday;
@@ -89,7 +112,7 @@ public class SellOfferFront implements Parcelable{
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
         this.terms = terms;
-        this.cType = cType;
+        this.commodity = commodity;
         //this.units = units;
         this.expired = expired;
     }
@@ -109,16 +132,16 @@ public class SellOfferFront implements Parcelable{
      * @param terms         any other terms or specifications defined by the
      *                      seller; this is a chance for the seller to write
      *                      whatever they want to say about their nuts
-     * @param cType         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
+     * @param commodity         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
      */
     public SellOfferFront(String sellerId, Double pricePerUnit, Double minWeight,
-                          Double maxWeight, String terms, String cType) {
+                          Double maxWeight, String terms, String commodity) {
         this.sellerId = sellerId;
         this.pricePerUnit = pricePerUnit;
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
         this.terms = terms;
-        this.cType = cType;
+        this.commodity = commodity;
         //this.units = units;
 
         // These three aren't used by the front end until they come back from the backend
@@ -130,25 +153,25 @@ public class SellOfferFront implements Parcelable{
 
     /**
      * Placeholder function to convert backend-type SellOffer objects to
-     * frontend-type SellOffer objects
+     * frontend-type SellOfferFront objects
+     * At this point, the only incompatible datamember in SellOffer is offerBirthday
      * @param s Backend-type SellOffer object
      */
     public SellOfferFront(SellOffer s) {
-        try {
-            this.sellerId = s.getSellerId();
-        } catch (NumberFormatException e) {
-            this.sellerId = "";
-        }
+        this.sellerId = s.getSellerId();
         this.pricePerUnit = s.getPricePerUnit();
         this.minWeight = s.getMinWeight();
         this.maxWeight = s.getMaxWeight();
         this.terms = s.getTerms();
-        this.cType = s.getCommodity();
+        this.commodity = s.getCommodity();
         //this.units = null;
 
-        this.id = s.getId(); // null; //can't be known by app yet
-        this.offerBirthday = -1l; // Calendar.getInstance();
-        this.expired = s.getExpired(); //if it's new it's not expired
+        this.id = s.getId();
+        /**
+         * This is the only datamember that needs to be handled differently right now
+         */
+        this.offerBirthday = INVALID_OFFER_BIRTHDAY; // s.getOfferBirthday()
+        this.expired = s.getExpired();
     }
 
     /**
@@ -161,7 +184,7 @@ public class SellOfferFront implements Parcelable{
                 "\nPPU=" + pricePerUnit +
                 "\nbetween " + minWeight + " and " + maxWeight +
                 //    " in units " + units.toString() +
-                "\nType: " + cType +
+                "\nType: " + commodity +
                 "\nTerms: " + terms;
     }
 
@@ -179,8 +202,8 @@ public class SellOfferFront implements Parcelable{
         return terms;
     }
 
-    public String getcType() {
-        return cType;
+    public String getCommodity() {
+        return commodity;
     }
 
     public Boolean getExpired() {
@@ -250,7 +273,7 @@ public class SellOfferFront implements Parcelable{
         dest.writeDouble(minWeight);
         dest.writeDouble(maxWeight);
         dest.writeString(terms);
-        dest.writeString(cType);
+        dest.writeString(commodity);
         dest.writeByte((byte) (expired ? 1 : 0));
     }
 
@@ -266,12 +289,12 @@ public class SellOfferFront implements Parcelable{
         minWeight = in.readDouble();
         maxWeight = in.readDouble();
         terms = in.readString();
-        cType = in.readString();
+        commodity = in.readString();
         expired = in.readByte() != 0;
     }
 
     /**
-     * Required by Android to create new SellOfferFront objects from parcel
+     * Required by Android OS to create new SellOfferFront objects from parcel
      */
     public static final Parcelable.Creator<SellOfferFront> CREATOR
             = new Parcelable.Creator<SellOfferFront>() {

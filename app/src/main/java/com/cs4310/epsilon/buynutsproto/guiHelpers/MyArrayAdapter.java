@@ -15,18 +15,32 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
+ * This is an ArrayAdapter class for SellOfferFront objects, used to display
+ * an ArrayList of SellOfferFront objects in a ListView object. To do so, it
+ * uses the layout defined in list_item_news.xml
+ *
  * Created by dave on 11/6/15.
  */
 public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
 
+    /**
+     * A reference to the ArrayList of objects you want to display in the ListView
+     */
     private ArrayList<SellOfferFront> aList;
 
 
+    /**
+     * Constructor
+     * @param context               The activity that needs the ArrayAdapter
+     * @param textViewResourceId    The layout xml file used to produce the output
+     * @param objects               The ArrayList of SellOffer objects to display
+     */
     public MyArrayAdapter(Context context, int textViewResourceId,
                           ArrayList<SellOfferFront> objects){
         super(context, textViewResourceId, objects);
         if(objects != null) {
             this.aList = objects;
+            // Sort the list by lowest price:
             Collections.sort(aList, new Comparator<SellOfferFront>() {
                 @Override
                 public int compare(SellOfferFront so1, SellOfferFront so2) {
@@ -60,11 +74,11 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
             TextView tvPPU = (TextView) view.findViewById(R.id.tvShowPPU);
             TextView tvMaxWeight = (TextView) view.findViewById(R.id.tvShowMaxWeight);
             TextView tvMinWeight = (TextView) view.findViewById(R.id.tvShowMinWeight);
-            TextView tvWeightUnits = (TextView) view.findViewById(R.id.tvShowUnitsWt);
+//            TextView tvWeightUnits = (TextView) view.findViewById(R.id.tvShowUnitsWt);
 
-            //put column values in the textviews of the inflated file
+            // put column values in the textviews of the inflated file
             if (tvCommod != null){
-                tvCommod.setText(i.getcType());
+                tvCommod.setText(i.getCommodity());
             }
             if (tvPPU != null){
                 tvPPU.setText(String.format("%.02f", i.getPricePerUnit()));

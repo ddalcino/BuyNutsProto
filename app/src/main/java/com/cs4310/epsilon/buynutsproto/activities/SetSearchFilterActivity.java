@@ -15,6 +15,7 @@ import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
+
 public class SetSearchFilterActivity extends AppCompatActivity {
     static final String TAG = "myTag";
     /**

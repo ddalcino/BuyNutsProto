@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.MyArrayAdapter;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.SellOfferAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 
 import java.util.ArrayList;
@@ -116,9 +117,19 @@ public class NewsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Used to set the list of SellOfferFront objects to display. Essentially,
+     * a setter for this.sellOffers
+     * @param sellOffers    ArrayList of SellOfferFront object to display in
+     *                      the ListView
+     */
     public void fillListView(ArrayList<SellOfferFront> sellOffers){
         this.sellOffers = sellOffers;
     }
+
+    /**
+     * Used to display the list of SellOfferFront objects.
+     */
     public void updateListView() {
         if(sellOffers != null) {
             myArrayAdapter = new MyArrayAdapter(this,
@@ -126,8 +137,13 @@ public class NewsActivity extends AppCompatActivity {
             listView.setAdapter(myArrayAdapter);
         }
     }
-    public void setStatusMsg(String s) {
+
+    /**
+     * Used to show a message in the status bar at the bottom of the screen.
+     * @param statusMsg The message to display
+     */
+    public void setStatusMsg(String statusMsg) {
         TextView tv = (TextView) findViewById(R.id.tvStatus_News);
-        tv.setText(s);
+        tv.setText(statusMsg);
     }
 }

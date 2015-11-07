@@ -1,8 +1,9 @@
-package com.cs4310.epsilon.buynutsproto.activities;
+package com.cs4310.epsilon.buynutsproto.talkToBackend;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.cs4310.epsilon.buynutsproto.activities.NewsActivity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -15,13 +16,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * An Asynchronous Task that runs in the background. It asks the backend for a
+ * list of SellOffer objects, and when it receives that list, it sends the list
+ * to the activity that created the task and tells it to update its view.
+ *
  * Created by Mike on 11/5/2015.
  */
 public class SellOfferAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
-    SellOfferAsyncTask(Context context) {
+    public SellOfferAsyncTask(Context context) {
         this.context = context;
     }
     @Override
