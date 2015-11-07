@@ -9,7 +9,6 @@ import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.Sell
  * Created by dave on 11/2/15.
  */
 public class SellOfferFront {
-    //public static final String INVALID_ID = -1l;
 
     // Instance Data Members:
     /**
