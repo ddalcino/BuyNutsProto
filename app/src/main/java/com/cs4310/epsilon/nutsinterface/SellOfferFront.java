@@ -189,44 +189,67 @@ public class SellOfferFront implements Parcelable{
                 "\nTerms: " + terms;
     }
 
+    /**
+     * Turns the SellOfferFront object into an array of strings, of the
+     * following form:<br/>
+     * (note that items marked as being doubles or longs are actually the
+     * string representation of that form, and not an actual numeric type)
+     * @return  id              // a long; the unique id for this SellOffer<br/>
+     *          sellerId        // a string of characters 0-9;<br/>
+     *          offerBirthday;  // a long, represents milliseconds since Jan 1 1970<br/>
+     *          pricePerUnit;   // a double<br/>
+     *          minWeight;      // a double<br/>
+     *          maxWeight;      // a double<br/>
+     *          commodity;      // a string; can be "walnut", "pecan", "cashew", or "almond"<br/>
+     *          expired;        // a string, either "true" or "false"<br/>
+     *          terms;          // a string, unchecked<br/>
+     */
     public String[] toStringArray() {
-
-        /*
-        this.id = id;   // a whole number
-        this.sellerId = sellerId;   //a whole number
-        this.offerBirthday = offerBirthday; // a whole number(long, represents ms since Jan 1 1970)
-        this.pricePerUnit = pricePerUnit;   // a decimal number
-        this.minWeight = minWeight; // a decimal number
-        this.maxWeight = maxWeight; // a decimal number
-        this.commodity = commodity; // a string
-        this.expired = expired; // 0 or 1
-        this.terms = terms;     // a string that may contain commas
-
-         */
-
         return new String[]{
                 id.toString(),
-                sellerId.toString(),
+                sellerId,
                 offerBirthday.toString(),
                 pricePerUnit.toString(),
                 minWeight.toString(),
                 maxWeight.toString(),
-                commodity.toString(),
+                commodity.toLowerCase(),
                 (expired ? "true" : "false"),
-                terms.toString()
+                terms
         };
     }
 
+    /**
+     * An exception, thrown only by the constructor for SellOfferFront(String[]).
+     * It exists for type safety and to hold specific messages about what went
+     * wrong with the constructor call.
+     */
     public class SellOfferStringArrayException extends Exception {
         SellOfferStringArrayException(String msg) {
             super(msg);
         }
     }
 
+    /**
+     * Constructor meant to build a SellOfferFront object out of an array of strings.
+     * @param stringArray   An array of strings, in the following form:<br/><br/>
+     *          id              // a long; the unique id for this SellOffer<br/>
+     *          sellerId        // a string of characters 0-9;<br/>
+     *          offerBirthday;  // a long, represents milliseconds since Jan 1 1970<br/>
+     *          pricePerUnit;   // a double<br/>
+     *          minWeight;      // a double<br/>
+     *          maxWeight;      // a double<br/>
+     *          commodity;      // a string; can be "walnut", "pecan", "cashew", or "almond"<br/>
+     *          expired;        // a string, either "true" or "false"<br/>
+     *          terms;          // a string, unchecked<br/>
+     * @throws SellOfferStringArrayException    this contains a message indicating the
+     *          first item in the parameter array that
+     */
     public SellOfferFront(String[] stringArray) throws SellOfferStringArrayException {
-        //String[] csvArray = csv.split(",");
         try {
             this.id = Long.parseLong(stringArray[0]);
+            if (id < 0) {
+                throw new SellOfferStringArrayException("User ID less than zero");
+            }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("User ID is not a long");
         }
@@ -237,21 +260,33 @@ public class SellOfferFront implements Parcelable{
 
         try {
             this.offerBirthday = Long.parseLong(stringArray[2]);
+            if (offerBirthday < 0) {
+                throw new SellOfferStringArrayException("offerBirthday less than zero");
+            }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("OfferBirthday is not a long");
         }
         try {
             this.pricePerUnit = Double.parseDouble(stringArray[3]);
+            if (pricePerUnit < 0) {
+                throw new SellOfferStringArrayException("pricePerUnit less than zero");
+            }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("pricePerUnit is not a double");
         }
         try {
             this.minWeight = Double.parseDouble(stringArray[4]);
+            if (minWeight < 0) {
+                throw new SellOfferStringArrayException("minWeight less than zero");
+            }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("minWeight is not a double");
         }
         try {
             this.maxWeight = Double.parseDouble(stringArray[5]);
+            if (maxWeight < minWeight) {
+                throw new SellOfferStringArrayException("maxWeight less than minWeight");
+            }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("maxWeight is not a double");
         }
@@ -262,15 +297,16 @@ public class SellOfferFront implements Parcelable{
                 !commodity.equals("almond") ) {
             throw new SellOfferStringArrayException("Invalid commodity type");
         }
-        if (stringArray[7].equals("1")) {
+        if (stringArray[7].equals("true")) {
             this.expired = true;
-        } else if (stringArray[7].equals("0")) {
+        } else if (stringArray[7].equals("false")) {
             this.expired = false;
         } else {
             throw new SellOfferStringArrayException("Expired field improperly set");
         }
 
-        //Collect the rest in terms
+        // the last item is terms; this isn't checked because it's allowed to
+        // be anything
         this.terms = stringArray[8];
     }
 
