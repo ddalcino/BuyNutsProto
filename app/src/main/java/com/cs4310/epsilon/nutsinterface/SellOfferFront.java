@@ -7,6 +7,8 @@ import android.os.Parcelable;
 // Used to convert between backend objects and frontend objects
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
+import java.util.regex.Pattern;
+
 //import com.googlecode.objectify.annotation.Entity;
 //import com.googlecode.objectify.annotation.Id;
 //import com.googlecode.objectify.annotation.Index;
@@ -113,7 +115,6 @@ public class SellOfferFront implements Parcelable{
         this.maxWeight = maxWeight;
         this.terms = terms;
         this.commodity = commodity;
-        //this.units = units;
         this.expired = expired;
     }
 
@@ -186,6 +187,91 @@ public class SellOfferFront implements Parcelable{
                 //    " in units " + units.toString() +
                 "\nType: " + commodity +
                 "\nTerms: " + terms;
+    }
+
+    public String[] toStringArray() {
+
+        /*
+        this.id = id;   // a whole number
+        this.sellerId = sellerId;   //a whole number
+        this.offerBirthday = offerBirthday; // a whole number(long, represents ms since Jan 1 1970)
+        this.pricePerUnit = pricePerUnit;   // a decimal number
+        this.minWeight = minWeight; // a decimal number
+        this.maxWeight = maxWeight; // a decimal number
+        this.commodity = commodity; // a string
+        this.expired = expired; // 0 or 1
+        this.terms = terms;     // a string that may contain commas
+
+         */
+
+        return new String[]{
+                id.toString(),
+                sellerId.toString(),
+                offerBirthday.toString(),
+                pricePerUnit.toString(),
+                minWeight.toString(),
+                maxWeight.toString(),
+                commodity.toString(),
+                (expired ? "true" : "false"),
+                terms.toString()
+        };
+    }
+
+    public class SellOfferStringArrayException extends Exception {
+        SellOfferStringArrayException(String msg) {
+            super(msg);
+        }
+    }
+
+    public SellOfferFront(String[] stringArray) throws SellOfferStringArrayException {
+        //String[] csvArray = csv.split(",");
+        try {
+            this.id = Long.parseLong(stringArray[0]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("User ID is not a long");
+        }
+        this.sellerId = stringArray[1];
+        if (!Pattern.matches("[0-9]+", stringArray[1])) {
+            throw new SellOfferStringArrayException("SellerId is not a number");
+        }
+
+        try {
+            this.offerBirthday = Long.parseLong(stringArray[2]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("OfferBirthday is not a long");
+        }
+        try {
+            this.pricePerUnit = Double.parseDouble(stringArray[3]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("pricePerUnit is not a double");
+        }
+        try {
+            this.minWeight = Double.parseDouble(stringArray[4]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("minWeight is not a double");
+        }
+        try {
+            this.maxWeight = Double.parseDouble(stringArray[5]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("maxWeight is not a double");
+        }
+        this.commodity = stringArray[6].toLowerCase();
+        if (    !commodity.equals("walnut") &&
+                !commodity.equals("cashew") &&
+                !commodity.equals("pecan") &&
+                !commodity.equals("almond") ) {
+            throw new SellOfferStringArrayException("Invalid commodity type");
+        }
+        if (stringArray[7].equals("1")) {
+            this.expired = true;
+        } else if (stringArray[7].equals("0")) {
+            this.expired = false;
+        } else {
+            throw new SellOfferStringArrayException("Expired field improperly set");
+        }
+
+        //Collect the rest in terms
+        this.terms = stringArray[8];
     }
 
     // Getters:
