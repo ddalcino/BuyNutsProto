@@ -8,7 +8,6 @@ import com.cs4310.epsilon.buynutsproto.activities.MakeOfferActivity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.SellOfferEndpoint;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
@@ -33,15 +32,12 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         if (Params == null || Params[0] == null) {
             return ("MakeOffer Failed");
         }
-        //SellOffer newSellOffer = new SellOffer();
-        SellOfferFront sf = Params[0];
+        SellOffer newSellOffer = Params[0].toSellOffer();
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
             ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
-
-
 
             sellOfferEndpoint = builder.build();
         }
@@ -55,11 +51,8 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         //newSellOffer.setOfferBirthday(sf.getOfferBirthday());
         //newSellOffer.setSpecification(sf.getSpecification())
         try {
-            sellOfferEndpoint.insert(sf.toSellOffer()).execute();
+            sellOfferEndpoint.insert(newSellOffer).execute();
             return ("Inserted");
-        } catch (GoogleJsonResponseException e) {
-            e.printStackTrace();
-            return(e.getLocalizedMessage());
         } catch (IOException e) {
             e.printStackTrace();
             return("Insertion Failed\n" + e.getLocalizedMessage());
