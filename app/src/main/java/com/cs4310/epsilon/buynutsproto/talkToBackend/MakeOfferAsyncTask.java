@@ -2,6 +2,7 @@ package com.cs4310.epsilon.buynutsproto.talkToBackend;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.activities.MakeOfferActivity;
@@ -20,32 +21,41 @@ import java.io.IOException;
  *
  * Created by Mike on 11/5/2015.
  */
-public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> {
+public class MakeOfferAsyncTask extends AsyncTask<Pair<Context, SellOfferFront>, Void, String> {
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
-    public MakeOfferAsyncTask(Context context) {
-        this.context = context;
-    }
+    //public MakeOfferAsyncTask(Context context) {
+    //    this.context = context;
+    //}
     @Override
-    protected String doInBackground(SellOfferFront... Params) {
-        if (Params == null || Params[0] == null) {
-            return ("MakeOffer Failed");
-        }
-        SellOffer newSellOffer = new SellOffer();
-        SellOfferFront sf = Params[0];
+    protected String doInBackground(Pair<Context, SellOfferFront>... params) {
+        // If we don't have a SellOfferEndpoint reference yet, build a new one
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
             ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
 
-
-
             sellOfferEndpoint = builder.build();
         }
 
+        if (params == null || params.length == 0) {
+            return ("MakeOffer Failed");
+        }
 
+        // Get a reference to the activity that spawned this AsyncTask, so that
+        // we will have somewhere to send the output
+        context = params[0].first;
+
+        // Get a reference to the SellOfferFront object passed into this AsyncTask
+        SellOfferFront sf = params[0].second;
+
+        // Make a new SellOffer object
+        SellOffer newSellOffer = new SellOffer();
+
+        // Build a SellOffer object from parts of the SellOfferFront object
+        // sent here in the parameter list
         newSellOffer.setPricePerUnit(sf.getPricePerUnit());
         newSellOffer.setCommodity(sf.getCommodity());
         newSellOffer.setMaxWeight(sf.getMaxWeight());
@@ -53,10 +63,12 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         newSellOffer.setTerms(sf.getTerms());
         //newSellOffer.setOfferBirthday(sf.getOfferBirthday());
         //newSellOffer.setSpecification(sf.getSpecification())
-    try {
+        try {
+            // Try to insert the object
             sellOfferEndpoint.insert(newSellOffer).execute();
             return("Inserted");
         } catch (IOException e) {
+            e.printStackTrace();
             return("Insertion Failed");
         }
     }
@@ -67,10 +79,10 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
             sellOffers.add(new SellOfferFront(s));
         }
 */
-        MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
+        //MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
         CharSequence text = (CharSequence) result;
         int duration = Toast.LENGTH_LONG;
-        Toast.makeText(makeOfferActivity,text,duration).show();
+        Toast.makeText(context,text,duration).show();
 
 
     }

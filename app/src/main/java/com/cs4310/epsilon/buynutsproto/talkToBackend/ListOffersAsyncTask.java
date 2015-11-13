@@ -36,11 +36,8 @@ public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> 
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
             ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
-
-
-
-        sellOfferEndpoint = builder.build();
-    }
+            sellOfferEndpoint = builder.build();
+        }
         try {
             return sellOfferEndpoint.list().execute().getItems();
         } catch (IOException e) {

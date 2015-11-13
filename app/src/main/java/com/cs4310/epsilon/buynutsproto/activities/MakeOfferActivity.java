@@ -1,8 +1,10 @@
 package com.cs4310.epsilon.buynutsproto.activities;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.MakeOfferAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
@@ -57,7 +60,14 @@ public class MakeOfferActivity extends AppCompatActivity {
                         "SellOfferFront is: " + newOffer,
                         Toast.LENGTH_LONG).show();
                 if(newOffer != null){
-                    //TODO: Send SellOfferFront object to the server
+
+                    Pair params = new Pair<Context, SellOfferFront>(MakeOfferActivity.this, newOffer);
+                    // Send SellOfferFront object to the server
+                    new MakeOfferAsyncTask().execute(new Pair<Context, SellOfferFront>(
+                            MakeOfferActivity.this, newOffer));
+
+                    //new MakeOfferAsyncTask( params ).execute();
+
                 }
             }
         });
