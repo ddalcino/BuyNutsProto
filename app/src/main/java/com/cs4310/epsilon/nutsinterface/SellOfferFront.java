@@ -219,6 +219,27 @@ public class SellOfferFront implements Parcelable{
     }
 
     /**
+     * Turns a SellOfferFront into a SellOffer object
+     * @return A SellOffer version of the SellOfferFront
+     */
+    public SellOffer toSellOffer() {
+        // should be using a constructor with a parameter list, but it doesn't exist
+        SellOffer so = new SellOffer();
+        if(id != null) so.setId(id);
+        if(sellerId != null) so.setSellerId(sellerId);
+        // SellOffer requires a String for this field, right now
+        if(offerBirthday != null) so.setOfferBirthday(offerBirthday.toString());
+        if(pricePerUnit != null) so.setPricePerUnit(pricePerUnit);
+        if(minWeight != null) so.setMinWeight(minWeight);
+        if(maxWeight != null) so.setMaxWeight(maxWeight);
+        if(commodity != null) so.setCommodity(commodity);
+        if(expired != null) so.setExpired(expired);
+        if(terms != null) so.setTerms(terms);
+
+        return so;
+    }
+
+    /**
      * An exception, thrown only by the constructor for SellOfferFront(String[]).
      * It exists for type safety and to hold specific messages about what went
      * wrong with the constructor call.
