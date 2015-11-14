@@ -22,11 +22,11 @@ import java.util.List;
  *
  * Created by Mike on 11/5/2015.
  */
-public class SellOfferAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
+public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
-    public SellOfferAsyncTask(Context context) {
+    public ListOffersAsyncTask(Context context) {
         this.context = context;
     }
     @Override

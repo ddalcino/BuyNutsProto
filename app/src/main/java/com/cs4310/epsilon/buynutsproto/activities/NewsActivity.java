@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.MyArrayAdapter;
-import com.cs4310.epsilon.buynutsproto.talkToBackend.SellOfferAsyncTask;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.ListOffersAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class NewsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "onClick btnRefreshNews_News");
 
-                new SellOfferAsyncTask(NewsActivity.this).execute();
+                new ListOffersAsyncTask(NewsActivity.this).execute();
                 /*Toast.makeText(NewsActivity.this.getApplicationContext(),
                         "Not yet implemented. Hahaha no news for you",
                         Toast.LENGTH_SHORT).show();*/
