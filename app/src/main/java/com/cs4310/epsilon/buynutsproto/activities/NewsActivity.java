@@ -38,7 +38,7 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
 
         //get mUid from intent
-        mUid = this.getIntent().getLongExtra("mUid", MainLoginActivity.INVALID_USERID);
+        mUid = this.getIntent().getLongExtra("uid", MainLoginActivity.INVALID_USERID);
         Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid=" + mUid));
 
         //get listView
@@ -92,7 +92,7 @@ public class NewsActivity extends AppCompatActivity {
                 SellOfferFront choice = NewsActivity.this.myArrayAdapter.getItem(position);
                 //intent is the only parameter passed to the new activity
                 Intent intent = new Intent(NewsActivity.this, ViewSellOfferActivity.class);
-                intent.putExtra("SellOffer", (Parcelable) choice);
+                intent.putExtra("SellOffer", choice);
 
                 Log.i(TAG, "User clicked SellOffer at position=" + position + ", id=" + id);
                 //create another activity
