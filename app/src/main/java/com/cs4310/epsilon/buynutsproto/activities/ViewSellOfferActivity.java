@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.GetContactInfoAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 
 /**
@@ -25,7 +25,7 @@ public class ViewSellOfferActivity extends AppCompatActivity {
 
         Log.i(TAG, "onCreate ViewSellOfferActivity");
 
-        SellOfferFront sellOffer = this.getIntent()
+        final SellOfferFront sellOffer = this.getIntent()
                 .getParcelableExtra("SellOffer");
 
         String weightUnits = "lbs";
@@ -57,9 +57,10 @@ public class ViewSellOfferActivity extends AppCompatActivity {
         btnContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This is where you would put code to contact the seller
-                Toast.makeText(ViewSellOfferActivity.this,
-                        "Not yet implemented.", Toast.LENGTH_SHORT).show();
+                // Start an AsyncTask that gets seller contact info and passes it into the next activity
+                new GetContactInfoAsyncTask(ViewSellOfferActivity.this).execute(sellOffer.getSellerId());
+
+                //startActivity(new Intent(ViewSellOfferActivity.this, ContactSellerActivity.class));
             }
         });
     }

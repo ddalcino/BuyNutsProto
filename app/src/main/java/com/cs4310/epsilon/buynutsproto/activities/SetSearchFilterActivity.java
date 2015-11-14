@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.SetFilterAsyncTask;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
@@ -23,11 +24,15 @@ public class SetSearchFilterActivity extends AppCompatActivity {
      * the user
      */
     private Spinner spinCommodityType, spinUnitWt;
+    private long mUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_search_filter);
+
+        mUid = this.getIntent().getLongExtra("uid", MainLoginActivity.INVALID_USERID);
+
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_SF);
         FillSpinner.fill(this, R.array.wt_units_array, spinUnitWt);
@@ -66,8 +71,8 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                     setResult(RESULT_OK, data);
                     // now NewsActivity has an idea of what's in the search filter
 
-                    //FIXME: 11/4/15
                     //Also, send a RequestFilteredSellOffer object to the server
+                    new SetFilterAsyncTask(SetSearchFilterActivity.this).execute(newFilter);
             }
 
             }
@@ -118,6 +123,6 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         }
         //create RequestFilteredSellOffer
         return new RequestFilteredSellOffer(
-                minWt, maxWt, minPpu, maxPpu, cType, false, unitsWeight);
+                mUid, minWt, maxWt, minPpu, maxPpu, cType, false);
     }
 }

@@ -5,10 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 
 /**
  * The entry point of the app: The first thing the app does is create a
@@ -36,6 +38,22 @@ public class MainLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
+
+        Button btnRegisterNewUser = (Button) findViewById(R.id.btnRegisterNewUser);
+        btnRegisterNewUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // To test ViewSellOfferActivity, uncomment the next block:
+//                Intent intent = new Intent(MainLoginActivity.this, ViewSellOfferActivity.class);
+//                intent.putExtra("SellOffer", new SellOfferFront(123l, "123", 123l, 5.0, 60.0, 600.0, null, "walnut", false));
+//                MainLoginActivity.this.startActivity(intent);
+
+                //TODO: uncomment the next line when RegisterNewUserActivity is ready
+                //startActivity(new Intent(MainLoginActivity.this, RegisterNewUserActivity.class));
+            }
+        });
+
     }
 
     /**

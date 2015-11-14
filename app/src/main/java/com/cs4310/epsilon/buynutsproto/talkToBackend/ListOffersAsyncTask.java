@@ -22,7 +22,7 @@ import java.util.List;
  *
  * Created by Mike on 11/5/2015.
  */
-public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
+public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> {
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
@@ -30,7 +30,14 @@ public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> 
         this.context = context;
     }
     @Override
-    protected List<SellOffer> doInBackground(Void... Params) {
+    protected List<SellOffer> doInBackground(Long... params) {
+
+        // Get userID from params
+        Long userID = null;
+        if(params != null && params[0] != null) {
+            userID = params[0];
+        }
+
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
@@ -42,6 +49,7 @@ public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> 
         sellOfferEndpoint = builder.build();
     }
         try {
+            //TODO: Should send userID in params, so the backend only sends us items matching that user's stored filter
             return sellOfferEndpoint.list().execute().getItems();
         } catch (IOException e) {
             return Collections.EMPTY_LIST;

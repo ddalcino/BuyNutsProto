@@ -64,10 +64,13 @@ public class NewsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "onClick btnSetFilter_News");
 
+                // create intent for SetSearchFilterActivity
+                Intent i = new Intent(NewsActivity.this, SetSearchFilterActivity.class);
+                i.putExtra("uid", mUid);
+
                 //create and launch SetSearchFilterActivity
                 NewsActivity.this.startActivityForResult(
-                        new Intent(NewsActivity.this, SetSearchFilterActivity.class),
-                        REQUEST_CODE_SEARCH_FILTER);
+                        i,REQUEST_CODE_SEARCH_FILTER);
             }
         });
         Button btnRefreshNews = (Button) findViewById(R.id.btnRefreshNews_News);
@@ -76,7 +79,7 @@ public class NewsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "onClick btnRefreshNews_News");
 
-                new ListOffersAsyncTask(NewsActivity.this).execute();
+                new ListOffersAsyncTask(NewsActivity.this).execute(mUid);
                 /*Toast.makeText(NewsActivity.this.getApplicationContext(),
                         "Not yet implemented. Hahaha no news for you",
                         Toast.LENGTH_SHORT).show();*/
