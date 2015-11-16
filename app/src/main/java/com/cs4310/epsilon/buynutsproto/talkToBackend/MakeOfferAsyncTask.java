@@ -2,14 +2,11 @@ package com.cs4310.epsilon.buynutsproto.talkToBackend;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import com.cs4310.epsilon.buynutsproto.activities.MakeOfferActivity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.SellOfferEndpoint;
-import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
 import java.io.IOException;
 
@@ -30,34 +27,51 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
     @Override
     protected String doInBackground(SellOfferFront... Params) {
         if (Params == null || Params[0] == null) {
-            return ("MakeOffer Failed");
+            return null;
         }
-        SellOffer newSellOffer = new SellOffer();
+        //SellOfferFront newSellOffer = new SellOfferFront();
         SellOfferFront sf = Params[0];
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
-
+            //).setRootUrl("http://10.0.2.2:8080/_ah/api/");
+            ).setRootUrl("https://backupnuts-1129.appspot.com/_ah/api/");
 
 
             sellOfferEndpoint = builder.build();
         }
-
+/*
 
         newSellOffer.setPricePerUnit(sf.getPricePerUnit());
         newSellOffer.setCommodity(sf.getCommodity());
         newSellOffer.setMaxWeight(sf.getMaxWeight());
         newSellOffer.setMinWeight(sf.getMinWeight());
         newSellOffer.setTerms(sf.getTerms());
+        */
+        String offer = sf.getPricePerUnit().toString() + "#" + sf.getCommodity() + "#" + sf.getMaxWeight().toString() + "#" + sf.getMinWeight().toString() + "#" + sf.getTerms();
+        //String[] offer_array = {sf.getPricePerUnit().toString(),sf.getCommodity(),sf.getMaxWeight().toString(),sf.getMinWeight().toString(),sf.getTerms()};
         //newSellOffer.setOfferBirthday(sf.getOfferBirthday());
         //newSellOffer.setSpecification(sf.getSpecification())
-    try {
-            sellOfferEndpoint.insert(newSellOffer).execute();
-            return("Inserted");
+        try {
+            //List<String[]> retpar = Collections.EMPTY_LIST;
+            //retpar.add(offer);
+
+
+            //List<String> offerList = Collections.EMPTY_LIST;
+            //offerList.add(offer);
+                // MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
+            //   CharSequence text = offer;
+            // int duration = Toast.LENGTH_LONG;
+            //Toast.makeText(makeOfferActivity,text,duration);
+            sellOfferEndpoint.insert(offer).execute();
+            /*CharSequence text = "Complete"+ offer;
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(context,text,duration);
+            */
+            return ("Complete" + offer);
         } catch (IOException e) {
-            return("Insertion Failed");
+            return ("Failure");
         }
     }
     @Override
@@ -67,10 +81,10 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
             sellOffers.add(new SellOfferFront(s));
         }
 */
-        MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
-        CharSequence text = (CharSequence) result;
-        int duration = Toast.LENGTH_LONG;
-        Toast.makeText(makeOfferActivity,text,duration).show();
+        //MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
+        //CharSequence text = (CharSequence) result;
+        //int duration = Toast.LENGTH_LONG;
+        //Toast.makeText(makeOfferActivity,text,duration).show();
 
 
     }

@@ -1,7 +1,7 @@
 package com.cs4310.epsilon.buynutsproto.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.MakeOfferAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
@@ -29,7 +30,7 @@ public class MakeOfferActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_offer);
-
+        SellOfferFront newOffer;
         //get mUid from intent
         mUid = this.getIntent().getLongExtra("mUid",
                 MainLoginActivity.INVALID_USERID);
@@ -53,10 +54,13 @@ public class MakeOfferActivity extends AppCompatActivity {
 
 
 
+/*
                 Toast.makeText(MakeOfferActivity.this,
                         "SellOfferFront is: " + newOffer,
                         Toast.LENGTH_LONG).show();
+                       */
                 if(newOffer != null){
+                    new MakeOfferAsyncTask(MakeOfferActivity.this).execute(newOffer);
                     //TODO: Send SellOfferFront object to the server
                 }
             }

@@ -35,7 +35,8 @@ public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> 
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
+            ).setRootUrl("https://backupnuts-1129.appspot.com/_ah/api/");
+            //).setRootUrl("http://10.0.2.2:8080/_ah/api/");
 
 
 
