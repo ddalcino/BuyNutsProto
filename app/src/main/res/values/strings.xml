@@ -18,6 +18,16 @@
     <string name="tv_max_ppu">Max PPU</string>
     <string name="tv_weights">Weight Units</string>
     <string name="tvCommodType">Commodity Type</string>
+    <string name="register">Register</string>
+    <string name="btn_registerNow">\@string/btn_registerNow</string>
+    <string name="registerBut">Register</string>
+    <string name="registerbutton">Register</string>
+    <string name="registerButton">Register</string>
+    <string name="lbl_registration_password" />
+    <string name="lbl_password_field" />
+    <string name="lbl_username_field" />
+    <string name="registration_password">Password</string>
+    <string name="registration_username">Username</string>
 
     <string-array name="commodities_array">
         <item>Walnut</item>

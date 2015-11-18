@@ -21,22 +21,24 @@
             android:layout_gravity="bottom|center_horizontal">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/btn_my_offers"
                 android:id="@+id/btnMakeOffer_News" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/btn_set_filter"
                 android:id="@+id/btnSetFilter_News" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/btn_refresh_news"
-                android:id="@+id/btnRefreshNews_News" />
+                android:id="@+id/btnRefreshNews_News"
+                android:elegantTextHeight="false" />
+
         </LinearLayout>
 
         <ListView

@@ -1,14 +1,12 @@
 package com.cs4310.epsilon.buynutsproto;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.cs4310.epsilon.buynutsproto.R;
 
 public class MainLoginActivity extends AppCompatActivity {
     static final String TAG = "myTag";
@@ -18,6 +16,20 @@ public class MainLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
+
+    }
+
+    /**
+     * Starts up a RegistrationActivity if user presses "Register New User" button
+     * Pre: User presses "Register New User" button
+     * Post: Starts a RegistrationActivity that provides user with blank "Username" and "Password" fields
+     *       and "Register" button.
+     * @param view the View object that called this function
+     */
+    public void onClickRegister(View view)
+    {
+        Log.i(TAG, "onClickRegister()");
+        MainLoginActivity.this.startActivity(new Intent(MainLoginActivity.this, RegistrationActivity.class));
     }
 
     /**
