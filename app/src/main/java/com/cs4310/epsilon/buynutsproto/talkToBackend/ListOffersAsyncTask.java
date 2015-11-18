@@ -43,11 +43,8 @@ public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> 
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
             ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
-
-
-
-        sellOfferEndpoint = builder.build();
-    }
+            sellOfferEndpoint = builder.build();
+        }
         try {
             //TODO: Should send userID in params, so the backend only sends us items matching that user's stored filter
             return sellOfferEndpoint.list().execute().getItems();
