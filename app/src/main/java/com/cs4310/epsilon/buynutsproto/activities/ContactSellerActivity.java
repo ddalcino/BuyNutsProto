@@ -27,6 +27,7 @@ public class ContactSellerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_seller);
 
+
         // Retrieve seller name, phone number, and email from the intent
         // (an intent or an async task), and fit them into mPhoneNumber,
         // mSellerName, and mEmailAddress.
@@ -39,10 +40,14 @@ public class ContactSellerActivity extends AppCompatActivity {
 
         TextView tvSellerName = (TextView) findViewById(R.id.tvSellerName);
         tvSellerName.setText(mSellerName);
+
+        String strEmail = getResources().getString(R.string.email);
         Button btnEmail = (Button) findViewById(R.id.btnEmail);
-        btnEmail.setText(mEmailAddress);
+        btnEmail.setText(String.format("%s: %s", strEmail, mEmailAddress));
+
+        String strTelephone = getResources().getString(R.string.telephone);
         Button btnPhone = (Button) findViewById(R.id.btnPhone);
-        btnPhone.setText(mPhoneNumber);
+        btnPhone.setText(String.format("%s: %s", strTelephone, mPhoneNumber));
 
         btnPhone.setOnClickListener(new View.OnClickListener() {
             @Override

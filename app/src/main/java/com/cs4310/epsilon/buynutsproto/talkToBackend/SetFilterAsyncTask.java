@@ -35,6 +35,8 @@ public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void
         }
         RequestFilteredSellOffer newFilter = params[0];
 
+
+
         if (setFilterEndpoint == null) {
             StubEndpoint.Builder builder = new StubEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),

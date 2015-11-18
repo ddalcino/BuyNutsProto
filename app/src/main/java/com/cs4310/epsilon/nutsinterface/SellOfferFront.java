@@ -93,9 +93,8 @@ public class SellOfferFront implements Parcelable{
      * for all data members.<br/>
      *
      * @param id            the SellOfferFront's id number
-     * @param offerBirthday the date/time at which the offer was created
-     * @param expired       whether or not the offer is expired
      * @param sellerId      the seller's id number
+     * @param offerBirthday the date/time at which the offer was created
      * @param pricePerUnit  price per unit
      * @param minWeight     minimum weight
      * @param maxWeight     maximum weight
@@ -103,6 +102,7 @@ public class SellOfferFront implements Parcelable{
      *                      seller; this is a chance for the seller to write
      *                      whatever they want to say about their nuts
      * @param commodity         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
+     * @param expired       whether or not the offer is expired
      */
     public SellOfferFront(Long id, String sellerId, Long offerBirthday,
                           Double pricePerUnit, Double minWeight, Double maxWeight,
@@ -156,6 +156,7 @@ public class SellOfferFront implements Parcelable{
      * Placeholder function to convert backend-type SellOffer objects to
      * frontend-type SellOfferFront objects
      * At this point, the only incompatible datamember in SellOffer is offerBirthday
+     *
      * @param s Backend-type SellOffer object
      */
     public SellOfferFront(SellOffer s) {
@@ -173,6 +174,9 @@ public class SellOfferFront implements Parcelable{
          */
         this.offerBirthday = INVALID_OFFER_BIRTHDAY; // s.getOfferBirthday()
         this.expired = s.getExpired();
+//        if(expired == null) {
+//            expired = true;
+//        }
     }
 
     /**
@@ -417,7 +421,13 @@ public class SellOfferFront implements Parcelable{
         dest.writeDouble(maxWeight);
         dest.writeString(terms);
         dest.writeString(commodity);
-        dest.writeByte((byte) (expired ? 1 : 0));
+        if (expired == null) {
+            dest.writeByte((byte) -1);
+        } else if (expired) {
+            dest.writeByte((byte) 1);
+        } else {
+            dest.writeByte((byte) 0);
+        }
     }
 
     /**
@@ -433,7 +443,14 @@ public class SellOfferFront implements Parcelable{
         maxWeight = in.readDouble();
         terms = in.readString();
         commodity = in.readString();
-        expired = in.readByte() != 0;
+        byte b = in.readByte();
+        if (b == -1) {
+            expired = null;
+        } else if (b == 0) {
+            expired = false;
+        } else if(b == 1) {
+            expired = true;
+        }
     }
 
     /**

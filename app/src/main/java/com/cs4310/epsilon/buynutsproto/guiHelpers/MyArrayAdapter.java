@@ -31,13 +31,13 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
 
     /**
      * Constructor
-     * @param context               The activity that needs the ArrayAdapter
-     * @param textViewResourceId    The layout xml file used to produce the output
-     * @param objects               The ArrayList of SellOffer objects to display
+     * @param context           The activity that needs the ArrayAdapter
+     * @param layoutResourceId  The layout xml file used to produce the output
+     * @param objects           The ArrayList of SellOffer objects to display
      */
-    public MyArrayAdapter(Context context, int textViewResourceId,
+    public MyArrayAdapter(Context context, int layoutResourceId,
                           ArrayList<SellOfferFront> objects){
-        super(context, textViewResourceId, objects);
+        super(context, layoutResourceId, objects);
         if(objects != null) {
             this.aList = objects;
             // Sort the list by lowest price:

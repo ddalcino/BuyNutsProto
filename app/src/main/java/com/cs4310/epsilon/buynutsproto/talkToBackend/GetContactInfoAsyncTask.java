@@ -9,6 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.activities.ContactSellerActivity;
 import com.cs4310.epsilon.buynutsproto.activities.MakeOfferActivity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
@@ -45,6 +46,7 @@ public class GetContactInfoAsyncTask extends AsyncTask<String, Void, String[]> {
             return (new String[]{"GetContactInfo Failed"});
         }
         String sellerID = params[0];
+
 
         if (contactInfoEndpoint == null) {
             StubEndpoint.Builder builder = new StubEndpoint.Builder(

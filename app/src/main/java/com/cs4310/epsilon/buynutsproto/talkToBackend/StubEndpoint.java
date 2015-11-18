@@ -1,11 +1,14 @@
 package com.cs4310.epsilon.buynutsproto.talkToBackend;
 
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
+import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
+import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This is a multipurpose stub class, meant to stand in for any Endpoint
@@ -64,5 +67,23 @@ public class StubEndpoint {
 
     SetFilter setFilter(RequestFilteredSellOffer filter) throws IOException {
         return new SetFilter();
+    }
+
+    public class List {
+        List execute() {
+            return new List();
+        }
+        java.util.List getItems(){
+            java.util.List list = new ArrayList<SellOffer>();
+            list.add(new SellOfferFront(6l, "1234", 1234567l, 5.0, 100.0,
+                    1000.0, "Buy a lot please", "walnut", false).toSellOffer());
+            list.add(new SellOfferFront(7l, "12345", 12345678l, 5.0, 100.0,
+                    1000.0, "Buy a lot more please", "cashew", false).toSellOffer());
+            return list;
+        }
+    }
+
+    List list(Long userID) throws IOException {
+        return new List();
     }
 }

@@ -42,10 +42,11 @@ public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> 
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
+            ).setRootUrl(Constants.BACKEND_URL);
             sellOfferEndpoint = builder.build();
         }
         try {
+            //return new StubEndpoint().list(/*userID*/).execute().getItems();
             //TODO: Should send userID in params, so the backend only sends us items matching that user's stored filter
             return sellOfferEndpoint.list().execute().getItems();
         } catch (IOException e) {
@@ -61,7 +62,7 @@ public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> 
 
         NewsActivity newsActivity = (NewsActivity) context;
         newsActivity.setStatusMsg("Received " + sellOffers.size() + " SellOffers from backend");
-        newsActivity.fillListView(sellOffers);
+        newsActivity.setmSellOffers(sellOffers);
         newsActivity.updateListView();
     }
 }

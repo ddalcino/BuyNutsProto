@@ -4,6 +4,8 @@ package com.nutsinterface.Mike.myapplication.backend;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 /**
  * Created by Mike on 10/28/2015.
  */
@@ -21,7 +23,7 @@ public class SellOffer {
     Double min_weight;
     @Index
     Double max_weight;
-    String specification;
+    //String specification;
     String terms;
     @Index
     String commodity;
@@ -77,13 +79,13 @@ public class SellOffer {
         return min_weight;
     }
 
-    public void setSpecification(String specification) {
-        this.specification = specification;
-    }
-
-    public String getSpecification() {
-        return specification;
-    }
+//    public void setSpecification(String specification) {
+//        this.specification = specification;
+//    }
+//
+//    public String getSpecification() {
+//        return specification;
+//    }
 
     public void setTerms(String terms) {
         this.terms = terms;
@@ -112,16 +114,23 @@ public class SellOffer {
         // id = new Long(curr_id);
         //curr_id+=1;
     }
+
     /*
-    public SellOffer(Double ppu, Integer max_weight, Integer min_weight, Integer commodity) {
+    public SellOffer(Double ppu, Double max_weight, Double min_weight,
+                     String commodity, String seller_id, String terms,
+                     Boolean expired) {
         this.expired = false;
-        offerBirthday = Calendar.getInstance();
+        //offerBirthday = Calendar.getInstance();
         this.max_weight = max_weight;
         this.min_weight = min_weight;
         this.price_per_unit = ppu;
         this.commodity = commodity;
-        id = new Long(curr_id);
-        curr_id += 1;
+        this.seller_id = seller_id;
+        this.terms = terms;
+        this.expired = expired;
+//        id = new Long(curr_id);
+//        curr_id += 1;
     }
     */
+
 }

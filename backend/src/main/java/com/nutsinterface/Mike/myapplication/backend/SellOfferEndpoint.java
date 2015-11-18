@@ -102,7 +102,10 @@ public class SellOfferEndpoint {
             name = "listSellerCommodities",
             path = "sellOffer/sellers/{seller_id}/offers",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<SellOffer> listSellerCommodities(@Named("seller_id") String seller_id, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> listSellerCommodities(
+            @Named("seller_id") String seller_id,
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("seller_id =",seller_id);
         if (cursor != null) {
@@ -120,7 +123,10 @@ public class SellOfferEndpoint {
             path = "sellOffer/commodity/{commodity}/offers",
             httpMethod = ApiMethod.HttpMethod.GET
     )
-    public CollectionResponse<SellOffer> listCommodityOffers(@Named("commodity") String commodity, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> listCommodityOffers(
+            @Named("commodity") String commodity,
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("commodity =",commodity).order("price_per_unit");
         if (cursor != null) {
@@ -138,7 +144,13 @@ public class SellOfferEndpoint {
             path = "sellOffer/fullQuery",
             httpMethod = ApiMethod.HttpMethod.GET
     )
-    public CollectionResponse<SellOffer> fullQueryOffers(@Nullable @Named("commodity") String commodity, @Nullable @Named("seller_id") String seller_id, @Nullable @Named("min_weight") Double min_weight, @Nullable @Named("max_weight") Double max_weight, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> fullQueryOffers(
+            @Nullable @Named("commodity") String commodity,
+            @Nullable @Named("seller_id") String seller_id,
+            @Nullable @Named("min_weight") Double min_weight,
+            @Nullable @Named("max_weight") Double max_weight,
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
 
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit);
@@ -231,7 +243,9 @@ public class SellOfferEndpoint {
             name = "list",
             path = "sellOffer",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<SellOffer> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> list(
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit);
         if (cursor != null) {

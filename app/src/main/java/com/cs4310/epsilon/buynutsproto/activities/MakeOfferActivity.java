@@ -38,10 +38,10 @@ public class MakeOfferActivity extends AppCompatActivity {
                 "Didn't receive mUid" : "Received mUid=" + mUid));
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_MO);
-        FillSpinner.fill(this, R.array.wt_units_array, spinUnitWt);
+        FillSpinner.fill(this, R.array.array_wt_units, spinUnitWt);
 
         spinCommodityType = (Spinner) findViewById(R.id.spinnerCommodityType_MO);
-        FillSpinner.fill(this, R.array.commodities_array, spinCommodityType);
+        FillSpinner.fill(this, R.array.array_commodities, spinCommodityType);
 
 
         // Set onclickListener
@@ -71,7 +71,7 @@ public class MakeOfferActivity extends AppCompatActivity {
      * @return  A new SellOfferFront object made from UI input fields. If the
      *          SellOfferFront is invalid in some way, returns null.
      */
-    SellOfferFront getSellOfferFromUI() {
+    public SellOfferFront getSellOfferFromUI() {
         //get commodity type and weight units
         String cType = spinCommodityType.getSelectedItem().toString();
         UnitsWt.Type unitsWeight = UnitsWt.toType(

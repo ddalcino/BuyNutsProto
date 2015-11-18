@@ -35,10 +35,10 @@ public class SetSearchFilterActivity extends AppCompatActivity {
 
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_SF);
-        FillSpinner.fill(this, R.array.wt_units_array, spinUnitWt);
+        FillSpinner.fill(this, R.array.array_wt_units, spinUnitWt);
 
         spinCommodityType = (Spinner) findViewById(R.id.spinnerCommodityType_SF);
-        FillSpinner.fill(this, R.array.commodities_array, spinCommodityType);
+        FillSpinner.fill(this, R.array.array_commodities, spinCommodityType);
 
         Button btnSetSearch = (Button) findViewById(R.id.btnSetSearchFilter_SF);
         btnSetSearch.setOnClickListener(new View.OnClickListener() {
@@ -58,17 +58,17 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
 
                     // make new Intent to send back to NewsActivity
-                    Intent data = new Intent();
+                    Intent intent = new Intent();
 
                     // FIXME: 11/4/15
-                    // fill data with search filter criteria - NOT IMPLEMENTED YET
+                    // fill intent with search filter criteria - NOT IMPLEMENTED YET
 
-                    //data.putExtra("filter", (Parcelable) newFilter);
+                    //intent.putExtra("filter", (Parcelable) newFilter);
                     // this call requires that RequestFilteredSellOffer implements
                     // the Parcelable interface, but it doesn't do that yet
 
 
-                    setResult(RESULT_OK, data);
+                    setResult(RESULT_OK, intent);
                     // now NewsActivity has an idea of what's in the search filter
 
                     //Also, send a RequestFilteredSellOffer object to the server
@@ -121,8 +121,11 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                     "Invalid spinner input", Toast.LENGTH_SHORT).show();
             return null;
         }
+        double unitConversion = UnitsWt.unitConversion(unitsWeight, UnitsWt.Type.LB);
+
         //create RequestFilteredSellOffer
         return new RequestFilteredSellOffer(
-                mUid, minWt, maxWt, minPpu, maxPpu, cType, false);
+                mUid, minWt * unitConversion, maxWt * unitConversion,
+                minPpu / unitConversion, maxPpu / unitConversion, cType, false);
     }
 }

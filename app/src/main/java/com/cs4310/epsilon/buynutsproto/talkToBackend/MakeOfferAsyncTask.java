@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.activities.MakeOfferActivity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -32,12 +33,15 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         if (Params == null || Params[0] == null) {
             return ("MakeOffer Failed");
         }
+
+        //context.getResources().getString(R.string.backend_url);
+
         SellOffer newSellOffer = Params[0].toSellOffer();
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
+            ).setRootUrl(Constants.BACKEND_URL);
 
             sellOfferEndpoint = builder.build();
         }
@@ -52,6 +56,7 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         //newSellOffer.setSpecification(sf.getSpecification())
         try {
             sellOfferEndpoint.insert(newSellOffer).execute();
+            //sellOfferEndpoint.insert("blah#blah#blah").execute();
             return ("Inserted");
         } catch (IOException e) {
             e.printStackTrace();
