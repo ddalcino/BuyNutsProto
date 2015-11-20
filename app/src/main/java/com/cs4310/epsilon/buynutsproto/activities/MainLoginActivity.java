@@ -41,9 +41,8 @@ public class MainLoginActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MainLoginActivity.this, ViewSellOfferActivity.class);
 //                intent.putExtra("SellOffer", new SellOfferFront(123l, "123", 123l, 5.0, 60.0, 600.0, null, "walnut", false));
 //                MainLoginActivity.this.startActivity(intent);
-
-                //TODO: uncomment the next line when RegisterNewUserActivity is ready
-                //startActivity(new Intent(MainLoginActivity.this, RegisterNewUserActivity.class));
+                Log.i(Constants.TAG, "onClickRegister()");
+                startActivity(new Intent(MainLoginActivity.this, RegistrationActivity.class));
             }
         });
 
