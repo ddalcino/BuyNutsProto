@@ -4,6 +4,8 @@ package com.nutsinterface.Mike.myapplication.backend;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 /**
  * Created by Mike on 10/28/2015.
  */
@@ -21,7 +23,7 @@ public class SellOffer {
     Double min_weight;
     @Index
     Double max_weight;
-    String specification;
+    //String specification;
     String terms;
     @Index
     String commodity;
@@ -77,13 +79,13 @@ public class SellOffer {
         return min_weight;
     }
 
-    public void setSpecification(String specification) {
-        this.specification = specification;
-    }
-
-    public String getSpecification() {
-        return specification;
-    }
+//    public void setSpecification(String specification) {
+//        this.specification = specification;
+//    }
+//
+//    public String getSpecification() {
+//        return specification;
+//    }
 
     public void setTerms(String terms) {
         this.terms = terms;
@@ -112,16 +114,80 @@ public class SellOffer {
         // id = new Long(curr_id);
         //curr_id+=1;
     }
+
+
+    /**
+     * An exception, thrown only by the constructor for SellOffer(String stringCode).
+     * It exists for type safety and to hold specific messages about what went
+     * wrong with the constructor call.
+     */
+    public class SellOfferStringArrayException extends Exception {
+        SellOfferStringArrayException(String msg) {
+            super(msg);
+        }
+    }
+
+    /**
+     * Constructor meant to build a SellOfferFront object out of an array of strings.
+     * @param stringCode   A string of the form "ppu#commodity#maxWeight#minWeight#terms"
+     * @throws SellOfferStringArrayException    this contains a message indicating the
+     *          first item in the parameter array that
+     */
+    public SellOffer(String stringCode) throws SellOfferStringArrayException {
+        String[] stringArray = stringCode.split("#");
+        try {
+            this.price_per_unit = Double.parseDouble(stringArray[0]);
+            if (price_per_unit < 0) {
+                throw new SellOfferStringArrayException("pricePerUnit less than zero");
+            }
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("pricePerUnit is not a double");
+        }
+        this.commodity = stringArray[1].toLowerCase();
+        if (    !commodity.equals("walnut") &&
+                !commodity.equals("cashew") &&
+                !commodity.equals("pecan") &&
+                !commodity.equals("almond") ) {
+            throw new SellOfferStringArrayException("Invalid commodity type");
+        }
+        try {
+            this.max_weight = Double.parseDouble(stringArray[2]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("maxWeight is not a double");
+        }
+        try {
+            this.min_weight = Double.parseDouble(stringArray[3]);
+            if (min_weight < 0) {
+                throw new SellOfferStringArrayException("minWeight less than zero");
+            }
+            if (max_weight < min_weight) {
+                throw new SellOfferStringArrayException("maxWeight less than minWeight");
+            }
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("minWeight is not a double");
+        }
+        // The last part is terms. When the string code version of this was made,
+        // it encoded all '#' characters as '&num;', so we can retrieve the original
+        // terms list with a replacement.
+        this.terms = stringArray[4].replace("&num;", "#");
+    }
+
     /*
-    public SellOffer(Double ppu, Integer max_weight, Integer min_weight, Integer commodity) {
+    public SellOffer(Double ppu, Double max_weight, Double min_weight,
+                     String commodity, String seller_id, String terms,
+                     Boolean expired) {
         this.expired = false;
-        offerBirthday = Calendar.getInstance();
+        //offerBirthday = Calendar.getInstance();
         this.max_weight = max_weight;
         this.min_weight = min_weight;
         this.price_per_unit = ppu;
         this.commodity = commodity;
-        id = new Long(curr_id);
-        curr_id += 1;
+        this.seller_id = seller_id;
+        this.terms = terms;
+        this.expired = expired;
+//        id = new Long(curr_id);
+//        curr_id += 1;
     }
     */
+
 }

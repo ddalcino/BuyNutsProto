@@ -17,14 +17,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NewsActivity" >
-        </activity>
-        <activity android:name=".activities.MakeOfferActivity" >
-        </activity>
-        <activity android:name=".activities.SetSearchFilterActivity" >
-        </activity>
-        <activity android:name=".activities.ViewSellOfferActivity" >
-        </activity>
+        <activity
+            android:name=".activities.NewsActivity"
+            android:label="@string/activity_title_news" />
+        <activity
+            android:name=".activities.MakeOfferActivity"
+            android:label="@string/activity_title_make_offer" />
+        <activity
+            android:name=".activities.SetSearchFilterActivity"
+            android:label="@string/activity_title_set_search_filter" />
+        <activity
+            android:name=".activities.ViewSellOfferActivity"
+            android:label="@string/activity_title_view_sell_offer" />
+        <activity
+            android:name=".activities.ContactSellerActivity"
+            android:label="@string/activity_title_contact_seller" />
+
     </application>
 
 </manifest>

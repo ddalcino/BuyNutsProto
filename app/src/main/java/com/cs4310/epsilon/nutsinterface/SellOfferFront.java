@@ -93,9 +93,8 @@ public class SellOfferFront implements Parcelable{
      * for all data members.<br/>
      *
      * @param id            the SellOfferFront's id number
-     * @param offerBirthday the date/time at which the offer was created
-     * @param expired       whether or not the offer is expired
      * @param sellerId      the seller's id number
+     * @param offerBirthday the date/time at which the offer was created
      * @param pricePerUnit  price per unit
      * @param minWeight     minimum weight
      * @param maxWeight     maximum weight
@@ -103,6 +102,7 @@ public class SellOfferFront implements Parcelable{
      *                      seller; this is a chance for the seller to write
      *                      whatever they want to say about their nuts
      * @param commodity         String: ALMONDS, WALNUTS, PECANS, or CASHEWS
+     * @param expired       whether or not the offer is expired
      */
     public SellOfferFront(Long id, String sellerId, Long offerBirthday,
                           Double pricePerUnit, Double minWeight, Double maxWeight,
@@ -156,6 +156,7 @@ public class SellOfferFront implements Parcelable{
      * Placeholder function to convert backend-type SellOffer objects to
      * frontend-type SellOfferFront objects
      * At this point, the only incompatible datamember in SellOffer is offerBirthday
+     *
      * @param s Backend-type SellOffer object
      */
     public SellOfferFront(SellOffer s) {
@@ -173,6 +174,9 @@ public class SellOfferFront implements Parcelable{
          */
         this.offerBirthday = INVALID_OFFER_BIRTHDAY; // s.getOfferBirthday()
         this.expired = s.getExpired();
+//        if(expired == null) {
+//            expired = true;
+//        }
     }
 
     /**
@@ -190,32 +194,54 @@ public class SellOfferFront implements Parcelable{
     }
 
     /**
-     * Turns the SellOfferFront object into an array of strings, of the
-     * following form:<br/>
-     * (note that items marked as being doubles or longs are actually the
-     * string representation of that form, and not an actual numeric type)
-     * @return  id              // a long; the unique id for this SellOffer<br/>
-     *          sellerId        // a string of characters 0-9;<br/>
-     *          offerBirthday;  // a long, represents milliseconds since Jan 1 1970<br/>
-     *          pricePerUnit;   // a double<br/>
-     *          minWeight;      // a double<br/>
-     *          maxWeight;      // a double<br/>
-     *          commodity;      // a string; can be "walnut", "pecan", "cashew", or "almond"<br/>
-     *          expired;        // a string, either "true" or "false"<br/>
-     *          terms;          // a string, unchecked<br/>
+     * Turns the SellOfferFront object into a string to be used with
+     * SellOfferEndpoint.insert(String sellOffer). The resulting string is in
+     * the form "val#val#val#val#val", where the values are:
+     *      pricePerUnit
+     *      commodity
+     *      maxWeight
+     *      minWeight
+     *      terms
+     * For the 'terms' field, every # is replaced with the HTML entity version
+     * of a # character: &num;
+     *
+     * @return A string of the form "ppu#commodity#maxWeight#minWeight#terms"
+     *
+     *
      */
-    public String[] toStringArray() {
-        return new String[]{
-                id.toString(),
-                sellerId,
-                offerBirthday.toString(),
-                pricePerUnit.toString(),
-                minWeight.toString(),
-                maxWeight.toString(),
-                commodity.toLowerCase(),
-                (expired ? "true" : "false"),
-                terms
-        };
+    public String toInsertString() {
+
+        return String.format("%f#%s#%f#%f#%s",
+                pricePerUnit, commodity.toLowerCase(),
+                maxWeight, minWeight,
+                terms.replace("#", "&num;") );
+
+//                pricePerUnit.toString() + "#" +
+//                commodity.toLowerCase() + "#" +
+//                maxWeight.toString() + "#" +
+//                minWeight.toString() + "#" +
+//                terms.replace("#", "&num;");
+    }
+
+    /**
+     * Turns a SellOfferFront into a SellOffer object
+     * @return A SellOffer version of the SellOfferFront
+     */
+    public SellOffer toSellOffer() {
+        // should be using a constructor with a parameter list, but it doesn't exist
+        SellOffer so = new SellOffer();
+        if(id != null) so.setId(id);
+        if(sellerId != null) so.setSellerId(sellerId);
+        // SellOffer requires a String for this field, right now
+        if(offerBirthday != null) so.setOfferBirthday(offerBirthday.toString());
+        if(pricePerUnit != null) so.setPricePerUnit(pricePerUnit);
+        if(minWeight != null) so.setMinWeight(minWeight);
+        if(maxWeight != null) so.setMaxWeight(maxWeight);
+        if(commodity != null) so.setCommodity(commodity);
+        if(expired != null) so.setExpired(expired);
+        if(terms != null) so.setTerms(terms);
+
+        return so;
     }
 
     /**
@@ -231,83 +257,75 @@ public class SellOfferFront implements Parcelable{
 
     /**
      * Constructor meant to build a SellOfferFront object out of an array of strings.
-     * @param stringArray   An array of strings, in the following form:<br/><br/>
-     *          id              // a long; the unique id for this SellOffer<br/>
-     *          sellerId        // a string of characters 0-9;<br/>
-     *          offerBirthday;  // a long, represents milliseconds since Jan 1 1970<br/>
-     *          pricePerUnit;   // a double<br/>
-     *          minWeight;      // a double<br/>
-     *          maxWeight;      // a double<br/>
-     *          commodity;      // a string; can be "walnut", "pecan", "cashew", or "almond"<br/>
-     *          expired;        // a string, either "true" or "false"<br/>
-     *          terms;          // a string, unchecked<br/>
+     * @param stringCode   A string of the form "ppu#commodity#maxWeight#minWeight#terms"
      * @throws SellOfferStringArrayException    this contains a message indicating the
      *          first item in the parameter array that
      */
-    public SellOfferFront(String[] stringArray) throws SellOfferStringArrayException {
+    public SellOfferFront(String stringCode) throws SellOfferStringArrayException {
+        String[] stringArray = stringCode.split("#");
         try {
-            this.id = Long.parseLong(stringArray[0]);
-            if (id < 0) {
-                throw new SellOfferStringArrayException("User ID less than zero");
-            }
-        } catch (NumberFormatException e) {
-            throw new SellOfferStringArrayException("User ID is not a long");
-        }
-        this.sellerId = stringArray[1];
-        if (!Pattern.matches("[0-9]+", stringArray[1])) {
-            throw new SellOfferStringArrayException("SellerId is not a number");
-        }
-
-        try {
-            this.offerBirthday = Long.parseLong(stringArray[2]);
-            if (offerBirthday < 0) {
-                throw new SellOfferStringArrayException("offerBirthday less than zero");
-            }
-        } catch (NumberFormatException e) {
-            throw new SellOfferStringArrayException("OfferBirthday is not a long");
-        }
-        try {
-            this.pricePerUnit = Double.parseDouble(stringArray[3]);
+            this.pricePerUnit = Double.parseDouble(stringArray[0]);
             if (pricePerUnit < 0) {
                 throw new SellOfferStringArrayException("pricePerUnit less than zero");
             }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("pricePerUnit is not a double");
         }
-        try {
-            this.minWeight = Double.parseDouble(stringArray[4]);
-            if (minWeight < 0) {
-                throw new SellOfferStringArrayException("minWeight less than zero");
-            }
-        } catch (NumberFormatException e) {
-            throw new SellOfferStringArrayException("minWeight is not a double");
-        }
-        try {
-            this.maxWeight = Double.parseDouble(stringArray[5]);
-            if (maxWeight < minWeight) {
-                throw new SellOfferStringArrayException("maxWeight less than minWeight");
-            }
-        } catch (NumberFormatException e) {
-            throw new SellOfferStringArrayException("maxWeight is not a double");
-        }
-        this.commodity = stringArray[6].toLowerCase();
+        this.commodity = stringArray[1].toLowerCase();
         if (    !commodity.equals("walnut") &&
                 !commodity.equals("cashew") &&
                 !commodity.equals("pecan") &&
                 !commodity.equals("almond") ) {
             throw new SellOfferStringArrayException("Invalid commodity type");
         }
-        if (stringArray[7].equals("true")) {
-            this.expired = true;
-        } else if (stringArray[7].equals("false")) {
-            this.expired = false;
-        } else {
-            throw new SellOfferStringArrayException("Expired field improperly set");
+        try {
+            this.maxWeight = Double.parseDouble(stringArray[2]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("maxWeight is not a double");
         }
+        try {
+            this.minWeight = Double.parseDouble(stringArray[3]);
+            if (minWeight < 0) {
+                throw new SellOfferStringArrayException("minWeight less than zero");
+            }
+            if (maxWeight < minWeight) {
+                throw new SellOfferStringArrayException("maxWeight less than minWeight");
+            }
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("minWeight is not a double");
+        }
+        // The last part is terms. When the string code version of this was made,
+        // it encoded all '#' characters as '&num;', so we can retrieve the original
+        // terms list with a replacement.
+        this.terms = stringArray[4].replace("&num;", "#");
 
-        // the last item is terms; this isn't checked because it's allowed to
-        // be anything
-        this.terms = stringArray[8];
+//        try {
+//            this.id = Long.parseLong(stringArray[0]);
+//            if (id < 0) {
+//                throw new SellOfferStringArrayException("User ID less than zero");
+//            }
+//        } catch (NumberFormatException e) {
+//            throw new SellOfferStringArrayException("User ID is not a long");
+//        }
+//        this.sellerId = stringArray[1];
+//        if (!Pattern.matches("[0-9]+", stringArray[1])) {
+//            throw new SellOfferStringArrayException("SellerId is not a number");
+//        }
+//        try {
+//            this.offerBirthday = Long.parseLong(stringArray[2]);
+//            if (offerBirthday < 0) {
+//                throw new SellOfferStringArrayException("offerBirthday less than zero");
+//            }
+//        } catch (NumberFormatException e) {
+//            throw new SellOfferStringArrayException("OfferBirthday is not a long");
+//        }
+//        if (stringArray[7].equals("true")) {
+//            this.expired = true;
+//        } else if (stringArray[7].equals("false")) {
+//            this.expired = false;
+//        } else {
+//            throw new SellOfferStringArrayException("Expired field improperly set");
+//        }
     }
 
     // Getters:
@@ -396,7 +414,13 @@ public class SellOfferFront implements Parcelable{
         dest.writeDouble(maxWeight);
         dest.writeString(terms);
         dest.writeString(commodity);
-        dest.writeByte((byte) (expired ? 1 : 0));
+        if (expired == null) {
+            dest.writeByte((byte) -1);
+        } else if (expired) {
+            dest.writeByte((byte) 1);
+        } else {
+            dest.writeByte((byte) 0);
+        }
     }
 
     /**
@@ -412,7 +436,14 @@ public class SellOfferFront implements Parcelable{
         maxWeight = in.readDouble();
         terms = in.readString();
         commodity = in.readString();
-        expired = in.readByte() != 0;
+        byte b = in.readByte();
+        if (b == -1) {
+            expired = null;
+        } else if (b == 0) {
+            expired = false;
+        } else if(b == 1) {
+            expired = true;
+        }
     }
 
     /**
@@ -420,10 +451,12 @@ public class SellOfferFront implements Parcelable{
      */
     public static final Parcelable.Creator<SellOfferFront> CREATOR
             = new Parcelable.Creator<SellOfferFront>() {
+        @Override
         public SellOfferFront createFromParcel(Parcel in) {
             return new SellOfferFront(in);
         }
 
+        @Override
         public SellOfferFront[] newArray(int size) {
             return new SellOfferFront[size];
         }

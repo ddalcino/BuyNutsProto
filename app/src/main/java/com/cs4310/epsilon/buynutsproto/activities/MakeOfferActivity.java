@@ -1,7 +1,7 @@
 package com.cs4310.epsilon.buynutsproto.activities;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +20,6 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
  * it to the backend
  */
 public class MakeOfferActivity extends AppCompatActivity {
-    static final String TAG = "myTag";
     private long mUid;
 
     Spinner spinUnitWt;
@@ -30,18 +29,18 @@ public class MakeOfferActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_offer);
-        SellOfferFront newOffer;
+
         //get mUid from intent
         mUid = this.getIntent().getLongExtra("mUid",
                 MainLoginActivity.INVALID_USERID);
-        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ?
+        Log.i(Constants.TAG, (mUid == MainLoginActivity.INVALID_USERID ?
                 "Didn't receive mUid" : "Received mUid=" + mUid));
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_MO);
-        FillSpinner.fill(this, R.array.wt_units_array, spinUnitWt);
+        FillSpinner.fill(this, R.array.array_wt_units, spinUnitWt);
 
         spinCommodityType = (Spinner) findViewById(R.id.spinnerCommodityType_MO);
-        FillSpinner.fill(this, R.array.commodities_array, spinCommodityType);
+        FillSpinner.fill(this, R.array.array_commodities, spinCommodityType);
 
 
         // Set onclickListener
@@ -54,14 +53,11 @@ public class MakeOfferActivity extends AppCompatActivity {
 
 
 
-/*
                 Toast.makeText(MakeOfferActivity.this,
                         "SellOfferFront is: " + newOffer,
                         Toast.LENGTH_LONG).show();
-                       */
                 if(newOffer != null){
                     new MakeOfferAsyncTask(MakeOfferActivity.this).execute(newOffer);
-                    //TODO: Send SellOfferFront object to the server
                 }
             }
         });
@@ -74,7 +70,7 @@ public class MakeOfferActivity extends AppCompatActivity {
      * @return  A new SellOfferFront object made from UI input fields. If the
      *          SellOfferFront is invalid in some way, returns null.
      */
-    SellOfferFront getSellOfferFromUI() {
+    public SellOfferFront getSellOfferFromUI() {
         //get commodity type and weight units
         String cType = spinCommodityType.getSelectedItem().toString();
         UnitsWt.Type unitsWeight = UnitsWt.toType(

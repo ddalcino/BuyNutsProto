@@ -75,7 +75,8 @@ public class SellOfferEndpoint {
      * Inserts a new {@code SellOffer}.
      */
     @ApiMethod(name = "insert")
-    public SellOffer insert(User user, SellOffer sellOffer) throws OAuthRequestException  {
+//    public SellOffer insert(User user, SellOffer sellOffer) throws OAuthRequestException  {
+    public SellOffer insert(User user, @Named("offer") String offer) throws OAuthRequestException  {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that sellOffer.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
@@ -88,13 +89,21 @@ public class SellOfferEndpoint {
         else {
             throw new OAuthRequestException("Invalid user.");
         }
-        Calendar today = Calendar.getInstance();
-        sellOffer.setOfferBirthday(today.toString());
-        sellOffer.setSeller_id(sellerId);
+
+        SellOffer sellOffer = null;
+        try {
+            sellOffer = new SellOffer(offer);
+            Calendar today = Calendar.getInstance();
+            sellOffer.setOfferBirthday(today.toString());
+            sellOffer.setSeller_id(sellerId);
 
 
-        ofy().save().entity(sellOffer).now();
-        logger.info("Created SellOffer with ID: " + sellOffer.getId() + "from user " + user.getEmail());
+            ofy().save().entity(sellOffer).now();
+            logger.info("Created SellOffer with ID: " + sellOffer.getId() + "from user " + user.getEmail());
+
+        } catch (SellOffer.SellOfferStringArrayException e) {
+            e.printStackTrace();
+        }
 
         return sellOffer;
     }
@@ -102,7 +111,10 @@ public class SellOfferEndpoint {
             name = "listSellerCommodities",
             path = "sellOffer/sellers/{seller_id}/offers",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<SellOffer> listSellerCommodities(@Named("seller_id") String seller_id, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> listSellerCommodities(
+            @Named("seller_id") String seller_id,
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("seller_id =",seller_id);
         if (cursor != null) {
@@ -120,7 +132,10 @@ public class SellOfferEndpoint {
             path = "sellOffer/commodity/{commodity}/offers",
             httpMethod = ApiMethod.HttpMethod.GET
     )
-    public CollectionResponse<SellOffer> listCommodityOffers(@Named("commodity") String commodity, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> listCommodityOffers(
+            @Named("commodity") String commodity,
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("commodity =",commodity).order("price_per_unit");
         if (cursor != null) {
@@ -138,7 +153,13 @@ public class SellOfferEndpoint {
             path = "sellOffer/fullQuery",
             httpMethod = ApiMethod.HttpMethod.GET
     )
-    public CollectionResponse<SellOffer> fullQueryOffers(@Nullable @Named("commodity") String commodity, @Nullable @Named("seller_id") String seller_id, @Nullable @Named("min_weight") Double min_weight, @Nullable @Named("max_weight") Double max_weight, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> fullQueryOffers(
+            @Nullable @Named("commodity") String commodity,
+            @Nullable @Named("seller_id") String seller_id,
+            @Nullable @Named("min_weight") Double min_weight,
+            @Nullable @Named("max_weight") Double max_weight,
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
 
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit);
@@ -231,7 +252,9 @@ public class SellOfferEndpoint {
             name = "list",
             path = "sellOffer",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<SellOffer> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<SellOffer> list(
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit);
         if (cursor != null) {

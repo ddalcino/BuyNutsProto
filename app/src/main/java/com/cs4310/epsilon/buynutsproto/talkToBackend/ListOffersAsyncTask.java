@@ -22,7 +22,7 @@ import java.util.List;
  *
  * Created by Mike on 11/5/2015.
  */
-public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> {
+public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> {
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
@@ -30,19 +30,24 @@ public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> 
         this.context = context;
     }
     @Override
-    protected List<SellOffer> doInBackground(Void... Params) {
+    protected List<SellOffer> doInBackground(Long... params) {
+
+        // Get userID from params
+        Long userID = null;
+        if(params != null && params[0] != null) {
+            userID = params[0];
+        }
+
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://backupnuts-1129.appspot.com/_ah/api/");
-            //).setRootUrl("http://10.0.2.2:8080/_ah/api/");
-
-
-
-        sellOfferEndpoint = builder.build();
-    }
+            ).setRootUrl(Constants.BACKEND_URL);
+            sellOfferEndpoint = builder.build();
+        }
         try {
+            //return new StubEndpoint().list(/*userID*/).execute().getItems();
+            //TODO: Should send userID in params, so the backend only sends us items matching that user's stored filter
             return sellOfferEndpoint.list().execute().getItems();
         } catch (IOException e) {
             return Collections.EMPTY_LIST;
@@ -57,7 +62,7 @@ public class ListOffersAsyncTask extends AsyncTask<Void, Void, List<SellOffer>> 
 
         NewsActivity newsActivity = (NewsActivity) context;
         newsActivity.setStatusMsg("Received " + sellOffers.size() + " SellOffers from backend");
-        newsActivity.fillListView(sellOffers);
+        newsActivity.setmSellOffers(sellOffers);
         newsActivity.updateListView();
     }
 }

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,12 +19,6 @@ import com.cs4310.epsilon.buynutsproto.R;
  */
 public class MainLoginActivity extends AppCompatActivity {
     /**
-     * A tag used to put messages in the Log. To see these messages while the
-     * app is running, go to the 'logcat' tab in Android Monitor (it pops up
-     * automatically for me), and type this string into the search filter.
-     */
-    static final String TAG = "myTag";
-    /**
      * The minimum valid user id.
      */
     static final long MIN_USERID = 0;
@@ -36,6 +31,22 @@ public class MainLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
+
+        Button btnRegisterNewUser = (Button) findViewById(R.id.btnRegisterNewUser);
+        btnRegisterNewUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // To test ViewSellOfferActivity, uncomment the next block:
+//                Intent intent = new Intent(MainLoginActivity.this, ViewSellOfferActivity.class);
+//                intent.putExtra("SellOffer", new SellOfferFront(123l, "123", 123l, 5.0, 60.0, 600.0, null, "walnut", false));
+//                MainLoginActivity.this.startActivity(intent);
+
+                //TODO: uncomment the next line when RegisterNewUserActivity is ready
+                //startActivity(new Intent(MainLoginActivity.this, RegisterNewUserActivity.class));
+            }
+        });
+
     }
 
     /**
@@ -50,7 +61,7 @@ public class MainLoginActivity extends AppCompatActivity {
      * @param view  the View object that called this function
      */
     public void onClickLogin(View view){
-        Log.i(TAG, "onClickLogin()");
+        Log.i(Constants.TAG, "onClickLogin()");
 
         try{
             //get username: should hold an int
@@ -58,7 +69,7 @@ public class MainLoginActivity extends AppCompatActivity {
             //this will throw NumberFormatException if input is not an int
             long uid = Long.parseLong( etUsername.getText().toString().trim() );
             if(uid < MIN_USERID){
-                Log.i(TAG, "user entered a negative value for username");
+                Log.i(Constants.TAG, "user entered a negative value for username");
                 Toast.makeText(this.getApplicationContext(),
                         "Please enter a positive integer for username",
                         Toast.LENGTH_LONG).show();
@@ -66,12 +77,12 @@ public class MainLoginActivity extends AppCompatActivity {
                 //create another activity
                 Intent intent = new Intent(MainLoginActivity.this, NewsActivity.class);
                 //send it the user id
-                intent.putExtra("uid", uid);
+                intent.putExtra(Constants.USER_ID_KEY, uid);
                 //launch NewsActivity
                 MainLoginActivity.this.startActivity(intent);
             }
         } catch (NumberFormatException e) { //Long.parseLong throws this exception
-            Log.i(TAG, "user entered a non-integer value for username");
+            Log.i(Constants.TAG, "user entered a non-integer value for username");
             Toast.makeText(this.getApplicationContext(),
                     "Please enter a userID (positive integer) for username",
                     Toast.LENGTH_LONG).show();
