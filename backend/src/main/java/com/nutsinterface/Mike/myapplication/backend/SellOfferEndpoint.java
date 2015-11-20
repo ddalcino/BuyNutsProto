@@ -75,7 +75,8 @@ public class SellOfferEndpoint {
      * Inserts a new {@code SellOffer}.
      */
     @ApiMethod(name = "insert")
-    public SellOffer insert(User user, SellOffer sellOffer) throws OAuthRequestException  {
+//    public SellOffer insert(User user, SellOffer sellOffer) throws OAuthRequestException  {
+    public SellOffer insert(User user, @Named("offer") String offer) throws OAuthRequestException  {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that sellOffer.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
@@ -88,13 +89,21 @@ public class SellOfferEndpoint {
         else {
             throw new OAuthRequestException("Invalid user.");
         }
-        Calendar today = Calendar.getInstance();
-        sellOffer.setOfferBirthday(today.toString());
-        sellOffer.setSeller_id(sellerId);
+
+        SellOffer sellOffer = null;
+        try {
+            sellOffer = new SellOffer(offer);
+            Calendar today = Calendar.getInstance();
+            sellOffer.setOfferBirthday(today.toString());
+            sellOffer.setSeller_id(sellerId);
 
 
-        ofy().save().entity(sellOffer).now();
-        logger.info("Created SellOffer with ID: " + sellOffer.getId() + "from user " + user.getEmail());
+            ofy().save().entity(sellOffer).now();
+            logger.info("Created SellOffer with ID: " + sellOffer.getId() + "from user " + user.getEmail());
+
+        } catch (SellOffer.SellOfferStringArrayException e) {
+            e.printStackTrace();
+        }
 
         return sellOffer;
     }

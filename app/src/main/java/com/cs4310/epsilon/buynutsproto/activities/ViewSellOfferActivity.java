@@ -15,15 +15,13 @@ import com.cs4310.epsilon.nutsinterface.SellOfferFront;
  * An activity used to provide a detailed look at a SellOfferFront object.
  */
 public class ViewSellOfferActivity extends AppCompatActivity {
-    public static final String TAG = "myTag";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_sell_offer);
 
-        Log.i(TAG, "onCreate ViewSellOfferActivity");
+        Log.i(Constants.TAG, "onCreate ViewSellOfferActivity");
 
         final SellOfferFront sellOffer = this.getIntent()
                 .getParcelableExtra("SellOffer");

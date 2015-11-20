@@ -12,10 +12,6 @@ import android.widget.TextView;
 
 public class ContactSellerActivity extends AppCompatActivity {
 
-    public static final String DEFAULT_TELEPHONE_NUMBER = "(510)867-5309";
-    public static final String DEFAULT_SELLER_NAME = "Jenny";
-    public static final String DEFAULT_EMAIL = "Jenny@nuts.com";
-
     // instance data members
 
     String mPhoneNumber;
@@ -57,7 +53,7 @@ public class ContactSellerActivity extends AppCompatActivity {
                 // you to the phone dialer; requires adding permission to
                 // application manifest "android.permission.CALL_PHONE"
 
-                Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:+" + mPhoneNumber));
+                Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mPhoneNumber));
 
                 startActivity(i);
             }

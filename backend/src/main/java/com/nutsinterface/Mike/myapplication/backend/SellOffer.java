@@ -115,6 +115,63 @@ public class SellOffer {
         //curr_id+=1;
     }
 
+
+    /**
+     * An exception, thrown only by the constructor for SellOffer(String stringCode).
+     * It exists for type safety and to hold specific messages about what went
+     * wrong with the constructor call.
+     */
+    public class SellOfferStringArrayException extends Exception {
+        SellOfferStringArrayException(String msg) {
+            super(msg);
+        }
+    }
+
+    /**
+     * Constructor meant to build a SellOfferFront object out of an array of strings.
+     * @param stringCode   A string of the form "ppu#commodity#maxWeight#minWeight#terms"
+     * @throws SellOfferStringArrayException    this contains a message indicating the
+     *          first item in the parameter array that
+     */
+    public SellOffer(String stringCode) throws SellOfferStringArrayException {
+        String[] stringArray = stringCode.split("#");
+        try {
+            this.price_per_unit = Double.parseDouble(stringArray[0]);
+            if (price_per_unit < 0) {
+                throw new SellOfferStringArrayException("pricePerUnit less than zero");
+            }
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("pricePerUnit is not a double");
+        }
+        this.commodity = stringArray[1].toLowerCase();
+        if (    !commodity.equals("walnut") &&
+                !commodity.equals("cashew") &&
+                !commodity.equals("pecan") &&
+                !commodity.equals("almond") ) {
+            throw new SellOfferStringArrayException("Invalid commodity type");
+        }
+        try {
+            this.max_weight = Double.parseDouble(stringArray[2]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("maxWeight is not a double");
+        }
+        try {
+            this.min_weight = Double.parseDouble(stringArray[3]);
+            if (min_weight < 0) {
+                throw new SellOfferStringArrayException("minWeight less than zero");
+            }
+            if (max_weight < min_weight) {
+                throw new SellOfferStringArrayException("maxWeight less than minWeight");
+            }
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("minWeight is not a double");
+        }
+        // The last part is terms. When the string code version of this was made,
+        // it encoded all '#' characters as '&num;', so we can retrieve the original
+        // terms list with a replacement.
+        this.terms = stringArray[4].replace("&num;", "#");
+    }
+
     /*
     public SellOffer(Double ppu, Double max_weight, Double min_weight,
                      String commodity, String seller_id, String terms,

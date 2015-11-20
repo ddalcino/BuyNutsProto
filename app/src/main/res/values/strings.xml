@@ -6,6 +6,7 @@
     <string name="activity_title_set_search_filter">Set Search Filter</string>
     <string name="activity_title_view_sell_offer">View Offer</string>
     <string name="activity_title_register_new_user">New User Registration</string>
+    <string name="activity_title_edit_sell_offer">Edit Offer</string>
 
     <string name="lbl_username">Username</string>
     <string name="lbl_password">Password</string>
@@ -34,7 +35,8 @@
     <string name="terms_not_specified">No terms specified</string>
     <string name="email">Email</string>
     <string name="telephone">Telephone</string>
-
+    <string name="chkMyOffersOnly">Only show offers that I have made</string>
+    <string name="chkShowExpired">Only show expired offers</string>
 
 
     <string-array name="array_commodities">

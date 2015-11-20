@@ -1,11 +1,13 @@
 package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -18,7 +20,8 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 
 public class SetSearchFilterActivity extends AppCompatActivity {
-    static final String TAG = "myTag";
+    public static final String SEARCH_FILTER_KEY = "filter";
+
     /**
      * Spinner objects used to obtain commodity type and weight unit type from
      * the user
@@ -44,8 +47,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         btnSetSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "clickedSetSearch");
-
+                Log.i(Constants.TAG, "clickedSetSearch");
 
                 //create RequestFilteredSellOffer
                 RequestFilteredSellOffer newFilter = getRequestFilteredSellOffer();
@@ -60,13 +62,8 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                     // make new Intent to send back to NewsActivity
                     Intent intent = new Intent();
 
-                    // FIXME: 11/4/15
                     // fill intent with search filter criteria - NOT IMPLEMENTED YET
-
-                    //intent.putExtra("filter", (Parcelable) newFilter);
-                    // this call requires that RequestFilteredSellOffer implements
-                    // the Parcelable interface, but it doesn't do that yet
-
+                    intent.putExtra(SEARCH_FILTER_KEY, (Parcelable) newFilter);
 
                     setResult(RESULT_OK, intent);
                     // now NewsActivity has an idea of what's in the search filter
@@ -113,7 +110,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         }
 
         String cType = spinCommodityType.getSelectedItem().toString();
-        Log.i(TAG, "User selected " + cType +" from spinner");
+        Log.i(Constants.TAG, "User selected " + cType +" from spinner");
         UnitsWt.Type unitsWeight = UnitsWt.toType(
                 spinUnitWt.getSelectedItem().toString());
         if(cType == null || unitsWeight == null){
@@ -121,11 +118,19 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                     "Invalid spinner input", Toast.LENGTH_SHORT).show();
             return null;
         }
+
+        CheckBox chkExpiredOffers = (CheckBox) findViewById(R.id.chkShowExpired);
+        Boolean expiredOffersOnly = chkExpiredOffers.isChecked();
+
+        CheckBox chkMyOffers = (CheckBox) findViewById(R.id.chkMyOffersOnly);
+        Boolean myOwnOffersOnly = chkMyOffers.isChecked();
+
         double unitConversion = UnitsWt.unitConversion(unitsWeight, UnitsWt.Type.LB);
 
         //create RequestFilteredSellOffer
         return new RequestFilteredSellOffer(
-                mUid, minWt * unitConversion, maxWt * unitConversion,
-                minPpu / unitConversion, maxPpu / unitConversion, cType, false);
+                mUid, cType, minWt * unitConversion, maxWt * unitConversion,
+                minPpu / unitConversion, maxPpu / unitConversion,
+                expiredOffersOnly, myOwnOffersOnly);
     }
 }

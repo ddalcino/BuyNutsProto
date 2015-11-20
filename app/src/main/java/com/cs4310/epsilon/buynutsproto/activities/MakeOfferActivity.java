@@ -20,7 +20,6 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
  * it to the backend
  */
 public class MakeOfferActivity extends AppCompatActivity {
-    static final String TAG = "myTag";
     private long mUid;
 
     Spinner spinUnitWt;
@@ -34,7 +33,7 @@ public class MakeOfferActivity extends AppCompatActivity {
         //get mUid from intent
         mUid = this.getIntent().getLongExtra("mUid",
                 MainLoginActivity.INVALID_USERID);
-        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ?
+        Log.i(Constants.TAG, (mUid == MainLoginActivity.INVALID_USERID ?
                 "Didn't receive mUid" : "Received mUid=" + mUid));
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_MO);

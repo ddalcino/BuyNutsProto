@@ -50,7 +50,11 @@ public class StubEndpoint {
 
     public class GetContactInfo {
         String[] execute() {
-            return new String[] {"Jenny (name provided by stub) with id (from SellOffer) "+ sellerID,"5108675309","jenny@nuts.com"};
+            return new String[] {
+                    "Jenny (name provided by stub) with id (from SellOffer) "+ sellerID,
+                    "5108675309",
+                    //"9258464013",
+                    "jenny@nuts.com"};
         }
     }
 

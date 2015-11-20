@@ -2,6 +2,7 @@ package com.cs4310.epsilon.buynutsproto.talkToBackend;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
@@ -36,7 +37,7 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
 
         //context.getResources().getString(R.string.backend_url);
 
-        SellOffer newSellOffer = Params[0].toSellOffer();
+        SellOfferFront newSellOffer = Params[0];
         if (sellOfferEndpoint == null) {
             SellOfferEndpoint.Builder builder = new SellOfferEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
@@ -55,8 +56,9 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         //newSellOffer.setOfferBirthday(sf.getOfferBirthday());
         //newSellOffer.setSpecification(sf.getSpecification())
         try {
-            sellOfferEndpoint.insert(newSellOffer).execute();
-            //sellOfferEndpoint.insert("blah#blah#blah").execute();
+            //sellOfferEndpoint.insert(newSellOffer).execute();
+            String offer = newSellOffer.toInsertString(); //.to  // "blah#blah#blah";
+            sellOfferEndpoint.insert(offer).execute();
             return ("Inserted");
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,6 +76,8 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         CharSequence text = (CharSequence) result;
         int duration = Toast.LENGTH_LONG;
         Toast.makeText(makeOfferActivity,text,duration).show();
+
+        Log.i("myTag", result);
 
 
     }

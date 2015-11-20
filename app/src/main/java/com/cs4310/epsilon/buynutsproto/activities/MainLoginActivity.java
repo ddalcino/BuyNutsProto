@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
-import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 
 /**
  * The entry point of the app: The first thing the app does is create a
@@ -19,12 +18,6 @@ import com.cs4310.epsilon.nutsinterface.SellOfferFront;
  * activity.
  */
 public class MainLoginActivity extends AppCompatActivity {
-    /**
-     * A tag used to put messages in the Log. To see these messages while the
-     * app is running, go to the 'logcat' tab in Android Monitor (it pops up
-     * automatically for me), and type this string into the search filter.
-     */
-    static final String TAG = "myTag";
     /**
      * The minimum valid user id.
      */
@@ -68,7 +61,7 @@ public class MainLoginActivity extends AppCompatActivity {
      * @param view  the View object that called this function
      */
     public void onClickLogin(View view){
-        Log.i(TAG, "onClickLogin()");
+        Log.i(Constants.TAG, "onClickLogin()");
 
         try{
             //get username: should hold an int
@@ -76,7 +69,7 @@ public class MainLoginActivity extends AppCompatActivity {
             //this will throw NumberFormatException if input is not an int
             long uid = Long.parseLong( etUsername.getText().toString().trim() );
             if(uid < MIN_USERID){
-                Log.i(TAG, "user entered a negative value for username");
+                Log.i(Constants.TAG, "user entered a negative value for username");
                 Toast.makeText(this.getApplicationContext(),
                         "Please enter a positive integer for username",
                         Toast.LENGTH_LONG).show();
@@ -84,12 +77,12 @@ public class MainLoginActivity extends AppCompatActivity {
                 //create another activity
                 Intent intent = new Intent(MainLoginActivity.this, NewsActivity.class);
                 //send it the user id
-                intent.putExtra("uid", uid);
+                intent.putExtra(Constants.USER_ID_KEY, uid);
                 //launch NewsActivity
                 MainLoginActivity.this.startActivity(intent);
             }
         } catch (NumberFormatException e) { //Long.parseLong throws this exception
-            Log.i(TAG, "user entered a non-integer value for username");
+            Log.i(Constants.TAG, "user entered a non-integer value for username");
             Toast.makeText(this.getApplicationContext(),
                     "Please enter a userID (positive integer) for username",
                     Toast.LENGTH_LONG).show();
