@@ -12,4 +12,6 @@ public class Constants {
     static final String TAG = "myTag";
 
     static final String USER_ID_KEY = "uid";
+
+    public static final long INVALID_USER_ID = -1l;
 }

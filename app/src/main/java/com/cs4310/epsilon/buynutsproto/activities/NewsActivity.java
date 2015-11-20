@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.MyArrayAdapter;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.ListFilteredOffersAsyncTask;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.ListOffersAsyncTask;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
@@ -131,7 +132,9 @@ public class NewsActivity extends AppCompatActivity {
 
                 setStatusMsg("Requesting SellOffers from server...");
 
-                new ListOffersAsyncTask(NewsActivity.this).execute(mUid);
+                new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);
+
+                //new ListOffersAsyncTask(NewsActivity.this).execute(mUid);
             }
         });
 

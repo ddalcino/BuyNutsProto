@@ -57,7 +57,7 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         //newSellOffer.setSpecification(sf.getSpecification())
         try {
             //sellOfferEndpoint.insert(newSellOffer).execute();
-            String offer = newSellOffer.toInsertString(); //.to  // "blah#blah#blah";
+            String offer = newSellOffer.toInsertString();
             sellOfferEndpoint.insert(offer).execute();
             return ("Inserted");
         } catch (IOException e) {
