@@ -22,180 +22,102 @@ public class SellOfferFrontTest {
     }
 
     @Test
-    public void testToStringCSV() throws Exception {
+    public void testToStringCode() throws Exception {
+        SellOfferFront sof = new SellOfferFront(
+                1234567896543l,
+                "098765456787654457685",
+                1223346567l,
+                7.63,
+                0.004,
+                99.94,
+                "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you",
+                "walnut",
+                true);
+        String correctStringCode =
+                "7.630000#" +
+                "walnut#" +
+                "99.940000#" +
+                "0.004000#" +
+                "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you";
+        System.out.println(correctStringCode);
+        System.out.println(sof.toInsertString());
+
+        assertTrue(correctStringCode.equals(sof.toInsertString()));
+
 
     }
     @Test
     public void testSellOfferFrontString() throws Exception {
-        String[][] testCSVs = {
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63",
-                        "0.004",
-                        "99.94",
-                        "walnut",
-                        "true",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543.1",  // should be a long, not double
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63",
-                        "0.004",
-                        "99.94",
-                        "walnut",
-                        "false",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685x",   //shouldn't contain non-numeric characters
-                        "1223346567",
-                        "7.63",
-                        "0.004",
-                        "99.94",
-                        "walnut",
-                        "false",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567.0",     //shouldn't be a double
-                        "7.63",
-                        "0.004",
-                        "99.94",
-                        "walnut",
-                        "true",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63.7",   // don't accept crazy garbage like this
-                        "0.004",
-                        "99.94",
-                        "walnut",
-                        "true",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63",
-                        "0.004+19",   // no math expressions allowed
-                        "99.94",
-                        "walnut",
-                        "true",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63",
-                        "0.004",
-                        "e^99.94",   // no math expressions allowed
-                        "walnut",
-                        "true",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63",
-                        "0.004",
-                        "99.94",
-                        "pistachio",    // unsupported nut type
-                        "true",
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                },
-                new String[]{
-                        "1234567896543",
-                        "098765456787654457685",
-                        "1223346567",
-                        "7.63",
-                        "0.004",
-                        "99.94",
-                        "almond",
-                        "fuhgeddaboudit",   // neither true not false
-                        "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
-                }
+        String[] testStringCodes = {
+                // Acceptable input
+                "7.63#" +
+                        "walnut#" +
+                        "99.94#" +
+                        "0.004#" +
+                        "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you",
 
+                "7.63.7#" +   // don't accept crazy garbage like this
+                        "walnut#" +
+                        "99.94#" +
+                        "0.004#" +
+                        "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you",
 
+                "7.63#" +
+                        "walnut#" +
+                        "99.94#" +
+                        "0.004+19#" +   // no math expressions allowed
+                        "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you",
+
+                "7.63#" +
+                        "walnut#" +
+                        "e^99.94#" +  // no math expressions allowed
+                        "0.004#" +
+                        "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you",
+
+                "7.63#" +
+                        "pistachio#" +   // unsupported nut type
+                        "99.94#" +
+                        "0.004#" +
+                        "Call my phone&num; and press &num;2&num;3&num;4&num;&num;&num;&num; and I'll &num; you",
         };
         SellOfferFront offer;
         try {
-            offer = new SellOfferFront(testCSVs[0]);
-            assertTrue(offer.getId() == 1234567896543l);
-            assertEquals(offer.getSellerId(), "098765456787654457685");
-            assertTrue(offer.getOfferBirthday() == 1223346567l);
+            offer = new SellOfferFront(testStringCodes[0]);
             assertTrue(offer.getPricePerUnit() == 7.63);
             assertTrue(offer.getMinWeight() == 0.004);
             assertTrue(offer.getMaxWeight() == 99.94);
             assertTrue(offer.getCommodity().equals("walnut"));
-            assertTrue(offer.getExpired());
             assertTrue(offer.getTerms().equals(
-                    "Hi I'm a list of terms,,,,,,,,,,,,and, also, some, conditions"
+                    "Call my phone# and press #2#3#4#### and I'll # you"
             ));
         } catch (SellOfferFront.SellOfferStringArrayException e) {
             // The first entry should not throw an exception; if it does, this test fails
+            System.out.println(e.getMessage());
             fail();
         }
         try {
-            offer = new SellOfferFront(testCSVs[1]);
-            // this test should throw an exception; otherwise it fails
-            fail();
-        } catch (SellOfferFront.SellOfferStringArrayException e) {
-            assertTrue(e.getMessage().equals("User ID is not a long"));
-        }
-        try {
-            offer = new SellOfferFront(testCSVs[2]);
-            fail();
-        } catch (SellOfferFront.SellOfferStringArrayException e) {
-            assertTrue(e.getMessage().equals("SellerId is not a number"));
-        }
-        try {
-            offer = new SellOfferFront(testCSVs[3]);
-            fail();
-        } catch (SellOfferFront.SellOfferStringArrayException e) {
-            assertTrue(e.getMessage().equals("OfferBirthday is not a long"));
-        }
-        try {
-            offer = new SellOfferFront(testCSVs[4]);
+            offer = new SellOfferFront(testStringCodes[1]);
             fail();
         } catch (SellOfferFront.SellOfferStringArrayException e) {
             assertTrue(e.getMessage().equals("pricePerUnit is not a double"));
         }
         try {
-            offer = new SellOfferFront(testCSVs[5]);
+            offer = new SellOfferFront(testStringCodes[2]);
             fail();
         } catch (SellOfferFront.SellOfferStringArrayException e) {
             assertTrue(e.getMessage().equals("minWeight is not a double"));
         }
         try {
-            offer = new SellOfferFront(testCSVs[6]);
+            offer = new SellOfferFront(testStringCodes[3]);
             fail();
         } catch (SellOfferFront.SellOfferStringArrayException e) {
             assertTrue(e.getMessage().equals("maxWeight is not a double"));
         }
         try {
-            offer = new SellOfferFront(testCSVs[7]);
+            offer = new SellOfferFront(testStringCodes[4]);
             fail();
         } catch (SellOfferFront.SellOfferStringArrayException e) {
             assertTrue(e.getMessage().equals("Invalid commodity type"));
-        }
-        try {
-            offer = new SellOfferFront(testCSVs[8]);
-            fail();
-        } catch (SellOfferFront.SellOfferStringArrayException e) {
-            assertTrue(e.getMessage().equals("Expired field improperly set"));
         }
     }
 }
