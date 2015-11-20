@@ -43,7 +43,8 @@ public class NutsUserEndpoint {
     private static final int DEFAULT_LIST_LIMIT = 20;
 
     static {
-        // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
+        // Typically you would register this inside an OfyServive wrapper.
+        // See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
         ObjectifyService.register(NutsUser.class);
     }
 
@@ -135,7 +136,9 @@ public class NutsUserEndpoint {
             name = "list",
             path = "nutsUser",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<NutsUser> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<NutsUser> list(
+            @Nullable @Named("cursor") String cursor,
+            @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<NutsUser> query = ofy().load().type(NutsUser.class).limit(limit);
         if (cursor != null) {
@@ -146,13 +149,16 @@ public class NutsUserEndpoint {
         while (queryIterator.hasNext()) {
             nutsUserList.add(queryIterator.next());
         }
-        return CollectionResponse.<NutsUser>builder().setItems(nutsUserList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
+        return CollectionResponse.<NutsUser>builder().setItems(nutsUserList)
+                .setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
     @ApiMethod(
             name="login",
             path="nutsUser/login",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public NutsUser login(@Named("userName") String userName, @Named("password") String password) {
+    public NutsUser login(
+            @Named("userName") String userName,
+            @Named("password") String password) {
         Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
         userFound = userFound.filter("password =", password);
         if (userFound.count() == 0) {
@@ -169,7 +175,12 @@ public class NutsUserEndpoint {
             name="register",
             path="nutsUser/register",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public NutsUser register(@Named("userName") String userName, @Named("password") String password, @Named("name") String name, @Named("email") String email, @Named("telephone") String telephone) {
+    public NutsUser register(
+            @Named("userName") String userName,
+            @Named("password") String password,
+            @Named("name") String name,
+            @Named("email") String email,
+            @Named("telephone") String telephone) {
         Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
         userFound = userFound.filter("userName =", userName);
         if (userFound.count() == 0) {
@@ -188,7 +199,9 @@ public class NutsUserEndpoint {
             name="getContactInfo",
             path="nutsUser/getContactInfo",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public void getContactInfo(@Named("id") Long id, @Named("info") List<String> info) throws NotFoundException {
+    public void getContactInfo(
+            @Named("id") Long id,
+            @Named("info") List<String> info) throws NotFoundException {
         NutsUser nutsUser = ofy().load().type(NutsUser.class).id(id).now();
         if (nutsUser == null) {
             throw new NotFoundException("Could not find NutsUser with ID: " + id);

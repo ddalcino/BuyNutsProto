@@ -47,6 +47,7 @@
     <string name="registration_confirm">Confirm Password</string>
     <string name="registration_btn_register">Register Now</string>
 
+    <string name="error_confirm_password">Password and Confirm Password fields do not match; please try again.</string>
 
     <string-array name="array_commodities">
         <item>Walnut</item>

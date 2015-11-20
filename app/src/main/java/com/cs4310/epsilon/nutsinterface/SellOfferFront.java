@@ -303,10 +303,10 @@ public class SellOfferFront implements Parcelable{
 //        try {
 //            this.id = Long.parseLong(stringArray[0]);
 //            if (id < 0) {
-//                throw new SellOfferStringArrayException("User ID less than zero");
+//                throw new SellOfferStringArrayException("UserFront ID less than zero");
 //            }
 //        } catch (NumberFormatException e) {
-//            throw new SellOfferStringArrayException("User ID is not a long");
+//            throw new SellOfferStringArrayException("UserFront ID is not a long");
 //        }
 //        this.sellerId = stringArray[1];
 //        if (!Pattern.matches("[0-9]+", stringArray[1])) {

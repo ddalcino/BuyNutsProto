@@ -8,4 +8,5 @@ public class Constants {
     //static final String BACKEND_URL = "http://10.0.2.2:8080/_ah/api/";  //Local host
 
     static final String ASYNC_TAG = "mTagAsync";
+    static final long INVALID_UID = -1l;
 }
