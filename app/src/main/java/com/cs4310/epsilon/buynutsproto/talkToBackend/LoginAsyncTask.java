@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cs4310.epsilon.buynutsproto.activities.RegistrationActivity;
+import com.cs4310.epsilon.buynutsproto.activities.MainLoginActivity;
 import com.cs4310.epsilon.nutsinterface.UserFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -16,26 +16,32 @@ import com.nutsinterface.mike.myapplication.backend.nutsUserApi.model.NutsUser;
 import java.io.IOException;
 
 /**
- * An Asynchronous Task that runs in the background. It sends a username,
- * password, name, phonenumber, email to the backend to register a new user.
- * It expects to receive an id number for that new user.
+ * An Asynchronous Task that runs in the background. It sends a username and
+ * password to the backend to login a user. It expects to receive an id number for that new user.
  *
  * Created by dave on 11/20/15.
  */
-public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
+public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
 
     private static NutsUserApi nutsUserEndpoint = null;
     private Context context;
-    public RegistrationAsyncTask(Context context) {
+    public LoginAsyncTask(Context context) {
         this.context = context;
     }
     @Override
-    protected Long doInBackground(UserFront... Params) {
-        if (Params == null || Params[0] == null) {
+    protected Long doInBackground(String... Params) {
+        if (Params == null || Params.length != 2 ||
+                Params[0] == null || Params[0].equals("") ||
+                Params[1] == null || Params[1].equals("") ) {
             return (Constants.INVALID_UID);
         }
 
-        UserFront newUser = Params[0];
+        String username = Params[0];
+        String password = Params[1];
+
+        Log.i(Constants.ASYNC_TAG, "User attempted login with username=" +
+                username + ", password=" + password);
+
         if (nutsUserEndpoint == null) {
             NutsUserApi.Builder builder = new NutsUserApi.Builder(
                     AndroidHttp.newCompatibleTransport(),
@@ -45,17 +51,14 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
             nutsUserEndpoint = builder.build();
         }
         try {
-            String userName = newUser.getUserName();
-            String password = newUser.getPassword();
-            String name = newUser.getName();
-            String email = newUser.getEmail();
-            String telephone = newUser.getTelephone();
-            Log.i(Constants.ASYNC_TAG, "Registering user=" + newUser.toString());
-            NutsUser result = nutsUserEndpoint.register(email, name, password, telephone, userName).execute();
+            Log.i(Constants.ASYNC_TAG, "Calling login");
+            NutsUser result = nutsUserEndpoint.login(username, password).execute();
             if (result != null) {
-                Log.i(Constants.ASYNC_TAG, "Registered user with id=" +
+                Log.i(Constants.ASYNC_TAG, "User logged in with id=" +
                         result.getId() + "\nuser=" + result.toString());
                 return (result.getId());
+            } else {
+                Log.i(Constants.ASYNC_TAG, "Login yields no matching user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,18 +67,13 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
     }
     @Override
     protected void onPostExecute(Long resultId) {
-        RegistrationActivity registrationActivity = (RegistrationActivity) context;
+        MainLoginActivity mainLoginActivity = (MainLoginActivity) context;
 
         if (resultId != Constants.INVALID_UID) {
-            Toast.makeText(registrationActivity, "Id assigned="+resultId,
+            Toast.makeText(mainLoginActivity, "User logged in with id="+resultId,
                     Toast.LENGTH_LONG).show();
-            Log.i(Constants.ASYNC_TAG, "Id assigned=" + resultId);
-
-        } else {
-            Toast.makeText(registrationActivity, "No Id assigned",
-                    Toast.LENGTH_LONG).show();
-            Log.i(Constants.ASYNC_TAG, "No Id assigned");
-
+            Log.i(Constants.ASYNC_TAG, "User logged in with id=" + resultId);
         }
+        mainLoginActivity.login(resultId);
     }
 }

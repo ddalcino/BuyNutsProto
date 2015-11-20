@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/et2Name"
             android:layout_weight="1"
-            android:inputType="none" />
+            android:inputType="textPersonName|none" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -57,7 +57,7 @@
             android:id="@+id/et2Email"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.84"
-            android:inputType="textPersonName|none" />
+            android:inputType="textEmailAddress|none" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -101,7 +101,7 @@
             android:id="@+id/et2Username"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:inputType="textEmailAddress|none" />
+            android:inputType="textPersonName|none" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
