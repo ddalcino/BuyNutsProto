@@ -31,6 +31,7 @@
     <string name="registration_name">Name</string>
     <string name="registration_phone">Phone</string>
     <string name="registration_email">Email</string>
+    <string name="registration_confirm">Confirm</string>
 
     <string-array name="commodities_array">
         <item>Walnut</item>

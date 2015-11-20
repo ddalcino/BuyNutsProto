@@ -117,6 +117,29 @@
                 android:inputType="textEmailAddress|none" />
         </LinearLayout>
         <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/registration_password"
+            android:id="@+id/tv2Password"
+            android:layout_gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/et2Password"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:inputType="textPassword|none" />
+
+    </LinearLayout>
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,14 +149,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/registration_password"
-                android:id="@+id/tv2Password"
+                android:text="@string/registration_confirm"
+                android:id="@+id/tv2Confirm"
                 android:layout_gravity="center_vertical" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/et2Password"
+                android:id="@+id/et2Confirm"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:inputType="textPassword|none" />
