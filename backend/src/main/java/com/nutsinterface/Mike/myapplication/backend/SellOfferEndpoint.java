@@ -46,7 +46,7 @@ public class SellOfferEndpoint {
     private static final int DEFAULT_LIST_LIMIT = 20;
     public SellOfferEndpoint() { }
     /*static {
-        // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
+        // Typically you would register this inside an OfyService wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
         ObjectifyService.register(SellOffer.class);
     }*/
 
@@ -137,7 +137,7 @@ public class SellOfferEndpoint {
             @Nullable @Named("cursor") String cursor,
             @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
-        Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("commodity =",commodity).order("price_per_unit");
+        Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("commodity =", commodity).order("price_per_unit");
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
@@ -267,9 +267,43 @@ public class SellOfferEndpoint {
         }
         return CollectionResponse.<SellOffer>builder().setItems(sellOfferList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
+    /*
     @ApiMethod(
-
+            name="login",
+            path="login",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public NutsUser login(@Named("userName") String userName, @Named("password") String password) {
+        Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
+        userFound = userFound.filter("password =", password);
+        if (userFound.count() == 0) {
+            return null;
+        }
+        else if (userFound.count() > 1) {
+            return null;
+        }
+        else {
+            return userFound.first().now();
+        }
+    }
+    */
+    /*
+    @ApiMethod(
+            name="register"
     )
+    public NutsUser register(@Named("userName") String userName, @Named("password") String password) {
+        Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
+        userFound = userFound.filter("userName =", userName);
+        if (userFound.count() == 0) {
+            NutsUser nu = new NutsUser();
+            nu.setUserName(userName);
+            nu.setPassword(password);
+            ofy().save().entity(nu).now();
+            return nu;
+        }
+        return null;
+    }
+    */
+
     private void checkExists(Long id) throws NotFoundException {
         try {
             ofy().load().type(SellOffer.class).id(id).safe();

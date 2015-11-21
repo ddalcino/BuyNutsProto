@@ -18,6 +18,7 @@ public class OfyService {
     private OfyService() { }
     static {
        factory().register(SellOffer.class);
+        factory().register(NutsUser.class);
         //ObjectifyService.register(SellOffer.class);
     }
 

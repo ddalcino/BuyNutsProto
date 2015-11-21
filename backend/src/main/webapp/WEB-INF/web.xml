@@ -13,8 +13,8 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>
-                com.nutsinterface.Mike.myapplication.backend.SellOfferEndpoint</param-value>
+            <param-value>com.nutsinterface.Mike.myapplication.backend.SellOfferEndpoint,
+                com.nutsinterface.Mike.myapplication.backend.NutsUserEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
