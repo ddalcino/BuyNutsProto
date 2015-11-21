@@ -69,7 +69,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                     // now NewsActivity has an idea of what's in the search filter
 
                     //Also, send a RequestFilteredSellOffer object to the server
-                    new SetFilterAsyncTask(SetSearchFilterActivity.this).execute(newFilter);
+                    //new SetFilterAsyncTask(SetSearchFilterActivity.this).execute(newFilter);
             }
 
             }

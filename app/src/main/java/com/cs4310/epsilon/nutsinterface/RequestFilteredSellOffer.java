@@ -228,4 +228,44 @@ public class RequestFilteredSellOffer implements Parcelable {
         expired = booleans[0];
         myOwnOffersOnly = booleans[1];
     }
+
+    public Long getAssociatedUserID() {
+        return associatedUserID;
+    }
+
+    public String getCommodity() {
+        return commodity;
+    }
+
+    public Double getMinWeight() {
+        return minWeight;
+    }
+
+    public Double getMaxWeight() {
+        return maxWeight;
+    }
+
+    public Double getMinPricePerUnit() {
+        return minPricePerUnit;
+    }
+
+    public Double getMaxPricePerUnit() {
+        return maxPricePerUnit;
+    }
+
+    public Boolean getExpired() {
+        return expired;
+    }
+
+    public Boolean getMyOwnOffersOnly() {
+        return myOwnOffersOnly;
+    }
+
+    public Long getEarliest() {
+        return earliest;
+    }
+
+    public Long getLatest() {
+        return latest;
+    }
 }
