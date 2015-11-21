@@ -176,6 +176,9 @@ public class NutsUserEndpoint {
             NutsUser nu = new NutsUser();
             nu.setUserName(userName);
             nu.setPassword(password);
+            nu.setEmail(email);
+            nu.setTelephone(telephone);
+            nu.setName(name);
             ofy().save().entity(nu).now();
             return nu;
         }
