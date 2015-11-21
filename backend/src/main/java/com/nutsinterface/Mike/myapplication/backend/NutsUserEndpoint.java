@@ -100,7 +100,7 @@ public class NutsUserEndpoint {
             path = "nutsUser/{id}",
             httpMethod = ApiMethod.HttpMethod.PUT)
     public NutsUser update(@Named("id") Long id, NutsUser nutsUser) throws NotFoundException {
-        
+
         checkExists(id);
         ofy().save().entity(nutsUser).now();
         logger.info("Updated NutsUser: " + nutsUser);
