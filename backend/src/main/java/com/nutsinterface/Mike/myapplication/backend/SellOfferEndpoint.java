@@ -7,7 +7,6 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
-import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.cmd.Query;
 
@@ -76,19 +75,20 @@ public class SellOfferEndpoint {
      */
     @ApiMethod(name = "insert")
 //    public SellOffer insert(User user, SellOffer sellOffer) throws OAuthRequestException  {
-    public SellOffer insert(User user, @Named("offer") String offer) throws OAuthRequestException  {
+    public SellOffer insert(@Named("offer") String offer)  {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that sellOffer.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
         String sellerId;
-        if (user != null) {
+        /*if (user != null) {
             sellerId = user.getUserId();
         }
         else {
             throw new OAuthRequestException("Invalid user.");
-        }
+        }*/
+        sellerId = "1";
 
         SellOffer sellOffer = null;
         try {
@@ -99,7 +99,7 @@ public class SellOfferEndpoint {
 
 
             ofy().save().entity(sellOffer).now();
-            logger.info("Created SellOffer with ID: " + sellOffer.getId() + "from user " + user.getEmail());
+            //logger.info("Created SellOffer with ID: " + sellOffer.getId() + "from user " + user.getEmail());
 
         } catch (SellOffer.SellOfferStringArrayException e) {
             e.printStackTrace();

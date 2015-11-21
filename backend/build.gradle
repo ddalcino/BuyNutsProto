@@ -33,11 +33,10 @@ dependencies {
 
 appengine {
     downloadSdk = true
-    appcfg {
-        oauth2 = true
-            email = "${appEmail}"
+    //appcfg {
+    //    oauth2 = false
 
-    }
+    //}
     endpoints {
         getClientLibsOnBuild = true
         getDiscoveryDocsOnBuild = true
