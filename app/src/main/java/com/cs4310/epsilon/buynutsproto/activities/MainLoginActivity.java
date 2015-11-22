@@ -63,7 +63,7 @@ public class MainLoginActivity extends AppCompatActivity {
     public void onClickLogin(View view){
 
         // This is the fake code that bypasses all login procedures.
-        if (true) {
+        if (false) {
             login(1l);
         } else {
             // This is the real code that logs users in. Until the backend is
@@ -79,6 +79,7 @@ public class MainLoginActivity extends AppCompatActivity {
 
             if (userName != null && !userName.equals("") &&
                     password != null && !password.equals("")) {
+                Log.i(Constants.TAG, "Calling LoginAsyncTask with username="+userName+", password="+password);
                 new LoginAsyncTask(MainLoginActivity.this).execute(
                         userName, password
                 );

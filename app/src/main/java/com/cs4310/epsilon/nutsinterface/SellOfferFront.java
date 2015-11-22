@@ -357,6 +357,14 @@ public class SellOfferFront implements Parcelable{
 
     public String getSellerId() {
         return sellerId;
+        /*
+        try {
+            return Double.parseDouble(sellerId);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return -1l;
+        }
+        */
     }
 
     public Long getId() {

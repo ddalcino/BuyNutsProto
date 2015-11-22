@@ -3,6 +3,7 @@ package com.cs4310.epsilon.buynutsproto.talkToBackend;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import android.content.Context;
@@ -15,69 +16,86 @@ import com.cs4310.epsilon.buynutsproto.activities.MakeOfferActivity;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.nutsinterface.mike.myapplication.backend.nutsUserApi.NutsUserApi;
+import com.nutsinterface.mike.myapplication.backend.nutsUserApi.model.NutsUser;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.SellOfferEndpoint;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An Asynchronous Task that runs in the background. It sends the backend a
- * sellerID string, and expects to receive an array of 3 Strings, in this order:
+ * sellerID Long, and expects to receive an array of 3 Strings, in this order:
  *      Seller Name
  *      Seller's Phone Number
  *      Seller's Email
  * When it has received these three things, it will launch a ContactSellerActivity
  * that has access to these items.
  *
- * TODO: This class uses a StubEndpoint and won't do anything for real until a real endpoint is created!
  *
  * Created by Dave on 11/13/2015.
  */
-public class GetContactInfoAsyncTask extends AsyncTask<String, Void, String[]> {
+public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
 
-    private static StubEndpoint contactInfoEndpoint = null;
+    private static NutsUserApi contactInfoEndpoint = null;
     private Context context;
     public GetContactInfoAsyncTask(Context context) {
         this.context = context;
     }
     @Override
-    protected String[] doInBackground(String... params) {
+    protected ArrayList<String> doInBackground(Long... params) {
         if (params == null || params[0] == null) {
-            return (new String[]{"GetContactInfo Failed"});
+            Log.i(Constants.ASYNC_TAG, "No params passed to GetContactInfoAsyncTask");
+            return (null);
         }
-        String sellerID = params[0];
+        Long sellerID = params[0];
 
 
         if (contactInfoEndpoint == null) {
-            StubEndpoint.Builder builder = new StubEndpoint.Builder(
+            NutsUserApi.Builder builder = new NutsUserApi.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
+            ).setRootUrl(Constants.BACKEND_URL);
 
             contactInfoEndpoint = builder.build();
         }
         try {
-            String[] contactInfo;
-            contactInfo = contactInfoEndpoint.getContactInfo(sellerID).execute();
+            //String[] contactInfo;
+            ArrayList<String> contactInfo = new ArrayList<String>();
+
+            contactInfoEndpoint.getContactInfo(sellerID, contactInfo).execute();
             return contactInfo;
         } catch (IOException e) {
             e.printStackTrace();
-            return(new String[]{"GetContactInfo Failed\n" + e.getLocalizedMessage()});
+            return null;
         }
     }
     @Override
-    protected void onPostExecute(String[] result) {
+    protected void onPostExecute(ArrayList<String> result) {
 
-        if (result != null && result.length == 3) {
+        if (result != null && result.size() == 3) {
+            Log.i(Constants.ASYNC_TAG, "Received contactinfo from backend: " +
+                            "\nsellerName=" + result.get(0) +
+                            "\nsellerPhone=" + result.get(1) +
+                            "\nsellerEmail=" + result.get(2)
+            );
+
             Intent i = new Intent(context, ContactSellerActivity.class);
-            i.putExtra("sellerName", result[0]);
-            i.putExtra("sellerPhone", result[1]);
-            i.putExtra("sellerEmail", result[2]);
+            i.putExtra("sellerName", result.get(0));
+            i.putExtra("sellerPhone", result.get(1));
+            i.putExtra("sellerEmail", result.get(2));
 
             context.startActivity(i);
-        } else if (result != null && result.length == 1) {
-            Toast.makeText(context, result[0], Toast.LENGTH_SHORT).show();
-        } else {
+        } else if (result != null) {
+            String contents = "";
+
+            for(String s : result) contents += s + "\n";
+
+            Log.i(Constants.ASYNC_TAG,
+                    "Received unexpected contactinfo from backend with size="+
+                            result.size() +"\nContents=" + contents);
             Toast.makeText(context, "Bad seller info", Toast.LENGTH_SHORT).show();
         }
     }

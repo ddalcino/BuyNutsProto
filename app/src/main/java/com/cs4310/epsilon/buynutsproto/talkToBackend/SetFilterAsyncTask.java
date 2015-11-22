@@ -41,7 +41,7 @@ public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void
             StubEndpoint.Builder builder = new StubEndpoint.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
-            ).setRootUrl("https://buynutsproto.appspot.com/_ah/api/");
+            ).setRootUrl(Constants.BACKEND_URL);
 
             setFilterEndpoint = builder.build();
         }

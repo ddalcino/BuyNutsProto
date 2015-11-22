@@ -52,7 +52,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
         }
         try {
             Log.i(Constants.ASYNC_TAG, "Calling login");
-            NutsUser result = nutsUserEndpoint.login(username, password).execute();
+            NutsUser result = nutsUserEndpoint.login(password, username).execute();
             if (result != null) {
                 Log.i(Constants.ASYNC_TAG, "User logged in with id=" +
                         result.getId() + "\nuser=" + result.toString());

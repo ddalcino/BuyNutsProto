@@ -55,10 +55,17 @@ public class ViewSellOfferActivity extends AppCompatActivity {
         btnContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start an AsyncTask that gets seller contact info and passes it into the next activity
-                new GetContactInfoAsyncTask(ViewSellOfferActivity.this).execute(sellOffer.getSellerId());
+                Log.i(Constants.TAG, "Clicked Contact Seller with sellerID=" + sellOffer.getSellerId());
+                try {
+                    Long sellerId = Long.parseLong(sellOffer.getSellerId());
 
-                //startActivity(new Intent(ViewSellOfferActivity.this, ContactSellerActivity.class));
+                    // Start an AsyncTask that gets seller contact info and passes it into the next activity
+                    new GetContactInfoAsyncTask(ViewSellOfferActivity.this).execute(sellerId);
+
+                    //startActivity(new Intent(ViewSellOfferActivity.this, ContactSellerActivity.class));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
