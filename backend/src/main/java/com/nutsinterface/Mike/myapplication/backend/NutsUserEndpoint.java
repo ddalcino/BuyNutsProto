@@ -160,8 +160,20 @@ public class NutsUserEndpoint {
             @Named("userName") String userName,
             @Named("password") String password) {
         Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
-        userFound = userFound.filter("password =", password);
-        if (userFound.count() == 0) {
+        userFound = userFound.filter("userName =", userName);
+        QueryResultIterator<NutsUser> queryIterator = userFound.iterator();
+        List<NutsUser> nutsUserList = new ArrayList<NutsUser>(100);
+        /*while (queryIterator.hasNext()) {
+            nutsUserList.add(queryIterator.next());
+        }*/
+        if (queryIterator.hasNext()) {
+            NutsUser n_user = queryIterator.next();
+            if (n_user.getPassword().equals(password)) {
+                return n_user;
+            }
+        }
+        return null;
+       /* if (userFound.count() == 0) {
             return null;
         }
         else if (userFound.count() > 1) {
@@ -169,29 +181,24 @@ public class NutsUserEndpoint {
         }
         else {
             return userFound.first().now();
-        }
+        }*/
     }
     @ApiMethod(
             name="register",
             path="nutsUser/register",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public NutsUser register(
-            @Named("userName") String userName,
-            @Named("password") String password,
-            @Named("name") String name,
-            @Named("email") String email,
-            @Named("telephone") String telephone) {
+    public NutsUser register(NutsUser nutsUser) {
         Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
-        userFound = userFound.filter("userName =", userName);
+
+        userFound = userFound.filter("userName =", nutsUser.getUserName());
         if (userFound.count() == 0) {
-            NutsUser nu = new NutsUser();
-            nu.setUserName(userName);
-            nu.setPassword(password);
-            nu.setEmail(email);
-            nu.setTelephone(telephone);
-            nu.setName(name);
-            ofy().save().entity(nu).now();
-            return nu;
+            /*
+            String userName, String password, String name, String email, String telephone
+
+             */
+            //NutsUser nu = new NutsUser();//userName, password, name, email, telephone);
+            ofy().save().entity(nutsUser).now();
+            return ofy().load().entity(nutsUser).now();
         }
         return null;
     }
@@ -206,9 +213,9 @@ public class NutsUserEndpoint {
         if (nutsUser == null) {
             throw new NotFoundException("Could not find NutsUser with ID: " + id);
         }
+        info.add(nutsUser.getTelephone());
         info.add(nutsUser.getName());
         info.add(nutsUser.getEmail());
-        info.add(nutsUser.getTelephone());
         return;
     }
 

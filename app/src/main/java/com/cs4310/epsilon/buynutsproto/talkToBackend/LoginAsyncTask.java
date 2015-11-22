@@ -6,14 +6,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.activities.MainLoginActivity;
-import com.cs4310.epsilon.nutsinterface.UserFront;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-//import com.nutsinterface.mike.myapplication.backend.nutsUserApi.model.CollectionResponseNutsUser\
 import com.nutsinterface.mike.myapplication.backend.nutsUserApi.NutsUserApi;
 import com.nutsinterface.mike.myapplication.backend.nutsUserApi.model.NutsUser;
 
 import java.io.IOException;
+
+//import com.nutsinterface.mike.myapplication.backend.nutsUserApi.model.CollectionResponseNutsUser\
 
 /**
  * An Asynchronous Task that runs in the background. It sends a username and

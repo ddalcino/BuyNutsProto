@@ -51,7 +51,20 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
             String email = newUser.getEmail();
             String telephone = newUser.getTelephone();
             Log.i(Constants.ASYNC_TAG, "Registering user=" + newUser.toString());
-            NutsUser result = nutsUserEndpoint.register(email, name, password, telephone, userName).execute();
+            /*
+              @Named("userName") String userName,
+            @Named("password") String password,
+            @Named("name") String name,
+            @Named("email") String email,
+            @Named("telephone") String telephone) {
+             */
+            NutsUser n_user = new NutsUser();
+            n_user.setUserName(userName);
+            n_user.setPassword(password);
+            n_user.setName(name);
+            n_user.setEmail(email);
+            n_user.setTelephone(telephone);
+            NutsUser result = nutsUserEndpoint.register(n_user).execute();
             if (result != null) {
                 Log.i(Constants.ASYNC_TAG, "Registered user with id=" +
                         result.getId() + "\nuser=" + result.toString());
