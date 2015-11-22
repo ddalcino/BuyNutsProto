@@ -162,7 +162,7 @@ public class NutsUserEndpoint {
         Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
         userFound = userFound.filter("userName =", userName);
         QueryResultIterator<NutsUser> queryIterator = userFound.iterator();
-        List<NutsUser> nutsUserList = new ArrayList<NutsUser>(1);
+        List<NutsUser> nutsUserList = new ArrayList<NutsUser>(100);
         /*while (queryIterator.hasNext()) {
             nutsUserList.add(queryIterator.next());
         }*/
@@ -187,23 +187,18 @@ public class NutsUserEndpoint {
             name="register",
             path="nutsUser/register",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public NutsUser register(
-            @Named("userName") String userName,
-            @Named("password") String password,
-            @Named("name") String name,
-            @Named("email") String email,
-            @Named("telephone") String telephone) {
+    public NutsUser register(NutsUser nutsUser) {
         Query<NutsUser> userFound = ofy().load().type(NutsUser.class);
-        userFound = userFound.filter("userName =", userName);
+
+        userFound = userFound.filter("userName =", nutsUser.getUserName());
         if (userFound.count() == 0) {
-            NutsUser nu = new NutsUser();
-            nu.setUserName(userName);
-            nu.setPassword(password);
-            nu.setEmail(email);
-            nu.setTelephone(telephone);
-            nu.setName(name);
-            ofy().save().entity(nu).now();
-            return nu;
+            /*
+            String userName, String password, String name, String email, String telephone
+
+             */
+            //NutsUser nu = new NutsUser();//userName, password, name, email, telephone);
+            ofy().save().entity(nutsUser).now();
+            return ofy().load().entity(nutsUser).now();
         }
         return null;
     }

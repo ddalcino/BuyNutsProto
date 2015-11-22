@@ -70,4 +70,19 @@ public class NutsUser {
     }
 
     String name;
+    /*
+     @Named("userName") String userName,
+            @Named("password") String password,
+            @Named("name") String name,
+            @Named("email") String email,
+            @Named("telephone") String telephone) {
+     */
+
+    /*public NutsUser(String userName_t, String password_t, String name_t, String email_t, String telephone_t) {
+        userName = userName_t;
+        password = password_t;
+        name = name_t;
+        email = email_t;
+        telephone = telephone_t;
+    }*/
 }
