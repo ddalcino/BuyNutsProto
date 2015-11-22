@@ -92,14 +92,20 @@ public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOf
     @Override
     protected void onPostExecute(List<SellOffer> result) {
         ArrayList<SellOfferFront> sellOffers = new ArrayList<SellOfferFront>();
-        for (SellOffer s : result) {
-            sellOffers.add(new SellOfferFront(s));
-        }
+        if (result != null) {
+            for (SellOffer s : result) {
+                sellOffers.add(new SellOfferFront(s));
+            }
 
-        NewsActivity newsActivity = (NewsActivity) context;
-        newsActivity.setStatusMsg("Received " + sellOffers.size() + " SellOffers from backend");
-        newsActivity.setmSellOffers(sellOffers);
-        newsActivity.updateListView();
+            NewsActivity newsActivity = (NewsActivity) context;
+            newsActivity.setStatusMsg("Received " + sellOffers.size() + " SellOffers from backend");
+            newsActivity.setmSellOffers(sellOffers);
+            newsActivity.updateListView();
+        } else {
+            NewsActivity newsActivity = (NewsActivity) context;
+            newsActivity.setStatusMsg("Received no SellOffers from backend");
+
+        }
     }
 }
 

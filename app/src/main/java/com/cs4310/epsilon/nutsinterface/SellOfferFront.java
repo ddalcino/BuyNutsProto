@@ -161,7 +161,11 @@ public class SellOfferFront implements Parcelable{
      * @param s Backend-type SellOffer object
      */
     public SellOfferFront(SellOffer s) {
-        this.sellerId = s.getSellerId();
+        try {
+            this.sellerId = "" + Long.parseLong(s.getSellerId());
+        } catch (NumberFormatException e) {
+            System.out.println("SellerID not a long");
+        }
         this.pricePerUnit = s.getPricePerUnit();
         this.minWeight = s.getMinWeight();
         this.maxWeight = s.getMaxWeight();
@@ -197,7 +201,8 @@ public class SellOfferFront implements Parcelable{
     /**
      * Turns the SellOfferFront object into a string to be used with
      * SellOfferEndpoint.insert(String sellOffer). The resulting string is in
-     * the form "val#val#val#val#val", where the values are:
+     * the form "val#val#val#val#val#val", where the values are:
+     *      sellerID
      *      pricePerUnit
      *      commodity
      *      maxWeight
@@ -212,8 +217,8 @@ public class SellOfferFront implements Parcelable{
      */
     public String toInsertString() {
 
-        return String.format("%f#%s#%f#%f#%s",
-                pricePerUnit, commodity.toLowerCase(),
+        return String.format("%d#%f#%s#%f#%f#%s",
+                sellerId, pricePerUnit, commodity.toLowerCase(),
                 maxWeight, minWeight,
                 terms.replace("#", "&num;") );
 
@@ -232,7 +237,7 @@ public class SellOfferFront implements Parcelable{
         // should be using a constructor with a parameter list, but it doesn't exist
         SellOffer so = new SellOffer();
         if(id != null) so.setId(id);
-        if(sellerId != null) so.setSellerId(sellerId);
+        if (sellerId != null) so.setSellerId("" + sellerId);
         // SellOffer requires a String for this field, right now
         if(offerBirthday != null) so.setOfferBirthday(offerBirthday.toString());
         if(pricePerUnit != null) so.setPricePerUnit(pricePerUnit);
@@ -264,15 +269,21 @@ public class SellOfferFront implements Parcelable{
      */
     public SellOfferFront(String stringCode) throws SellOfferStringArrayException {
         String[] stringArray = stringCode.split("#");
+        int index = 0;
         try {
-            this.pricePerUnit = Double.parseDouble(stringArray[0]);
+            this.sellerId = "" + Long.parseLong(stringArray[index++]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("sellerID is not a Long");
+        }
+        try {
+            this.pricePerUnit = Double.parseDouble(stringArray[index++]);
             if (pricePerUnit < 0) {
                 throw new SellOfferStringArrayException("pricePerUnit less than zero");
             }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("pricePerUnit is not a double");
         }
-        this.commodity = stringArray[1].toLowerCase();
+        this.commodity = stringArray[index++].toLowerCase();
         if (    !commodity.equals("walnut") &&
                 !commodity.equals("cashew") &&
                 !commodity.equals("pecan") &&
@@ -280,12 +291,12 @@ public class SellOfferFront implements Parcelable{
             throw new SellOfferStringArrayException("Invalid commodity type");
         }
         try {
-            this.maxWeight = Double.parseDouble(stringArray[2]);
+            this.maxWeight = Double.parseDouble(stringArray[index++]);
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("maxWeight is not a double");
         }
         try {
-            this.minWeight = Double.parseDouble(stringArray[3]);
+            this.minWeight = Double.parseDouble(stringArray[index++]);
             if (minWeight < 0) {
                 throw new SellOfferStringArrayException("minWeight less than zero");
             }
@@ -298,7 +309,7 @@ public class SellOfferFront implements Parcelable{
         // The last part is terms. When the string code version of this was made,
         // it encoded all '#' characters as '&num;', so we can retrieve the original
         // terms list with a replacement.
-        this.terms = stringArray[4].replace("&num;", "#");
+        this.terms = stringArray[index++].replace("&num;", "#");
 
 //        try {
 //            this.id = Long.parseLong(stringArray[0]);

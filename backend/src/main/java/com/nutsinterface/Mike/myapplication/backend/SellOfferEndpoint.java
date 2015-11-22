@@ -81,21 +81,22 @@ public class SellOfferEndpoint {
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
-        String sellerId;
+
+        //String sellerId;
         /*if (user != null) {
             sellerId = user.getUserId();
         }
         else {
             throw new OAuthRequestException("Invalid user.");
         }*/
-        sellerId = "1";
+        //sellerId = "1";
 
         SellOffer sellOffer = null;
         try {
             sellOffer = new SellOffer(offer);
             Calendar today = Calendar.getInstance();
             sellOffer.setOfferBirthday(today.toString());
-            sellOffer.setSeller_id(sellerId);
+            //sellOffer.setSeller_id(sellerId);
 
 
             ofy().save().entity(sellOffer).now();

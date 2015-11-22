@@ -135,15 +135,23 @@ public class SellOffer {
      */
     public SellOffer(String stringCode) throws SellOfferStringArrayException {
         String[] stringArray = stringCode.split("#");
+        int index = 0;
         try {
-            this.price_per_unit = Double.parseDouble(stringArray[0]);
+            // This statement parses a string into a Long, then turns it into
+            // a string again. The whole point is for input validation.
+            this.seller_id = "" + Long.parseLong(stringArray[index++]);
+        } catch (NumberFormatException e) {
+            throw new SellOfferStringArrayException("sellerID is not a Long");
+        }
+        try {
+            this.price_per_unit = Double.parseDouble(stringArray[index++]);
             if (price_per_unit < 0) {
                 throw new SellOfferStringArrayException("pricePerUnit less than zero");
             }
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("pricePerUnit is not a double");
         }
-        this.commodity = stringArray[1].toLowerCase();
+        this.commodity = stringArray[index++].toLowerCase();
         if (    !commodity.equals("walnut") &&
                 !commodity.equals("cashew") &&
                 !commodity.equals("pecan") &&
@@ -151,12 +159,12 @@ public class SellOffer {
             throw new SellOfferStringArrayException("Invalid commodity type");
         }
         try {
-            this.max_weight = Double.parseDouble(stringArray[2]);
+            this.max_weight = Double.parseDouble(stringArray[index++]);
         } catch (NumberFormatException e) {
             throw new SellOfferStringArrayException("maxWeight is not a double");
         }
         try {
-            this.min_weight = Double.parseDouble(stringArray[3]);
+            this.min_weight = Double.parseDouble(stringArray[index++]);
             if (min_weight < 0) {
                 throw new SellOfferStringArrayException("minWeight less than zero");
             }
@@ -169,7 +177,7 @@ public class SellOffer {
         // The last part is terms. When the string code version of this was made,
         // it encoded all '#' characters as '&num;', so we can retrieve the original
         // terms list with a replacement.
-        this.terms = stringArray[4].replace("&num;", "#");
+        this.terms = stringArray[index++].replace("&num;", "#");
     }
 
     /*
