@@ -154,7 +154,7 @@ public class NewsActivity extends AppCompatActivity {
                 Intent intent = new Intent(NewsActivity.this, ViewSellOfferActivity.class);
                 intent.putExtra("SellOffer", choice);
 
-                Log.i(Constants.TAG, "User clicked SellOffer at position=" + position + ", id=" + id);
+                Log.i(Constants.TAG, "UserFront clicked SellOffer at position=" + position + ", id=" + id);
                 //create another activity
                 NewsActivity.this.startActivity(intent);
                 //refer to parent reference - can't just say "this", that's the inner class

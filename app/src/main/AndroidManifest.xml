@@ -32,7 +32,8 @@
         <activity
             android:name=".activities.ContactSellerActivity"
             android:label="@string/activity_title_contact_seller" />
-
+        <activity android:name=".activities.RegistrationActivity" >
+        </activity>
     </application>
 
 </manifest>

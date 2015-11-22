@@ -39,6 +39,16 @@
     <string name="chkShowExpired">Only show expired offers</string>
 
 
+    <string name="registration_password">Password</string>
+    <string name="registration_username">Username</string>
+    <string name="registration_name">Name</string>
+    <string name="registration_phone">Phone</string>
+    <string name="registration_email">Email</string>
+    <string name="registration_confirm">Confirm Password</string>
+    <string name="registration_btn_register">Register Now</string>
+
+    <string name="error_confirm_password">Password and Confirm Password fields do not match; please try again.</string>
+
     <string-array name="array_commodities">
         <item>Walnut</item>
         <item>Pecan</item>

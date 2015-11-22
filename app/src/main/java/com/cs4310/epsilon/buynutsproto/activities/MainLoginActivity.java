@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.LoginAsyncTask;
 
 /**
  * The entry point of the app: The first thing the app does is create a
@@ -41,9 +42,8 @@ public class MainLoginActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MainLoginActivity.this, ViewSellOfferActivity.class);
 //                intent.putExtra("SellOffer", new SellOfferFront(123l, "123", 123l, 5.0, 60.0, 600.0, null, "walnut", false));
 //                MainLoginActivity.this.startActivity(intent);
-
-                //TODO: uncomment the next line when RegisterNewUserActivity is ready
-                //startActivity(new Intent(MainLoginActivity.this, RegisterNewUserActivity.class));
+                Log.i(Constants.TAG, "onClickRegister()");
+                startActivity(new Intent(MainLoginActivity.this, RegistrationActivity.class));
             }
         });
 
@@ -61,31 +61,45 @@ public class MainLoginActivity extends AppCompatActivity {
      * @param view  the View object that called this function
      */
     public void onClickLogin(View view){
-        Log.i(Constants.TAG, "onClickLogin()");
 
-        try{
-            //get username: should hold an int
+        // This is the fake code that bypasses all login procedures.
+        if (true) {
+            login(1l);
+        } else {
+            // This is the real code that logs users in. Until the backend is
+            // capable of logging users in successfully, it will be unreachable.
+
+            Log.i(Constants.TAG, "onClickLogin()");
+
             EditText etUsername = (EditText) this.findViewById(R.id.etUsername);
-            //this will throw NumberFormatException if input is not an int
-            long uid = Long.parseLong( etUsername.getText().toString().trim() );
-            if(uid < MIN_USERID){
-                Log.i(Constants.TAG, "user entered a negative value for username");
-                Toast.makeText(this.getApplicationContext(),
-                        "Please enter a positive integer for username",
-                        Toast.LENGTH_LONG).show();
+            EditText etPassword = (EditText) this.findViewById(R.id.etPassword);
+
+            String userName = etUsername.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
+            if (userName != null && !userName.equals("") &&
+                    password != null && !password.equals("")) {
+                new LoginAsyncTask(MainLoginActivity.this).execute(
+                        userName, password
+                );
             } else {
-                //create another activity
-                Intent intent = new Intent(MainLoginActivity.this, NewsActivity.class);
-                //send it the user id
-                intent.putExtra(Constants.USER_ID_KEY, uid);
-                //launch NewsActivity
-                MainLoginActivity.this.startActivity(intent);
+                Log.i(Constants.TAG, "User entered no text for username or password");
+                Toast.makeText(this.getApplicationContext(),
+                        "Please enter a valid username and password",
+                        Toast.LENGTH_SHORT).show();
             }
-        } catch (NumberFormatException e) { //Long.parseLong throws this exception
-            Log.i(Constants.TAG, "user entered a non-integer value for username");
-            Toast.makeText(this.getApplicationContext(),
-                    "Please enter a userID (positive integer) for username",
-                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void login(Long uid) {
+        if (uid != Constants.INVALID_USER_ID) {
+            //create another activity
+            Intent intent = new Intent(MainLoginActivity.this, NewsActivity.class);
+            //send it the user id
+            intent.putExtra(Constants.USER_ID_KEY, uid);
+            //launch NewsActivity
+            MainLoginActivity.this.startActivity(intent);
+
         }
     }
 }

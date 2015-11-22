@@ -46,15 +46,6 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
 
             sellOfferEndpoint = builder.build();
         }
-
-
-        //newSellOffer.setPricePerUnit(sf.getPricePerUnit());
-        //newSellOffer.setCommodity(sf.getCommodity());
-        //newSellOffer.setMaxWeight(sf.getMaxWeight());
-        //newSellOffer.setMinWeight(sf.getMinWeight());
-        //newSellOffer.setTerms(sf.getTerms());
-        //newSellOffer.setOfferBirthday(sf.getOfferBirthday());
-        //newSellOffer.setSpecification(sf.getSpecification())
         try {
             //sellOfferEndpoint.insert(newSellOffer).execute();
             String offer = newSellOffer.toInsertString();
@@ -67,12 +58,7 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
     }
     @Override
     protected void onPostExecute(String result) {
-       /* ArrayList<SellOfferFront> sellOffers = new ArrayList<SellOfferFront>();
-        for (SellOffer s : result) {
-            sellOffers.add(new SellOfferFront(s));
-        }
-*/
-        MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
+         MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
         CharSequence text = (CharSequence) result;
         int duration = Toast.LENGTH_LONG;
         Toast.makeText(makeOfferActivity,text,duration).show();

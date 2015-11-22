@@ -110,7 +110,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         }
 
         String cType = spinCommodityType.getSelectedItem().toString();
-        Log.i(Constants.TAG, "User selected " + cType +" from spinner");
+        Log.i(Constants.TAG, "UserFront selected " + cType +" from spinner");
         UnitsWt.Type unitsWeight = UnitsWt.toType(
                 spinUnitWt.getSelectedItem().toString());
         if(cType == null || unitsWeight == null){
