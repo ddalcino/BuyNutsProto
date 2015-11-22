@@ -217,7 +217,7 @@ public class SellOfferFront implements Parcelable{
      */
     public String toInsertString() {
 
-        return String.format("%d#%f#%s#%f#%f#%s",
+        return String.format("%s#%f#%s#%f#%f#%s",
                 sellerId, pricePerUnit, commodity.toLowerCase(),
                 maxWeight, minWeight,
                 terms.replace("#", "&num;") );
