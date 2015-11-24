@@ -4,11 +4,10 @@ package com.cs4310.epsilon.nutsinterface;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-// Used to convert between backend objects and frontend objects
 import com.cs4310.epsilon.buynutsproto.activities.Constants;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
-import java.util.regex.Pattern;
+// Used to convert between backend objects and frontend objects
 
 //import com.googlecode.objectify.annotation.Entity;
 //import com.googlecode.objectify.annotation.Id;
@@ -404,47 +403,47 @@ public class SellOfferFront implements Parcelable{
         this.expired = expired;
     }
 
-    public boolean isIn(RequestFilteredSellOffer filter) {
-        if (filter != null) {
+    public boolean isIn(RequestFilteredSellOffer r_filter) {
+        if (r_filter != null) {
             // check sellerID
-            if (    filter.myOwnOffersOnly != null &&
-                    filter.myOwnOffersOnly &&
-                    filter.associatedUserID != null &&
-                    filter.associatedUserID != Constants.INVALID_USER_ID &&
-                    !filter.associatedUserID.toString().equals(this.sellerId) ) {
+            if (    r_filter.myOwnOffersOnly != null &&
+                    r_filter.myOwnOffersOnly &&
+                    r_filter.associatedUserID != null &&
+                    r_filter.associatedUserID != Constants.INVALID_USER_ID &&
+                    !r_filter.associatedUserID.toString().equals(this.sellerId) ) {
                 return false;
             }
 
             // check commodity
             if (    !this.commodity.toLowerCase().equals(
-                    filter.commodity.toLowerCase())) {
+                    r_filter.commodity.toLowerCase())) {
                 return false;
             }
             // check expired
-            if (    filter.expired != null &&
-                    filter.expired != this.expired) {
+            if (    r_filter.expired != null &&
+                    r_filter.expired != this.expired) {
                 return false;
             }
 
             // check PPU range
-            if (    this.pricePerUnit < filter.minPricePerUnit ||
-                    this.pricePerUnit > filter.maxPricePerUnit) {
+            if (    this.pricePerUnit < r_filter.minPricePerUnit ||
+                    this.pricePerUnit > r_filter.maxPricePerUnit) {
                 return false;
             }
 
             // check weight range
-            if (    this.maxWeight < filter.minWeight ||
-                    this.minWeight > filter.maxWeight) {
+            if (    this.maxWeight < r_filter.minWeight ||
+                    this.minWeight > r_filter.maxWeight) {
                 return false;
             }
 
             // check time range
-            if (    filter.latest != INVALID_OFFER_BIRTHDAY &&
-                    this.offerBirthday > filter.latest) {
+            if (    r_filter.latest != INVALID_OFFER_BIRTHDAY &&
+                    this.offerBirthday > r_filter.latest) {
                 return false;
             }
-            if (    filter.earliest != INVALID_OFFER_BIRTHDAY &&
-                    this.offerBirthday < filter.earliest) {
+            if (    r_filter.earliest != INVALID_OFFER_BIRTHDAY &&
+                    this.offerBirthday < r_filter.earliest) {
                 return false;
             }
         }

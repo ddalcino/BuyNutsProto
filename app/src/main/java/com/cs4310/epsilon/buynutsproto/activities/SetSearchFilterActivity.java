@@ -1,9 +1,9 @@
 package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
-import com.cs4310.epsilon.buynutsproto.talkToBackend.SetFilterAsyncTask;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
@@ -128,6 +127,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         double unitConversion = UnitsWt.unitConversion(unitsWeight, UnitsWt.Type.LB);
 
         //create RequestFilteredSellOffer
+        cType = cType.toLowerCase();
         return new RequestFilteredSellOffer(
                 mUid, cType, minWt * unitConversion, maxWt * unitConversion,
                 minPpu / unitConversion, maxPpu / unitConversion,

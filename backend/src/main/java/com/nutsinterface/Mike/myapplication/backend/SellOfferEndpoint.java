@@ -138,7 +138,7 @@ public class SellOfferEndpoint {
             @Nullable @Named("cursor") String cursor,
             @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
-        Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("commodity =", commodity).order("price_per_unit");
+        Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit).filter("commodity =", commodity);//.order("price_per_unit");
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }

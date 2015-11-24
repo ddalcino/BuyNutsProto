@@ -4,7 +4,6 @@ package com.nutsinterface.Mike.myapplication.backend;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * Created by Mike on 10/28/2015.
@@ -95,8 +94,8 @@ public class SellOffer {
         return terms;
     }
 
-    public void setCommodity(String commodity) {
-        this.commodity = commodity;
+    public void setCommodity(String _commodity) {
+        commodity = _commodity;
     }
 
     public String getCommodity() {
