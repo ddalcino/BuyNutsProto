@@ -78,7 +78,7 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
 
             // put column values in the textviews of the inflated file
             if (tvCommod != null){
-                tvCommod.setText(i.getCommodity());
+                tvCommod.setText(i.getCommodityPretty());
             }
             if (tvPPU != null){
                 tvPPU.setText(String.format("%.02f", i.getPricePerUnit()));
@@ -97,4 +97,6 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
         //return the inflated view
         return view;
     }
+
+
 }

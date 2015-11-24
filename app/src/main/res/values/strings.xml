@@ -35,8 +35,9 @@
     <string name="terms_not_specified">No terms specified</string>
     <string name="email">Email</string>
     <string name="telephone">Telephone</string>
-    <string name="chkMyOffersOnly">Only show offers that I have made</string>
+    <string name="chkMyOffersOnly">Show all offers that I have made</string>
     <string name="chkShowExpired">Only show expired offers</string>
+    <string name="chkShowAll">Show all items for one type of nut</string>
 
 
     <string name="registration_password">Password</string>

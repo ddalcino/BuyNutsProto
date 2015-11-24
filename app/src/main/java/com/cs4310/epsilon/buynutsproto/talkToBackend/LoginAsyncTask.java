@@ -59,21 +59,30 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
                 return (result.getId());
             } else {
                 Log.i(Constants.ASYNC_TAG, "Login yields no matching user");
+                return Constants.INVALID_UID;
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return Constants.SERVER_ERROR;
+
         }
-        return(Constants.INVALID_UID);
     }
     @Override
     protected void onPostExecute(Long resultId) {
         MainLoginActivity mainLoginActivity = (MainLoginActivity) context;
 
-        if (resultId != Constants.INVALID_UID) {
+        if (resultId != Constants.INVALID_UID && resultId != Constants.SERVER_ERROR) {
             Toast.makeText(mainLoginActivity, "User logged in with id="+resultId,
                     Toast.LENGTH_LONG).show();
-            Log.i(Constants.ASYNC_TAG, "User logged in with id=" + resultId);
+            mainLoginActivity.login(resultId);
+        } else if (resultId == Constants.INVALID_UID) {
+            Toast.makeText(mainLoginActivity,
+                    "No user found with that username and password; try registering a new account",
+                    Toast.LENGTH_LONG
+            ).show();
+        } else if (resultId == Constants.SERVER_ERROR) {
+            Toast.makeText(mainLoginActivity, "Error accessing the server",
+                    Toast.LENGTH_SHORT).show();
         }
-        mainLoginActivity.login(resultId);
     }
 }

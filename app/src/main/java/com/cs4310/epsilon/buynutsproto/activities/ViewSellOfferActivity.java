@@ -29,7 +29,7 @@ public class ViewSellOfferActivity extends AppCompatActivity {
         String weightUnits = "lbs";
 
         TextView tvCommod = (TextView) findViewById(R.id.tvCommod_VSO);
-        tvCommod.setText(sellOffer.getCommodity().toString());
+        tvCommod.setText(sellOffer.getCommodityPretty());
         TextView tvPPU = (TextView) findViewById(R.id.tvPPU_VSO);
         tvPPU.setText(String.format(
                 "$%.2f/%s",

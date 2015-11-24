@@ -53,24 +53,49 @@ public class SetSearchFilterActivity extends AppCompatActivity {
 
                 // If we have a real RequestFilteredSellOffer object, send it to the server
                 if(newFilter != null) {
-                   Toast.makeText(
-                            SetSearchFilterActivity.this.getApplicationContext(),
-                            "RequestFilteredSellOffer is: " + newFilter.toString(),
-                            Toast.LENGTH_LONG).show();
+//                   Toast.makeText(
+//                            SetSearchFilterActivity.this.getApplicationContext(),
+//                            "RequestFilteredSellOffer is: " + newFilter.toString(),
+//                            Toast.LENGTH_LONG).show();
+                    Log.i(Constants.TAG, "SetSearchFilterActivity made filter: " + newFilter.toString());
 
                     // make new Intent to send back to NewsActivity
                     Intent intent = new Intent();
 
-                    // fill intent with search filter criteria - NOT IMPLEMENTED YET
-                    intent.putExtra(SEARCH_FILTER_KEY, (Parcelable) newFilter);
+                    // fill intent with search filter criteria
+                    intent.putExtra(SEARCH_FILTER_KEY, newFilter);
 
                     setResult(RESULT_OK, intent);
                     // now NewsActivity has an idea of what's in the search filter
 
                     //Also, send a RequestFilteredSellOffer object to the server
                     //new SetFilterAsyncTask(SetSearchFilterActivity.this).execute(newFilter);
+
+                    // Close down the activity and send the user back to NewsActivity
+                    SetSearchFilterActivity.this.finish();
             }
 
+            }
+        });
+
+        // Set an OnClickListener that turns off all the other controls if
+        // "My Offers Only" is turned on
+        final CheckBox chkMyOffers = (CheckBox) findViewById(R.id.chkMyOffersOnly);
+
+        chkMyOffers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setControlsActive(!chkMyOffers.isChecked(), true);
+            }
+        });
+
+        // Set an OnClickListener that turns off all the other controls except
+        // spinCommodityType if "Show all offers for one nut type" is turned on
+        final CheckBox chkShowAll = (CheckBox) findViewById(R.id.chkShowAll);
+        chkShowAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setControlsActive(!chkShowAll.isChecked(), false);
             }
         });
 
@@ -80,10 +105,38 @@ public class SetSearchFilterActivity extends AppCompatActivity {
      * Reads all the input fields in the UI and generates a new
      * RequestFilteredSellOffer object. Also performs input validation
      * and returns null for invalid offers.
+     *
+     * <p>If the user has clicked the checkbox for 'My Offers Only', then input
+     * validation is short-circuited, and numeric input for min and max PPU and
+     * weight are ignored.</p>
+     *
      * @return  A new SellOfferFront object made from UI input fields. If the
      *          SellOfferFront is invalid in some way, returns null.
      */
     public RequestFilteredSellOffer getRequestFilteredSellOffer(){
+
+        String cType = spinCommodityType.getSelectedItem().toString().toLowerCase();
+        Log.i(Constants.TAG, "UserFront selected " + cType +" from spinner");
+
+        CheckBox chkMyOffers = (CheckBox) findViewById(R.id.chkMyOffersOnly);
+        boolean myOwnOffersOnly = chkMyOffers.isChecked();
+        CheckBox chkExpiredOffers = (CheckBox) findViewById(R.id.chkShowExpired);
+        boolean expiredOffersOnly = chkExpiredOffers.isChecked();
+        CheckBox chkShowAll = (CheckBox) findViewById(R.id.chkShowAll);
+        boolean showAllForOneNut = chkShowAll.isChecked();
+
+        if (myOwnOffersOnly) {
+            return new RequestFilteredSellOffer(
+                    mUid, cType, 0.0, 0.0,
+                    0.0, 0.0,
+                    expiredOffersOnly, myOwnOffersOnly);
+        } else if (showAllForOneNut) {
+            return new RequestFilteredSellOffer(
+                    mUid, cType, 0.0, 0.0,
+                    0.0, 0.0,
+                    expiredOffersOnly, myOwnOffersOnly);
+        }
+
         double minPpu=-1, maxPpu=-1;
         double minWt=-1, maxWt=-1;
         try {
@@ -108,8 +161,6 @@ public class SetSearchFilterActivity extends AppCompatActivity {
             return null;
         }
 
-        String cType = spinCommodityType.getSelectedItem().toString();
-        Log.i(Constants.TAG, "UserFront selected " + cType +" from spinner");
         UnitsWt.Type unitsWeight = UnitsWt.toType(
                 spinUnitWt.getSelectedItem().toString());
         if(cType == null || unitsWeight == null){
@@ -118,19 +169,30 @@ public class SetSearchFilterActivity extends AppCompatActivity {
             return null;
         }
 
-        CheckBox chkExpiredOffers = (CheckBox) findViewById(R.id.chkShowExpired);
-        Boolean expiredOffersOnly = chkExpiredOffers.isChecked();
-
-        CheckBox chkMyOffers = (CheckBox) findViewById(R.id.chkMyOffersOnly);
-        Boolean myOwnOffersOnly = chkMyOffers.isChecked();
-
         double unitConversion = UnitsWt.unitConversion(unitsWeight, UnitsWt.Type.LB);
 
         //create RequestFilteredSellOffer
-        cType = cType.toLowerCase();
         return new RequestFilteredSellOffer(
                 mUid, cType, minWt * unitConversion, maxWt * unitConversion,
                 minPpu / unitConversion, maxPpu / unitConversion,
                 expiredOffersOnly, myOwnOffersOnly);
+    }
+
+    public void setControlsActive(boolean active, boolean affectCommodityType) {
+        EditText etMinPPU = (EditText) findViewById(R.id.etMinPPU_SF);
+        EditText etMaxPPU = (EditText) findViewById(R.id.etMaxPPU_SF);
+        EditText etMinWeight = (EditText) findViewById(R.id.etMinWeight_SF);
+        EditText etMaxWeight = (EditText) findViewById(R.id.etMaxWeight_SF);
+
+        etMaxPPU.setEnabled(active);
+        etMinPPU.setEnabled(active);
+        etMaxWeight.setEnabled(active);
+        etMinWeight.setEnabled(active);
+        spinUnitWt.setEnabled(active);
+        if(affectCommodityType) {
+            spinCommodityType.setEnabled(active);
+            final CheckBox chkShowAll = (CheckBox) findViewById(R.id.chkShowAll);
+            chkShowAll.setEnabled(active);
+        }
     }
 }

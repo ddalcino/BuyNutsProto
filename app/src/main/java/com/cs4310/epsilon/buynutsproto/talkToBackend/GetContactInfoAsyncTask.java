@@ -92,14 +92,9 @@ public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<Str
             i.putExtra("sellerEmail", result.get(2));
 
             context.startActivity(i);
-        } else if (result != null) {
-            String contents = "";
-
-            for(String s : result) contents += s + "\n";
-
+        } else {
             Log.i(Constants.ASYNC_TAG,
-                    "Received unexpected contactinfo from backend with size="+
-                            result.size() +"\nContents=" + contents);
+                    "Received no contactinfo from backend");
             Toast.makeText(context, "Bad seller info", Toast.LENGTH_SHORT).show();
         }
     }

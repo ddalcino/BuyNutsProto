@@ -357,6 +357,10 @@ public class SellOfferFront implements Parcelable{
         return commodity;
     }
 
+    public String getCommodityPretty() {
+        return commodity.substring(0,1).toUpperCase() + commodity.substring(1) + "s";
+
+    }
     public Boolean getExpired() {
         return expired;
     }

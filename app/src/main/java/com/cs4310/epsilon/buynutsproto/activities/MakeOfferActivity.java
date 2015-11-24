@@ -1,5 +1,6 @@
 package com.cs4310.epsilon.buynutsproto.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,12 +51,9 @@ public class MakeOfferActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //create SellOfferFront
                 SellOfferFront newOffer = getSellOfferFromUI();
-
-
-
-                Toast.makeText(MakeOfferActivity.this,
-                        "SellOfferFront is: " + newOffer,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(MakeOfferActivity.this,
+//                        "SellOfferFront is: " + newOffer,
+//                        Toast.LENGTH_LONG).show();
                 if(newOffer != null){
                     new MakeOfferAsyncTask(MakeOfferActivity.this).execute(newOffer);
                 }
@@ -119,6 +117,25 @@ public class MakeOfferActivity extends AppCompatActivity {
         String terms = etTerms.getText().toString().trim();
 
         //make the new SellOfferFront and return it
-        return new SellOfferFront(""+mUid, ppu, minWt, maxWt, terms, cType);
+        return new SellOfferFront(""+mUid, ppu, minWt, maxWt, terms, cType.toLowerCase());
+    }
+
+    public void reportInsertion (boolean insertionSucceeded) {
+        if (insertionSucceeded) {
+            // Set the status message on the NewsActivity
+
+            // make new Intent to send back to NewsActivity
+            Intent intent = new Intent();
+
+            intent.putExtra("commodity", spinCommodityType.getSelectedItem().toString());
+
+            setResult(RESULT_OK, intent);
+            // now NewsActivity knows that a new SellOffer was properly recorded
+
+            // Close down the activity and send the user back to NewsActivity
+            this.finish();
+        } else {
+            Toast.makeText(this, "Failed to make offer", Toast.LENGTH_SHORT).show();
+        }
     }
 }

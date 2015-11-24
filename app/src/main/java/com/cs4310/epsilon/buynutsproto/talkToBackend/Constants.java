@@ -9,4 +9,5 @@ public class Constants {
 
     static final String ASYNC_TAG = "myTagAsync";
     static final long INVALID_UID = -1l;
+    static final long SERVER_ERROR = -2l;
 }

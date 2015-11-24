@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -61,13 +62,22 @@ public class ContactSellerActivity extends AppCompatActivity {
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent emailIntent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto"));
+                try {
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto"));
 
-                emailIntent.setType("text/plain");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mEmailAddress});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "I WANT TO BUY YOUR NUTS!");
-                emailIntent.putExtra(Intent.EXTRA_TEXT   , "I WANT TO BUY YOUR NUTS RIGHT NOW!!!");
-                startActivity(emailIntent);
+                    emailIntent.setType("text/plain");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mEmailAddress});
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "I WANT TO BUY YOUR NUTS!");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "I WANT TO BUY YOUR NUTS RIGHT NOW!!!");
+                    startActivity(emailIntent);
+                } catch (android.content.ActivityNotFoundException e) {
+                    Log.i(Constants.TAG, "Can't launch email provider");
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto"));
+
+                    emailIntent.setType("text/plain");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mEmailAddress});
+                    startActivity(emailIntent);
+                }
             }
         });
     }

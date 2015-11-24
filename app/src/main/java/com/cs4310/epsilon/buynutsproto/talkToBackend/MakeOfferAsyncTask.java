@@ -22,7 +22,7 @@ import java.io.IOException;
  *
  * Created by Mike on 11/5/2015.
  */
-public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> {
+public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, Boolean> {
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
@@ -30,9 +30,9 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
         this.context = context;
     }
     @Override
-    protected String doInBackground(SellOfferFront... Params) {
+    protected Boolean doInBackground(SellOfferFront... Params) {
         if (Params == null || Params[0] == null) {
-            return ("MakeOffer Failed");
+            return false;
         }
 
         //context.getResources().getString(R.string.backend_url);
@@ -50,22 +50,20 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, String> 
             //sellOfferEndpoint.insert(newSellOffer).execute();
             String offer = newSellOffer.toInsertString();
             sellOfferEndpoint.insert(offer).execute();
-            return ("Inserted");
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return("Insertion Failed\n" + e.getLocalizedMessage());
+            return false; // ("Insertion Failed\n" + e.getLocalizedMessage());
         }
     }
     @Override
-    protected void onPostExecute(String result) {
-         MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
-        CharSequence text = (CharSequence) result;
-        int duration = Toast.LENGTH_LONG;
-        Toast.makeText(makeOfferActivity,text,duration).show();
+    protected void onPostExecute(Boolean insertionSucceeded) {
+        MakeOfferActivity makeOfferActivity = (MakeOfferActivity) context;
+        makeOfferActivity.reportInsertion(insertionSucceeded);
 
-        Log.i("myTag", result);
-
-
+//        CharSequence text = (CharSequence) result;
+//        int duration = Toast.LENGTH_LONG;
+//        Toast.makeText(makeOfferActivity,text,duration).show();
     }
 }
 

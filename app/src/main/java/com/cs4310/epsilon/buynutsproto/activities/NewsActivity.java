@@ -41,6 +41,7 @@ public class NewsActivity extends AppCompatActivity {
      * so the method can respond appropriately to the data passed in the intent.
      */
     static final int REQUEST_CODE_SEARCH_FILTER = 0;
+    static final int REQUEST_CODE_MAKE_OFFER = 1;
 
     // instance data members
     /**
@@ -97,7 +98,7 @@ public class NewsActivity extends AppCompatActivity {
                 //create and launch MakeOfferActivity
                 Intent intent = new Intent(NewsActivity.this, MakeOfferActivity.class);
                 intent.putExtra("mUid", mUid);
-                NewsActivity.this.startActivity(intent);
+                NewsActivity.this.startActivityForResult(intent, REQUEST_CODE_MAKE_OFFER);
             }
         });
         /**
@@ -175,7 +176,18 @@ public class NewsActivity extends AppCompatActivity {
             mFilter = data.getParcelableExtra(
                     SetSearchFilterActivity.SEARCH_FILTER_KEY);
 
-            Toast.makeText(this, mFilter.toString(), Toast.LENGTH_SHORT).show();
+            Log.i(Constants.TAG, "NewsActivity received filter: " + mFilter.toString());
+            setStatusMsg("Requesting " + mFilter.getCommodity() + " offers from server...");
+
+            new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);
+
+            //Toast.makeText(this, mFilter.toString(), Toast.LENGTH_SHORT).show();
+        } else if (requestCode == REQUEST_CODE_MAKE_OFFER) {
+            // The only way to get here is if the user made an offer successfully;
+            // otherwise resultCode would not be RESULT_OK or requestCode would be something else
+
+            String commodity = data.getStringExtra("commodity");
+            setStatusMsg("New offer for " + commodity +" inserted ok");
         } else {
             // handle other requestCode values here
         }
@@ -198,8 +210,11 @@ public class NewsActivity extends AppCompatActivity {
         if(mSellOffers != null) {
             mArrayAdapter = new MyArrayAdapter(this,
                     R.layout.list_item_news, mSellOffers);
-            mListView.setAdapter(mArrayAdapter);
+        } else {
+            mArrayAdapter = new MyArrayAdapter(this,
+                    R.layout.list_item_news, new ArrayList<SellOfferFront>());
         }
+        mListView.setAdapter(mArrayAdapter);
     }
 
     /**

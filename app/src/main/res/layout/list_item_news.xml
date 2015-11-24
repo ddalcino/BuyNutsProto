@@ -12,21 +12,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Commodity: "
-            android:id="@+id/textView" />
+            android:id="@+id/tvShowCommodType"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/tvShowCommodType" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="| Price per unit: $"
-            android:id="@+id/textView4" />
+            android:text=": $"
+            android:id="@+id/tvUnitsCurrency" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,13 +50,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Min Wt: "
-            android:id="@+id/textView2" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tvShowMinWeight"
             android:singleLine="true" />
 
@@ -70,14 +57,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="| Max Wt: "
-            android:id="@+id/textView3" />
+            android:text=" - "
+            android:id="@+id/tvBetweenWeights" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/tvShowMaxWeight" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="lb"
+            android:id="@+id/tvShowUnitsWt2" />
+
     </LinearLayout>
 
 </LinearLayout>
