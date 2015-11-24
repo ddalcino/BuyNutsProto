@@ -65,7 +65,11 @@ public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<Str
             //String[] contactInfo;
             ArrayList<String> contactInfo = new ArrayList<String>();
 
-            contactInfoEndpoint.getContactInfo(sellerID, contactInfo).execute();
+            NutsUser user = contactInfoEndpoint.get(sellerID).execute();
+            contactInfo.add(user.getName());
+            contactInfo.add(user.getTelephone());
+            contactInfo.add(user.getEmail());
+
             return contactInfo;
         } catch (IOException e) {
             e.printStackTrace();
