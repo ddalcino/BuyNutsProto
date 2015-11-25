@@ -8,6 +8,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.appengine.api.users.User;
+import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
@@ -45,10 +46,10 @@ public class SellOfferEndpoint {
 
     private static final int DEFAULT_LIST_LIMIT = 20;
     public SellOfferEndpoint() { }
-    /*static {
+    static {
         // Typically you would register this inside an OfyService wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
         ObjectifyService.register(SellOffer.class);
-    }*/
+    }
 
     /**
      * Returns the {@link SellOffer} with the corresponding ID.
@@ -154,14 +155,16 @@ public class SellOfferEndpoint {
             path = "sellOffer/fullQuery",
             httpMethod = ApiMethod.HttpMethod.GET
     )
+    //public CollectionResponse<SellOffer> fullQueryOffers(OfferFilter offerFilter) {
     public CollectionResponse<SellOffer> fullQueryOffers(
-            @Nullable @Named("commodity") String commodity,
-            @Nullable @Named("seller_id") String seller_id,
-            @Nullable @Named("min_weight") Double min_weight,
-            @Nullable @Named("max_weight") Double max_weight,
+            @Named("commodity") String commodity,
+            @Named("seller_id") String seller_id,
+            @Named("min_weight") Double min_weight,
+            @Named("max_weight") Double max_weight,
             @Nullable @Named("cursor") String cursor,
             @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+
 
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit);
 
@@ -195,6 +198,7 @@ public class SellOfferEndpoint {
         QueryResultIterator<SellOffer> queryIterator = query.iterator();
         List<SellOffer> sellOfferList = new ArrayList<SellOffer>(limit);
         while (queryIterator.hasNext()) {
+
             sellOfferList.add(queryIterator.next());
         }
         return CollectionResponse.<SellOffer>builder().setItems(sellOfferList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
