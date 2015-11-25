@@ -38,6 +38,11 @@ import java.util.List;
  * Created by Dave on 11/13/2015.
  */
 public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "GetContactInfo";
 
     private static NutsUserApi contactInfoEndpoint = null;
     private Context context;
@@ -47,7 +52,7 @@ public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<Str
     @Override
     protected ArrayList<String> doInBackground(Long... params) {
         if (params == null || params[0] == null) {
-            Log.i(Constants.ASYNC_TAG, "No params passed to GetContactInfoAsyncTask");
+            Log.i(TAG, "No params passed to GetContactInfoAsyncTask");
             return (null);
         }
         Long sellerID = params[0];
@@ -80,7 +85,7 @@ public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<Str
     protected void onPostExecute(ArrayList<String> result) {
 
         if (result != null && result.size() == 3) {
-            Log.i(Constants.ASYNC_TAG, "Received contactinfo from backend: " +
+            Log.i(TAG, "Received contactinfo from backend: " +
                             "\nsellerName=" + result.get(0) +
                             "\nsellerPhone=" + result.get(1) +
                             "\nsellerEmail=" + result.get(2)
@@ -93,8 +98,7 @@ public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<Str
 
             context.startActivity(i);
         } else {
-            Log.i(Constants.ASYNC_TAG,
-                    "Received no contactinfo from backend");
+            Log.i(TAG, "Received no contactinfo from backend");
             Toast.makeText(context, "Bad seller info", Toast.LENGTH_SHORT).show();
         }
     }

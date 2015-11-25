@@ -22,6 +22,11 @@ import java.util.List;
  * Created by Dave on 11/24/2015.
  */
 public class DeleteOfferAsyncTask extends AsyncTask<Long, Void, Boolean> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "DeleteOffer";
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
@@ -45,7 +50,7 @@ public class DeleteOfferAsyncTask extends AsyncTask<Long, Void, Boolean> {
             sellOfferEndpoint = builder.build();
         }
         try {
-            Log.i(Constants.ASYNC_TAG, "Attempting to remove SellOffer at id=" + sellOfferID);
+            Log.i(TAG, "Attempting to remove SellOffer at id=" + sellOfferID);
             sellOfferEndpoint.remove(sellOfferID).execute();
             return true;
         } catch (IOException e) {

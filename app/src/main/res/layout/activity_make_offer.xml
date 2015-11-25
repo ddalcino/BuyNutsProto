@@ -150,7 +150,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btnDeleteOffer"
+            android:text="@string/btn_delete_offer"
             android:id="@+id/btnDeleteOffer"
             android:layout_gravity="center_horizontal"
             android:visibility="gone" />
@@ -158,7 +158,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btnConfirmDelete"
+            android:text="@string/btn_confirm_delete"
             android:id="@+id/btnConfirmDelete"
             android:layout_gravity="center_horizontal"
             android:visibility="gone" />

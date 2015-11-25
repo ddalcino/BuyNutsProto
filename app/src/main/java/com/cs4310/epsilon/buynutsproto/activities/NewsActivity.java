@@ -26,6 +26,9 @@ import java.util.ArrayList;
  */
 public class NewsActivity extends AppCompatActivity {
     // constants
+
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "News";
+
     /**
      * This is a request code for a search filter, used to notify the
      * NewsActivity which activity is sending it data. For example, this
@@ -77,7 +80,7 @@ public class NewsActivity extends AppCompatActivity {
 
         //get mUid from intent
         mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY, MainLoginActivity.INVALID_USERID);
-        Log.i(Constants.TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid=" + mUid));
+        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid=" + mUid));
 
         //get mListView
         mListView = (ListView) findViewById(R.id.listView);
@@ -92,7 +95,7 @@ public class NewsActivity extends AppCompatActivity {
         btnMakeNewOffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(Constants.TAG, "onClick btnMakeOffer_News");
+                Log.i(TAG, "onClick btnMakeOffer_News");
 
                 //create and launch MakeOfferActivity
                 Intent intent = new Intent(NewsActivity.this, MakeOfferActivity.class);
@@ -108,7 +111,7 @@ public class NewsActivity extends AppCompatActivity {
         btnSetSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(Constants.TAG, "onClick btnSetFilter_News");
+                Log.i(TAG, "onClick btnSetFilter_News");
 
                 // create intent for SetSearchFilterActivity
                 Intent i = new Intent(NewsActivity.this, SetSearchFilterActivity.class);
@@ -128,7 +131,7 @@ public class NewsActivity extends AppCompatActivity {
         btnRefreshNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(Constants.TAG, "onClick btnRefreshNews_News");
+                Log.i(TAG, "onClick btnRefreshNews_News");
 
                 setStatusMsg("Requesting SellOffers from server...");
 
@@ -150,11 +153,11 @@ public class NewsActivity extends AppCompatActivity {
                                     int position, long id) {
 
                 SellOfferFront choice = NewsActivity.this.mArrayAdapter.getItem(position);
-                Log.i(Constants.TAG, "User clicked SellOffer at position=" + position + ", id=" + id);
+                Log.i(TAG, "User clicked SellOffer at position=" + position + ", id=" + id);
 
                 // Check if this offer is was made by the current user:
                 if (choice.getSellerId().equals("" + mUid)) {
-                    Log.i(Constants.TAG, "SellerID == UserID; need to edit SellOffer");
+                    Log.i(TAG, "SellerID == UserID; need to edit SellOffer");
                     // if it was, then we need to launch MakeOfferActivity
                     // and tell it to edit the offer
 
@@ -184,17 +187,17 @@ public class NewsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        Log.i(Constants.TAG, "NewsActivity.onActivityResult()");
+        Log.i(TAG, "NewsActivity.onActivityResult()");
         if(resultCode != Activity.RESULT_OK) {
-            Log.i(Constants.TAG, "didn't get an intent from activity");
+            Log.i(TAG, "didn't get an intent from activity");
         } else if(requestCode == REQUEST_CODE_SEARCH_FILTER) {
             // now we know that a SetSearchFilterActivity has sent us this intent
-            Log.i(Constants.TAG, "successfully obtained intent from SetSearchFilterActivity");
+            Log.i(TAG, "successfully obtained intent from SetSearchFilterActivity");
             // we can retrieve info from intent 'data' here
             mFilter = data.getParcelableExtra(
                     SetSearchFilterActivity.SEARCH_FILTER_KEY);
 
-            Log.i(Constants.TAG, "NewsActivity received filter: " + mFilter.toString());
+            Log.i(TAG, "NewsActivity received filter: " + mFilter.toString());
             setStatusMsg("Requesting " + mFilter.getCommodity() + " offers from server...");
 
             new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);

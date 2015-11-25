@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 public class ContactSellerActivity extends AppCompatActivity {
 
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "ContactSeller";
+
     // instance data members
 
     String mPhoneNumber;
@@ -39,11 +41,11 @@ public class ContactSellerActivity extends AppCompatActivity {
         TextView tvSellerName = (TextView) findViewById(R.id.tvSellerName);
         tvSellerName.setText(mSellerName);
 
-        String strEmail = getResources().getString(R.string.email);
+        String strEmail = getResources().getString(R.string.lbl_email_CS);
         Button btnEmail = (Button) findViewById(R.id.btnEmail);
         btnEmail.setText(String.format("%s: %s", strEmail, mEmailAddress));
 
-        String strTelephone = getResources().getString(R.string.telephone);
+        String strTelephone = getResources().getString(R.string.lbl_telephone_CS);
         Button btnPhone = (Button) findViewById(R.id.btnPhone);
         btnPhone.setText(String.format("%s: %s", strTelephone, mPhoneNumber));
 
@@ -72,7 +74,7 @@ public class ContactSellerActivity extends AppCompatActivity {
                     emailIntent.putExtra(Intent.EXTRA_TEXT, "I WANT TO BUY YOUR NUTS RIGHT NOW!!!");
                     startActivity(emailIntent);
                 } catch (android.content.ActivityNotFoundException e) {
-                    Log.i(Constants.TAG, "Can't launch email provider");
+                    Log.i(TAG, "Can't launch email provider");
                     Toast.makeText(ContactSellerActivity.this,
                             "Can't launch email provider; please check that your email app is set up properly",
                             Toast.LENGTH_SHORT).show();

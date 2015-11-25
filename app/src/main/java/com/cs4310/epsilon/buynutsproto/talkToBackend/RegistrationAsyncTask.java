@@ -23,6 +23,11 @@ import java.io.IOException;
  * Created by dave on 11/20/15.
  */
 public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "Registration";
 
     private static NutsUserApi nutsUserEndpoint = null;
     private Context context;
@@ -50,7 +55,7 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
             String name = newUser.getName();
             String email = newUser.getEmail();
             String telephone = newUser.getTelephone();
-            Log.i(Constants.ASYNC_TAG, "Registering user=" + newUser.toString());
+            Log.i(TAG, "Registering user=" + newUser.toString());
             /*
               @Named("userName") String userName,
             @Named("password") String password,
@@ -66,7 +71,7 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
             n_user.setTelephone(telephone);
             NutsUser result = nutsUserEndpoint.register(n_user).execute();
             if (result != null) {
-                Log.i(Constants.ASYNC_TAG, "Registered user with id=" +
+                Log.i(TAG, "Registered user with id=" +
                         result.getId() + "\nuser=" + result.toString());
                 return (result.getId());
             }
@@ -82,12 +87,12 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
         if (resultId != Constants.INVALID_UID) {
             Toast.makeText(registrationActivity, "Id assigned="+resultId,
                     Toast.LENGTH_LONG).show();
-            Log.i(Constants.ASYNC_TAG, "Id assigned=" + resultId);
+            Log.i(TAG, "Id assigned=" + resultId);
 
         } else {
             Toast.makeText(registrationActivity, "No Id assigned",
                     Toast.LENGTH_LONG).show();
-            Log.i(Constants.ASYNC_TAG, "No Id assigned");
+            Log.i(TAG, "No Id assigned");
 
         }
     }

@@ -28,6 +28,11 @@ import java.util.List;
  * Created by Mike on 11/5/2015.
  */
 public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void, List<SellOffer>> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "ListFilteredOfr";
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
@@ -38,7 +43,7 @@ public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOf
     @Override
     protected List<SellOffer> doInBackground(RequestFilteredSellOffer... params) {
 
-        Log.i(Constants.ASYNC_TAG, "ListFilteredSellOffersAsyncTask called!");
+        Log.i(TAG, "ListFilteredSellOffersAsyncTask called!");
         // Get mFilter from params
         if(params != null && params[0] != null) {
             mFilter = params[0];
@@ -65,7 +70,7 @@ public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOf
                 }
                 Double min_weight = mFilter.getMinWeight();
                 Double max_weight = mFilter.getMaxWeight();
-                Log.i(Constants.ASYNC_TAG, "" + seller_id + ", " + commodity + ", " + min_weight + ", " + max_weight);
+                Log.i(TAG, "" + seller_id + ", " + commodity + ", " + min_weight + ", " + max_weight);
                 try {
                     return sellOfferEndpoint.fullQueryOffers(commodity, min_weight, max_weight, seller_id).execute().getItems();
                 } catch (IOException e) {
@@ -75,7 +80,7 @@ public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOf
         return null;
 /*
         } catch (IOException e) {
-            Log.d(Constants.ASYNC_TAG, e.getMessage());
+            Log.d(TAG, e.getMessage());
             return Collections.EMPTY_LIST;
         }
         */

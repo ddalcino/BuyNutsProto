@@ -16,12 +16,18 @@ import java.io.IOException;
 /**
  * Created by Mike on 11/25/2015.
  */
-public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSellOffer>
-{
-        private static OfferFilterEndpoint offerFilterEndpoint = null;
-        private Context context;
-        //private static RequestFilteredSellOffer requestFilteredSellOffer = null;
-        //private static OfferFilter offerFilter = null;
+public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSellOffer> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "GetFilter";
+
+    private static OfferFilterEndpoint offerFilterEndpoint = null;
+    private Context context;
+    //private static RequestFilteredSellOffer requestFilteredSellOffer = null;
+    //private static OfferFilter offerFilter = null;
+
     public GetFilterAsyncTask(Context context) {
             this.context = context;
         }
@@ -45,16 +51,16 @@ public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSel
 
             try {
                 //OfferFilter offerFilter = new OfferFilter();
-                Log.i(Constants.ASYNC_TAG, "associatedUserID is=" + associatedUserID);
+                Log.i(TAG, "associatedUserID is=" + associatedUserID);
                 OfferFilter offerFilter = new OfferFilter();
                 offerFilter = offerFilterEndpoint.retrieveFilter(associatedUserID).execute();
                 RequestFilteredSellOffer requestFilteredSellOffer = null;
                 if (offerFilter != null) {
 
                     requestFilteredSellOffer = new RequestFilteredSellOffer(offerFilter.getAssociatedUserID(), offerFilter.getCommodity(), offerFilter.getMinWeight(), offerFilter.getMaxWeight(), offerFilter.getMinPricePerUnit(), offerFilter.getMaxPricePerUnit(), offerFilter.getExpired(), offerFilter.getMyOwnOffersOnly(), offerFilter.getEarliest(), offerFilter.getLatest());
-                    Log.i(Constants.ASYNC_TAG, "requestFilteredSellOffer considers commodity: " + offerFilter.getCommodity());
+                    Log.i(TAG, "requestFilteredSellOffer considers commodity: " + offerFilter.getCommodity());
                 } else {
-                    Log.i(Constants.ASYNC_TAG, "offerFilter was null");
+                    Log.i(TAG, "offerFilter was null");
                 }
 
                 return requestFilteredSellOffer;
@@ -67,7 +73,7 @@ public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSel
     @Override
     protected void onPostExecute(RequestFilteredSellOffer requestFilteredSellOffer) {
         Toast.makeText(context, "Complete", Toast.LENGTH_SHORT).show();
-        Log.i(Constants.ASYNC_TAG, "User requested filter =" +
+        Log.i(TAG, "User requested filter =" +
                 requestFilteredSellOffer.getAssociatedUserID() + ", " + requestFilteredSellOffer.getCommodity() + ", " + requestFilteredSellOffer.getMinWeight() + ", " + requestFilteredSellOffer.getMaxWeight() + ", " + requestFilteredSellOffer.getMinPricePerUnit() + ", " + requestFilteredSellOffer.getMaxPricePerUnit() + ", " + requestFilteredSellOffer.getExpired() + ", " + requestFilteredSellOffer.getMyOwnOffersOnly() + ", " + requestFilteredSellOffer.getEarliest() +", "+ requestFilteredSellOffer.getLatest());
         return;
         //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();

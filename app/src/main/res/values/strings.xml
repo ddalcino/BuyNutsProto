@@ -11,8 +11,8 @@
     <string name="lbl_username">Username</string>
     <string name="lbl_password">Password</string>
     <string name="lbl_terms_VSO">Terms: </string>
+    <string name="str_terms_not_specified_VSO">No terms specified</string>
 
-    <string name="chk_remember_my_info">Remember my information</string>
 
     <string name="btn_login">Log In</string>
     <string name="btn_register">Register New User</string>
@@ -33,26 +33,26 @@
     <string name="tv_weights">Weight Units</string>
     <string name="tv_commod_type">Commodity Type</string>
 
-    <string name="terms_not_specified">No terms specified</string>
-    <string name="email">Email</string>
-    <string name="telephone">Telephone</string>
+    <string name="lbl_email_CS">Email</string>
+    <string name="lbl_telephone_CS">Telephone</string>
 
-    <string name="chkMyOffersOnly">Show all offers that I have made</string>
-    <string name="chkShowExpired">Only show expired offers</string>
-    <string name="chkShowAll">Show all items for one type of nut</string>
+    <string name="chk_remember_my_info_ML">Remember my information</string>
+    <string name="chk_my_offers_only_SF">Show all offers that I have made</string>
+    <string name="chk_show_expired_SF">Only show expired offers</string>
+    <string name="chk_show_all_SF">Show all items for one type of nut</string>
 
 
-    <string name="registration_password">Password</string>
-    <string name="registration_username">Username</string>
-    <string name="registration_name">Name</string>
-    <string name="registration_phone">Phone</string>
-    <string name="registration_email">Email</string>
-    <string name="registration_confirm">Confirm Password</string>
-    <string name="registration_btn_register">Register Now</string>
+    <string name="lbl_registration_password">Password</string>
+    <string name="lbl_registration_username">Username</string>
+    <string name="lbl_registration_name">Name</string>
+    <string name="lbl_registration_phone">Phone</string>
+    <string name="lbl_registration_email">Email</string>
+    <string name="lbl_registration_confirm">Confirm Password</string>
+    <string name="lbl_registration_btn_register">Register Now</string>
 
     <string name="error_confirm_password">Password and Confirm Password fields do not match; please try again.</string>
-    <string name="btnDeleteOffer">Delete This Offer</string>
-    <string name="btnConfirmDelete">I\'m absolutely sure I want to delete this</string>
+    <string name="btn_delete_offer">Delete This Offer</string>
+    <string name="btn_confirm_delete">I\'m absolutely sure I want to delete this</string>
 
     <string-array name="array_commodities">
         <item>Walnut</item>
@@ -67,5 +67,10 @@
         <item>net ton (2000lb)</item>
         <item>metric tonne (1000kg)</item>
     </string-array>
+    
+    <string name="key_saved_username">savedUsername</string>
+    <string name="key_saved_password">savedPassword</string>
+    <string name="key_saved_filter">savedFilter</string>
+    <string name="key_saved_units_weight">savedUnitsWt</string>
 
 </resources>

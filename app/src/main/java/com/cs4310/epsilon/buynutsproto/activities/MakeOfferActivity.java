@@ -22,6 +22,10 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
  * it to the backend
  */
 public class MakeOfferActivity extends AppCompatActivity {
+
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "MakeOffer";
+
+
     private long mUid;
     private boolean mIsEditingOwnOffer;
     private SellOfferFront mOldOffer;
@@ -45,7 +49,7 @@ public class MakeOfferActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         mUid = intent.getLongExtra(Constants.USER_ID_KEY,
                 MainLoginActivity.INVALID_USERID);
-        Log.i(Constants.TAG, (mUid == MainLoginActivity.INVALID_USERID ?
+        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ?
                 "Didn't receive mUid" : "Received mUid=" + mUid));
 
         // Look for a SellOfferFront passed in arguments

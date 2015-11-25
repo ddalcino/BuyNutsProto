@@ -14,6 +14,8 @@ import com.cs4310.epsilon.nutsinterface.UserFront;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "Registration";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +50,9 @@ public class RegistrationActivity extends AppCompatActivity {
             //display whether or not password input and confirm input matches
             if(!et2Confirm.getText().toString().equals(et2Password.getText().toString()))
             {
-                // Log the entered password and confirmed passwords to the logs under tag constants.TAG
+                // Log the entered password and confirmed passwords to the logs under tag TAG
                 String msg = "PASSWORD: " + et2Password.getText().toString() + " doesn't match CONFIRM: " + et2Confirm.getText().toString();
-                Log.i(Constants.TAG, msg);
+                Log.i(TAG, msg);
                 // Display standardized error message to user
                 String errorMsg = getResources().getString(R.string.error_confirm_password);
                 Toast.makeText(RegistrationActivity.this, errorMsg, Toast.LENGTH_LONG).show();
@@ -65,13 +67,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         et2Name.getText().toString().trim()
                 );
 
-
-                //Toast displays user inputted entry just making sure register button is responsive
-                Toast.makeText(RegistrationActivity.this, user.toString(), Toast.LENGTH_LONG).show();
-
-                //TODO: send user to RegistrationAsyncTask
+                // Send UserFront object to RegistrationAsyncTask, to record
+                // the new user on the backend
                 new RegistrationAsyncTask(RegistrationActivity.this).execute(user);
-
             }
         }
         catch(Exception invalid)

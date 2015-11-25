@@ -23,6 +23,11 @@ import java.io.IOException;
  * Created by Mike on 11/5/2015.
  */
 public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, Boolean> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "MakeOffer";
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;
@@ -49,13 +54,13 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, Boolean>
 
         Long offerID = newSellOffer.getId();
         if (offerID != null) {
-            Log.i(Constants.ASYNC_TAG, "This was an edited offer with id=" + offerID);
-            Log.i(Constants.ASYNC_TAG, "SellOfferFront=" + newSellOffer.toString());
-            Log.i(Constants.ASYNC_TAG, "SellOffer=" + newSellOffer.toSellOffer().toString());
+            Log.i(TAG, "This was an edited offer with id=" + offerID);
+            Log.i(TAG, "SellOfferFront=" + newSellOffer.toString());
+            Log.i(TAG, "SellOffer=" + newSellOffer.toSellOffer().toString());
 
             try {
                 sellOfferEndpoint.update(offerID, newSellOffer.toSellOffer()).execute();
-                Log.i(Constants.ASYNC_TAG, "Update sellOffer succeeded");
+                Log.i(TAG, "Update sellOffer succeeded");
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();

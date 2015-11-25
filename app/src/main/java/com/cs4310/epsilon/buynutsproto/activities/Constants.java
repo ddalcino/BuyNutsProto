@@ -9,7 +9,7 @@ public class Constants {
      * app is running, go to the 'logcat' tab in Android Monitor (it pops up
      * automatically for me), and type this string into the search filter.
      */
-    static final String TAG = "myTag";
+    static final String TAG_ACTIVITY_PREFIX = "tagActivity";
 
     static final String USER_ID_KEY = "uid";
     static final String COMMODITY_KEY = "commodity";

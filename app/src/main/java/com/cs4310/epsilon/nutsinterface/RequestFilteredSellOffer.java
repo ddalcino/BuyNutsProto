@@ -3,6 +3,8 @@ package com.cs4310.epsilon.nutsinterface;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.nutsinterface.mike.myapplication.backend.offerFilterEndpoint.model.OfferFilter;
+
 import java.util.Calendar;
 
 /**
@@ -267,5 +269,22 @@ public class RequestFilteredSellOffer implements Parcelable {
 
     public Long getLatest() {
         return latest;
+    }
+
+    public OfferFilter toOfferFilter() {
+
+        OfferFilter offerFilter = new OfferFilter();
+        offerFilter.setAssociatedUserID(this.getAssociatedUserID());
+        offerFilter.setCommodity(this.getCommodity());
+        offerFilter.setMinWeight(this.getMinWeight());
+        offerFilter.setMaxWeight(this.getMaxWeight());
+        offerFilter.setMinPricePerUnit(this.getMinPricePerUnit());
+        offerFilter.setMaxPricePerUnit(this.getMaxPricePerUnit());
+        offerFilter.setExpired(this.getExpired());
+        offerFilter.setMyOwnOffersOnly(this.getMyOwnOffersOnly());
+        offerFilter.setEarliest(this.getEarliest());
+        offerFilter.setLatest(this.getLatest());
+
+        return offerFilter;
     }
 }

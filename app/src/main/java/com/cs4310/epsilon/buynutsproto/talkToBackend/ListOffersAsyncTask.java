@@ -23,6 +23,11 @@ import java.util.List;
  * Created by Mike on 11/5/2015.
  */
 public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "ListOffers";
 
     private static SellOfferEndpoint sellOfferEndpoint = null;
     private Context context;

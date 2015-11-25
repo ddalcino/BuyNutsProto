@@ -22,6 +22,11 @@ import java.io.IOException;
  * Created by dave on 11/20/15.
  */
 public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "Login";
 
     private static NutsUserApi nutsUserEndpoint = null;
     private Context context;
@@ -39,7 +44,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
         String username = Params[0];
         String password = Params[1];
 
-        Log.i(Constants.ASYNC_TAG, "User attempted login with username=" +
+        Log.i(TAG, "User attempted login with username=" +
                 username + ", password=" + password);
 
         if (nutsUserEndpoint == null) {
@@ -51,14 +56,14 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
             nutsUserEndpoint = builder.build();
         }
         try {
-            Log.i(Constants.ASYNC_TAG, "Calling login");
+            Log.i(TAG, "Calling login");
             NutsUser result = nutsUserEndpoint.login(password, username).execute();
             if (result != null) {
-                Log.i(Constants.ASYNC_TAG, "User logged in with id=" +
+                Log.i(TAG, "User logged in with id=" +
                         result.getId() + "\nuser=" + result.toString());
                 return (result.getId());
             } else {
-                Log.i(Constants.ASYNC_TAG, "Login yields no matching user");
+                Log.i(TAG, "Login yields no matching user");
                 return Constants.INVALID_UID;
             }
         } catch (IOException e) {
@@ -72,8 +77,8 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Long> {
         MainLoginActivity mainLoginActivity = (MainLoginActivity) context;
 
         if (resultId != Constants.INVALID_UID && resultId != Constants.SERVER_ERROR) {
-            Toast.makeText(mainLoginActivity, "User logged in with id="+resultId,
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(mainLoginActivity, "User logged in with id="+resultId,
+//                    Toast.LENGTH_LONG).show();
             mainLoginActivity.login(resultId);
         } else if (resultId == Constants.INVALID_UID) {
             Toast.makeText(mainLoginActivity,

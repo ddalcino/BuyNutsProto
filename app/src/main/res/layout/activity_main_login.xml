@@ -80,8 +80,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/chk_remember_my_info"
-            android:id="@+id/checkBox" />
+            android:text="@string/chk_remember_my_info_ML"
+            android:id="@+id/chkSaveLoginInfo"
+            android:checked="false" />
 
         <Button
             android:layout_width="match_parent"

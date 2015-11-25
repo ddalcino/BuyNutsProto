@@ -151,21 +151,21 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/chkShowExpired"
+                android:text="@string/chk_show_expired_SF"
                 android:id="@+id/chkShowExpired"
                 android:checked="false" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/chkMyOffersOnly"
+                android:text="@string/chk_my_offers_only_SF"
                 android:id="@+id/chkMyOffersOnly"
                 android:checked="false" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/chkShowAll"
+                android:text="@string/chk_show_all_SF"
                 android:id="@+id/chkShowAll"
                 android:checked="false" />
 

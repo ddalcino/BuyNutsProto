@@ -23,6 +23,11 @@ import java.io.IOException;
  * Created by dave on 11/13/15.
  */
 public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void, String> {
+    /**
+     * Tag used in logs; starts with the same prefix as all other AsyncTasks
+     * in the project, but with a suffix unique to this class
+     */
+    private static final String TAG = Constants.ASYNC_TAG_PREFIX + "SetFilter";
 
     private static OfferFilterEndpoint offerFilterEndpoint = null;
     private Context context;
@@ -72,7 +77,7 @@ public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void
 
         try {
             offerFilter = offerFilterEndpoint.submitFilter(offerFilter).execute();
-            Log.i(Constants.ASYNC_TAG, "offerFilter on commodity : " + offerFilter.getCommodity());
+            Log.i(TAG, "offerFilter on commodity : " + offerFilter.getCommodity());
             return("Complete");
         } catch (IOException e) {
             e.printStackTrace();

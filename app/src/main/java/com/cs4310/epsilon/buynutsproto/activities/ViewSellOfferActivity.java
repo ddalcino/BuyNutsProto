@@ -15,13 +15,14 @@ import com.cs4310.epsilon.nutsinterface.SellOfferFront;
  * An activity used to provide a detailed look at a SellOfferFront object.
  */
 public class ViewSellOfferActivity extends AppCompatActivity {
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "ViewSellOffer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_sell_offer);
 
-        Log.i(Constants.TAG, "onCreate ViewSellOfferActivity");
+        Log.i(TAG, "onCreate ViewSellOfferActivity");
 
         final SellOfferFront sellOffer = this.getIntent()
                 .getParcelableExtra(Constants.VIEW_OFFER_KEY);
@@ -45,7 +46,7 @@ public class ViewSellOfferActivity extends AppCompatActivity {
         TextView tvTerms = (TextView) findViewById(R.id.tvTerms_VSO);
         String terms = sellOffer.getTerms();
         if(terms == null || terms.equals("")){
-            tvTerms.setText(getResources().getString(R.string.terms_not_specified));
+            tvTerms.setText(getResources().getString(R.string.str_terms_not_specified_VSO));
         } else {
             tvTerms.setText(terms);
         }
@@ -55,7 +56,7 @@ public class ViewSellOfferActivity extends AppCompatActivity {
         btnContactSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(Constants.TAG, "Clicked Contact Seller with sellerID=" + sellOffer.getSellerId());
+                Log.i(TAG, "Clicked Contact Seller with sellerID=" + sellOffer.getSellerId());
                 try {
                     Long sellerId = Long.parseLong(sellOffer.getSellerId());
 

@@ -13,11 +13,15 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.SetFilterAsyncTask;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 
 public class SetSearchFilterActivity extends AppCompatActivity {
+
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "SetSearchFilter";
+
     public static final String SEARCH_FILTER_KEY = "filter";
 
     /**
@@ -45,7 +49,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         btnSetSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(Constants.TAG, "clickedSetSearch");
+                Log.i(TAG, "clickedSetSearch");
 
                 //create RequestFilteredSellOffer
                 RequestFilteredSellOffer newFilter = getRequestFilteredSellOffer();
@@ -56,7 +60,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
 //                            SetSearchFilterActivity.this.getApplicationContext(),
 //                            "RequestFilteredSellOffer is: " + newFilter.toString(),
 //                            Toast.LENGTH_LONG).show();
-                    Log.i(Constants.TAG, "SetSearchFilterActivity made filter: " + newFilter.toString());
+                    Log.i(TAG, "SetSearchFilterActivity made filter: " + newFilter.toString());
 
                     // make new Intent to send back to NewsActivity
                     Intent intent = new Intent();
@@ -68,7 +72,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                     // now NewsActivity has an idea of what's in the search filter
 
                     //Also, send a RequestFilteredSellOffer object to the server
-                    //new SetFilterAsyncTask(SetSearchFilterActivity.this).execute(newFilter);
+                    new SetFilterAsyncTask(SetSearchFilterActivity.this).execute(newFilter);
 
                     // Close down the activity and send the user back to NewsActivity
                     SetSearchFilterActivity.this.finish();
@@ -115,7 +119,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
     public RequestFilteredSellOffer getRequestFilteredSellOffer(){
 
         String cType = spinCommodityType.getSelectedItem().toString().toLowerCase();
-        Log.i(Constants.TAG, "UserFront selected " + cType +" from spinner");
+        Log.i(TAG, "UserFront selected " + cType +" from spinner");
 
         CheckBox chkMyOffers = (CheckBox) findViewById(R.id.chkMyOffersOnly);
         boolean myOwnOffersOnly = chkMyOffers.isChecked();
