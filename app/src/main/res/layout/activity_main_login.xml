@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imageViewAppIcon"
-            android:src="@android:drawable/btn_star_big_on" />
+            android:src="@drawable/ice_age_copyright_infringement" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/etUsername"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,13 +96,6 @@
             android:layout_height="wrap_content"
             android:text="@string/btn_register"
             android:id="@+id/btnRegisterNewUser"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prototype Annotation:\nLogin not yet implemented. Please enter a userID number for username."
-            android:id="@+id/tvProtoAnnotation"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

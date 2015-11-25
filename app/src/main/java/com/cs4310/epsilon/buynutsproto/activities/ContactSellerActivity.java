@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactSellerActivity extends AppCompatActivity {
 
@@ -72,11 +73,9 @@ public class ContactSellerActivity extends AppCompatActivity {
                     startActivity(emailIntent);
                 } catch (android.content.ActivityNotFoundException e) {
                     Log.i(Constants.TAG, "Can't launch email provider");
-                    Intent emailIntent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto"));
-
-                    emailIntent.setType("text/plain");
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mEmailAddress});
-                    startActivity(emailIntent);
+                    Toast.makeText(ContactSellerActivity.this,
+                            "Can't launch email provider; please check that your email app is set up properly",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
