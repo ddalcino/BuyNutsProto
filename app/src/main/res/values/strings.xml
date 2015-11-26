@@ -10,7 +10,7 @@
 
     <string name="lbl_username">Username</string>
     <string name="lbl_password">Password</string>
-    <string name="lbl_terms_VSO">Terms: </string>
+    <string name="lbl_terms_VSO">Terms:</string>
     <string name="str_terms_not_specified_VSO">No terms specified</string>
 
 

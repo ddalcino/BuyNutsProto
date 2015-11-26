@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.localDataStorage.LocalDataHandler;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.SetFilterAsyncTask;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
@@ -41,6 +43,13 @@ public class SetSearchFilterActivity extends AppCompatActivity {
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_SF);
         FillSpinner.fill(this, R.array.array_wt_units, spinUnitWt);
+
+        // Set preferred units:
+        // figure out what the units are
+        String units = LocalDataHandler.getPrefUnitsWt(this, mUid);
+        Log.i(TAG, "units=" + units);
+        // set them
+        this.setUnitsSelection(units);
 
         spinCommodityType = (Spinner) findViewById(R.id.spinnerCommodityType_SF);
         FillSpinner.fill(this, R.array.array_commodities, spinCommodityType);
@@ -102,6 +111,28 @@ public class SetSearchFilterActivity extends AppCompatActivity {
             }
         });
 
+        spinUnitWt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private boolean isOkToCheck = false;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isOkToCheck) {
+                    String units = parent.getItemAtPosition(position).toString();
+
+                    Log.i(TAG, "user selected units=" + units);
+
+                    // Store that item
+                    LocalDataHandler.storeUnitsWeight(SetSearchFilterActivity.this, units, mUid);
+                } else {
+                    isOkToCheck = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -198,4 +229,15 @@ public class SetSearchFilterActivity extends AppCompatActivity {
             chkShowAll.setEnabled(active);
         }
     }
+
+    public void setUnitsSelection(String chosenUnits) {
+        String[] unitTypes = getResources().getStringArray(R.array.array_wt_units);
+        for (int i = 0; i < unitTypes.length; i++) {
+            if (unitTypes[i].equals(chosenUnits)) {
+                spinUnitWt.setSelection(i);
+                return;
+            }
+        }
+    }
+
 }

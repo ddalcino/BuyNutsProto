@@ -12,6 +12,7 @@ public class Constants {
     static final String TAG_ACTIVITY_PREFIX = "tagActivity";
 
     static final String USER_ID_KEY = "uid";
+    static final String PREF_UNITS_WT = "unitsWt";
     static final String COMMODITY_KEY = "commodity";
     static final String EDIT_OFFER_KEY = "editSellOffer";
     static final String VIEW_OFFER_KEY = "viewSellOffer";

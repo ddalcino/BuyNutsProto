@@ -2,6 +2,7 @@ package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,9 +11,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.MyArrayAdapter;
+import com.cs4310.epsilon.buynutsproto.localDataStorage.LocalDataHandler;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.ListFilteredOffersAsyncTask;
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
@@ -54,6 +57,8 @@ public class NewsActivity extends AppCompatActivity {
      */
     private long mUid = MainLoginActivity.INVALID_USERID;
 
+    private String mUnitsWt;
+
 
     private RequestFilteredSellOffer mFilter;
 
@@ -87,6 +92,9 @@ public class NewsActivity extends AppCompatActivity {
         mListView = (ListView) findViewById(R.id.listView);
         updateListView();
 
+        //get mUnitsWt from sql
+        mUnitsWt = LocalDataHandler.getPrefUnitsWt(this, mUid);
+
         // set OnClickListeners:
         /**
          * btnMakeNewOffer: launches a new MakeOfferActivity that will allow a
@@ -101,6 +109,7 @@ public class NewsActivity extends AppCompatActivity {
                 //create and launch MakeOfferActivity
                 Intent intent = new Intent(NewsActivity.this, MakeOfferActivity.class);
                 intent.putExtra(Constants.USER_ID_KEY, mUid);
+                intent.putExtra(Constants.PREF_UNITS_WT, mUnitsWt);
                 NewsActivity.this.startActivityForResult(intent, REQUEST_CODE_MAKE_OFFER);
             }
         });
@@ -117,6 +126,7 @@ public class NewsActivity extends AppCompatActivity {
                 // create intent for SetSearchFilterActivity
                 Intent i = new Intent(NewsActivity.this, SetSearchFilterActivity.class);
                 i.putExtra(Constants.USER_ID_KEY, mUid);
+                i.putExtra(Constants.PREF_UNITS_WT, mUnitsWt);
 
                 //create and launch SetSearchFilterActivity
                 NewsActivity.this.startActivityForResult(
@@ -165,6 +175,7 @@ public class NewsActivity extends AppCompatActivity {
                     //intent is the only parameter passed to the new activity
                     Intent intent = new Intent(NewsActivity.this, MakeOfferActivity.class);
                     intent.putExtra(Constants.USER_ID_KEY, mUid);
+                    intent.putExtra(Constants.PREF_UNITS_WT, mUnitsWt);
                     intent.putExtra(Constants.EDIT_OFFER_KEY, choice);
 
                     //create another activity
@@ -173,6 +184,7 @@ public class NewsActivity extends AppCompatActivity {
 
                     //intent is the only parameter passed to the new activity
                     Intent intent = new Intent(NewsActivity.this, ViewSellOfferActivity.class);
+                    intent.putExtra(Constants.PREF_UNITS_WT, mUnitsWt);
                     intent.putExtra(Constants.VIEW_OFFER_KEY, choice);
 
                     // In this case, we will ask the ViewSellOfferActivity for
@@ -192,6 +204,16 @@ public class NewsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i(TAG, "NewsActivity.onActivityResult()");
+
+        if(resultCode == Activity.RESULT_OK) {
+            String unitsWt = data.getStringExtra(Constants.PREF_UNITS_WT);
+            if (unitsWt != null) {
+                mUnitsWt = unitsWt;
+            } else {
+                mUnitsWt = LocalDataHandler.getPrefUnitsWt(this, mUid);
+            }
+        }
+
         if(resultCode != Activity.RESULT_OK) {
             Log.i(TAG, "didn't get an intent from activity");
         } else if(requestCode == REQUEST_CODE_SEARCH_FILTER) {
@@ -247,10 +269,10 @@ public class NewsActivity extends AppCompatActivity {
     public void updateListView() {
         if(mSellOffers != null) {
             mArrayAdapter = new MyArrayAdapter(this,
-                    R.layout.list_item_news, mSellOffers);
+                    R.layout.list_item_news, mSellOffers, mUnitsWt);
         } else {
             mArrayAdapter = new MyArrayAdapter(this,
-                    R.layout.list_item_news, new ArrayList<SellOfferFront>());
+                    R.layout.list_item_news, new ArrayList<SellOfferFront>(), mUnitsWt);
         }
         mListView.setAdapter(mArrayAdapter);
     }
@@ -262,5 +284,11 @@ public class NewsActivity extends AppCompatActivity {
     public void setStatusMsg(String statusMsg) {
         TextView tv = (TextView) findViewById(R.id.tvStatus_News);
         tv.setText(statusMsg);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // keep the same layout
     }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
+import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +29,8 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
      */
     private ArrayList<SellOfferFront> aList;
 
+    private String mUnits;
+
 
     /**
      * Constructor
@@ -36,8 +39,9 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
      * @param objects           The ArrayList of SellOffer objects to display
      */
     public MyArrayAdapter(Context context, int layoutResourceId,
-                          ArrayList<SellOfferFront> objects){
+                          ArrayList<SellOfferFront> objects, String units){
         super(context, layoutResourceId, objects);
+        mUnits = units;
         if(objects != null) {
             this.aList = objects;
             // Sort the list by lowest price:
@@ -74,20 +78,28 @@ public class MyArrayAdapter extends ArrayAdapter<SellOfferFront> {
             TextView tvPPU = (TextView) view.findViewById(R.id.tvShowPPU);
             TextView tvMaxWeight = (TextView) view.findViewById(R.id.tvShowMaxWeight);
             TextView tvMinWeight = (TextView) view.findViewById(R.id.tvShowMinWeight);
+
+            TextView tvUnits1 = (TextView) view.findViewById(R.id.tvLblUnits);
+            tvUnits1.setText("/"+mUnits);
+            TextView tvUnits2 = (TextView) view.findViewById(R.id.tvShowUnitsWt2);
+            tvUnits2.setText(" "+mUnits);
 //            TextView tvWeightUnits = (TextView) view.findViewById(R.id.tvShowUnitsWt);
+
+            // Default units conversion; we'll figure that out later
+            double unitConversion = UnitsWt.unitConversion(UnitsWt.Type.LB, UnitsWt.toType(mUnits));
 
             // put column values in the textviews of the inflated file
             if (tvCommod != null){
                 tvCommod.setText(i.getCommodityPretty());
             }
             if (tvPPU != null){
-                tvPPU.setText(String.format("%.02f", i.getPricePerUnit()));
+                tvPPU.setText(String.format("%.02f", i.getPricePerUnit()/unitConversion));
             }
             if (tvMaxWeight != null){
-                tvMaxWeight.setText(String.format("%.4f", i.getMaxWeight()));
+                tvMaxWeight.setText(String.format("%.4f", i.getMaxWeight()*unitConversion));
             }
             if (tvMinWeight != null){
-                tvMinWeight.setText(String.format("%.4f", i.getMinWeight()));
+                tvMinWeight.setText(String.format("%.4f", i.getMinWeight()*unitConversion));
             }
 //            if (tvWeightUnits != null){
 //                tvWeightUnits.setText(UnitsWt.toString(i.getUnits()));

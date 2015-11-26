@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.GetContactInfoAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
+import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 /**
  * An activity used to provide a detailed look at a SellOfferFront object.
@@ -25,24 +26,34 @@ public class ViewSellOfferActivity extends AppCompatActivity {
 
         Log.i(TAG, "onCreate ViewSellOfferActivity");
 
-        final SellOfferFront sellOffer = this.getIntent()
+        Intent intent = this.getIntent();
+        final SellOfferFront sellOffer = intent
                 .getParcelableExtra(Constants.VIEW_OFFER_KEY);
 
-        String weightUnits = "lbs";
+        String weightUnits = intent.getStringExtra(Constants.PREF_UNITS_WT);
+        if (weightUnits == null) {
+            weightUnits = "lb";
+        }
+
+        double unitConversion = UnitsWt.unitConversion(UnitsWt.Type.LB, UnitsWt.toType(weightUnits));
+
+
+
+        //String weightUnits = "lbs";
 
         TextView tvCommod = (TextView) findViewById(R.id.tvCommod_VSO);
         tvCommod.setText(sellOffer.getCommodityPretty());
         TextView tvPPU = (TextView) findViewById(R.id.tvPPU_VSO);
         tvPPU.setText(String.format(
                 "$%.2f/%s",
-                sellOffer.getPricePerUnit(),
+                sellOffer.getPricePerUnit() / unitConversion,
                 weightUnits));
         TextView tvWeightRange = (TextView) findViewById(R.id.tvWeightRange_VSO);
         tvWeightRange.setText(String.format(
                 "%.2f %s - %.2f %s",
-                sellOffer.getMinWeight(),
+                sellOffer.getMinWeight() * unitConversion,
                 weightUnits,
-                sellOffer.getMaxWeight(),
+                sellOffer.getMaxWeight() * unitConversion,
                 weightUnits));
         TextView tvTerms = (TextView) findViewById(R.id.tvTerms_VSO);
         String terms = sellOffer.getTerms();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.localDataStorage.LocalDataHandler;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.DeleteOfferAsyncTask;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.MakeOfferAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
@@ -42,6 +44,12 @@ public class MakeOfferActivity extends AppCompatActivity {
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_MO);
         FillSpinner.fill(this, R.array.array_wt_units, spinUnitWt);
 
+        // Set preferred units:
+        // figure out what the units are
+        String units = LocalDataHandler.getPrefUnitsWt(this, mUid);
+        // set them
+        this.setUnitsSelection(units);
+
         spinCommodityType = (Spinner) findViewById(R.id.spinnerCommodityType_MO);
         FillSpinner.fill(this, R.array.array_commodities, spinCommodityType);
 
@@ -61,7 +69,7 @@ public class MakeOfferActivity extends AppCompatActivity {
             // Fill in UI elements with data from offerFront
 
             // Default units conversion; we'll figure that out later
-            double unitConversion = 1.0;
+            double unitConversion = UnitsWt.unitConversion(UnitsWt.Type.LB, UnitsWt.toType(units));
 
             EditText etPPU = (EditText) findViewById(R.id.etPPU_MO);
             etPPU.setText("" + mOldOffer.getPricePerUnit()*unitConversion);
@@ -129,9 +137,34 @@ public class MakeOfferActivity extends AppCompatActivity {
 //                Toast.makeText(MakeOfferActivity.this,
 //                        "SellOfferFront is: " + newOffer,
 //                        Toast.LENGTH_LONG).show();
-                if(newOffer != null){
+                if (newOffer != null) {
                     new MakeOfferAsyncTask(MakeOfferActivity.this).execute(newOffer);
                 }
+            }
+        });
+
+
+
+        spinUnitWt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private boolean isOkToCheck = false;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isOkToCheck) {
+                    String units = parent.getItemAtPosition(position).toString();
+
+                    Log.i(TAG, "user selected units=" + units);
+
+                    // Store that item
+                    LocalDataHandler.storeUnitsWeight(MakeOfferActivity.this, units, mUid);
+                } else {
+                    isOkToCheck = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -220,4 +253,15 @@ public class MakeOfferActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to make offer", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void setUnitsSelection(String chosenUnits) {
+        String[] unitTypes = getResources().getStringArray(R.array.array_wt_units);
+        for (int i = 0; i < unitTypes.length; i++) {
+            if (unitTypes[i].equals(chosenUnits)) {
+                spinUnitWt.setSelection(i);
+                return;
+            }
+        }
+    }
+
 }

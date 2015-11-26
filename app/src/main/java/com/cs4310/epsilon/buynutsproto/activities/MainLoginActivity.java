@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
+import com.cs4310.epsilon.buynutsproto.localDataStorage.LocalDataHandler;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.LoginAsyncTask;
 
 /**
@@ -40,11 +41,9 @@ public class MainLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
 
-        // Look for stored data for username and password:
-        // If nothing is stored, then save blank strings for both values
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        String userName = sharedPref.getString(getString(R.string.key_saved_username), "");
-        String password = sharedPref.getString(getString(R.string.key_saved_password), "");
+        String info[] = LocalDataHandler.getUNamePassword(this);
+        String userName = info[0];
+        String password = info[1];
 
         // Fill in the empty EditText fields with stored data
         EditText etUsername = (EditText) this.findViewById(R.id.etUsername);
@@ -106,7 +105,7 @@ public class MainLoginActivity extends AppCompatActivity {
             // Only accept input if there's something there
             if (!userName.equals("") && !password.equals("")) {
 
-                saveUserInfo(chkSaveInfo.isChecked(), userName, password);
+                LocalDataHandler.saveUserInfo(this, chkSaveInfo.isChecked(), userName, password);
 
                 Log.i(TAG, "Calling LoginAsyncTask with username="+userName+", password="+password);
                 new LoginAsyncTask(MainLoginActivity.this).execute(
@@ -140,33 +139,5 @@ public class MainLoginActivity extends AppCompatActivity {
             MainLoginActivity.this.startActivity(intent);
 
         }
-    }
-
-    /**
-     * If okToStoreInfo is true, this method saves the user's username and
-     * password to SharedPreferences. Otherwise, it overwrites the stored
-     * values for username and password with blank strings.
-     * @param okToStoreInfo Whether or not the method should store username and password
-     * @param userName      The username to store
-     * @param password      The password to store
-     */
-    private void saveUserInfo(boolean okToStoreInfo, String userName, String password) {
-        // Get a reference to the Android Device's shared preferences, keeping
-        // this data private
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        // Get a reference to an object that can write to SharedPreferences
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        // If the user has checked "remember my login info", save that info to SharedPreferences
-        if (okToStoreInfo) {
-            editor.putString(getString(R.string.key_saved_username), userName);
-            editor.putString(getString(R.string.key_saved_password), password);
-        } else {
-            // Otherwise, overwrite saved data with empty strings
-            editor.putString(getString(R.string.key_saved_username), "");
-            editor.putString(getString(R.string.key_saved_password), "");
-        }
-        // Save the changes
-        editor.apply();
     }
 }
