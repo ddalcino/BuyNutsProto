@@ -79,7 +79,7 @@
             android:id="@+id/et2Phone"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:inputType="phone|none" />
+            android:inputType="phone" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"

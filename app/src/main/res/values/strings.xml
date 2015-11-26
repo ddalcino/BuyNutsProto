@@ -22,6 +22,7 @@
     <string name="btn_contact_seller">Contact Seller For Purchase</string>
     <string name="btn_make_offer">Make New Offer</string>
     <string name="btn_set_search_filter">Set Search Filter</string>
+    <string name="btn_submit_edited_offer">Submit Edited Offer</string>
 
     <string name="tv_ppu">Price Per Unit Wt</string>
     <string name="tv_min_weight">Min Weight</string>
@@ -35,6 +36,7 @@
     <string name="terms_not_specified">No terms specified</string>
     <string name="email">Email</string>
     <string name="telephone">Telephone</string>
+
     <string name="chkMyOffersOnly">Show all offers that I have made</string>
     <string name="chkShowExpired">Only show expired offers</string>
     <string name="chkShowAll">Show all items for one type of nut</string>
@@ -49,6 +51,8 @@
     <string name="registration_btn_register">Register Now</string>
 
     <string name="error_confirm_password">Password and Confirm Password fields do not match; please try again.</string>
+    <string name="btnDeleteOffer">Delete This Offer</string>
+    <string name="btnConfirmDelete">I\'m absolutely sure I want to delete this</string>
 
     <string-array name="array_commodities">
         <item>Walnut</item>

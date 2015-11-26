@@ -46,6 +46,23 @@ public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, Boolean>
 
             sellOfferEndpoint = builder.build();
         }
+
+        Long offerID = newSellOffer.getId();
+        if (offerID != null) {
+            Log.i(Constants.ASYNC_TAG, "This was an edited offer with id=" + offerID);
+            Log.i(Constants.ASYNC_TAG, "SellOfferFront=" + newSellOffer.toString());
+            Log.i(Constants.ASYNC_TAG, "SellOffer=" + newSellOffer.toSellOffer().toString());
+
+            try {
+                sellOfferEndpoint.update(offerID, newSellOffer.toSellOffer()).execute();
+                Log.i(Constants.ASYNC_TAG, "Update sellOffer succeeded");
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
         try {
             //sellOfferEndpoint.insert(newSellOffer).execute();
             String offer = newSellOffer.toInsertString();

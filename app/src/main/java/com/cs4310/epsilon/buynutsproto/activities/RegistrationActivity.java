@@ -2,6 +2,7 @@ package com.cs4310.epsilon.buynutsproto.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -15,10 +16,12 @@ public class RegistrationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         //sets layout to activity_registration
         setContentView(R.layout.activity_registration);
+
+        EditText etPhone = (EditText) findViewById(R.id.et2Phone);
+        etPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
     }
 

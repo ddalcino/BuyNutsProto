@@ -24,7 +24,7 @@ public class ViewSellOfferActivity extends AppCompatActivity {
         Log.i(Constants.TAG, "onCreate ViewSellOfferActivity");
 
         final SellOfferFront sellOffer = this.getIntent()
-                .getParcelableExtra("SellOffer");
+                .getParcelableExtra(Constants.VIEW_OFFER_KEY);
 
         String weightUnits = "lbs";
 

@@ -33,7 +33,7 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_search_filter);
 
-        mUid = this.getIntent().getLongExtra("uid", MainLoginActivity.INVALID_USERID);
+        mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY, MainLoginActivity.INVALID_USERID);
 
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_SF);

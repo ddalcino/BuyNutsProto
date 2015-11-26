@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.guiHelpers.FillSpinner;
+import com.cs4310.epsilon.buynutsproto.talkToBackend.DeleteOfferAsyncTask;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.MakeOfferAsyncTask;
 import com.cs4310.epsilon.nutsinterface.SellOfferFront;
 import com.cs4310.epsilon.nutsinterface.UnitsWt;
@@ -22,6 +23,8 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
  */
 public class MakeOfferActivity extends AppCompatActivity {
     private long mUid;
+    private boolean mIsEditingOwnOffer;
+    private SellOfferFront mOldOffer;
 
     Spinner spinUnitWt;
     Spinner spinCommodityType;
@@ -31,17 +34,85 @@ public class MakeOfferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_offer);
 
-        //get mUid from intent
-        mUid = this.getIntent().getLongExtra("mUid",
-                MainLoginActivity.INVALID_USERID);
-        Log.i(Constants.TAG, (mUid == MainLoginActivity.INVALID_USERID ?
-                "Didn't receive mUid" : "Received mUid=" + mUid));
-
+        // build UI
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_MO);
         FillSpinner.fill(this, R.array.array_wt_units, spinUnitWt);
 
         spinCommodityType = (Spinner) findViewById(R.id.spinnerCommodityType_MO);
         FillSpinner.fill(this, R.array.array_commodities, spinCommodityType);
+
+        //get mUid from intent
+        Intent intent = this.getIntent();
+        mUid = intent.getLongExtra(Constants.USER_ID_KEY,
+                MainLoginActivity.INVALID_USERID);
+        Log.i(Constants.TAG, (mUid == MainLoginActivity.INVALID_USERID ?
+                "Didn't receive mUid" : "Received mUid=" + mUid));
+
+        // Look for a SellOfferFront passed in arguments
+        mOldOffer = intent.getParcelableExtra(Constants.EDIT_OFFER_KEY);
+        // If it was null, then we're not editing the user's old offer
+        mIsEditingOwnOffer = mOldOffer != null;
+
+        if (mIsEditingOwnOffer) {
+            // Fill in UI elements with data from offerFront
+
+            // Default units conversion; we'll figure that out later
+            double unitConversion = 1.0;
+
+            EditText etPPU = (EditText) findViewById(R.id.etPPU_MO);
+            etPPU.setText("" + mOldOffer.getPricePerUnit()*unitConversion);
+
+            EditText etMinWeight = (EditText) findViewById(R.id.etMinWeight_MO);
+            etMinWeight.setText("" + mOldOffer.getMinWeight()/unitConversion);
+
+            EditText etMaxWeight = (EditText) findViewById(R.id.etMaxWeight_MO);
+            etMaxWeight.setText("" + mOldOffer.getMaxWeight() / unitConversion);
+
+            EditText etTerms = (EditText) findViewById(R.id.etTerms_MO);
+            etTerms.setText(mOldOffer.getTerms());
+
+            String[] commodities = getResources().getStringArray(R.array.array_commodities);
+            String chosenCommod = mOldOffer.getCommodity();
+            for (int i = 0; i < commodities.length; i++) {
+                if (commodities[i].toLowerCase().startsWith(chosenCommod)) {
+                    spinCommodityType.setSelection(i);
+                    break;
+                }
+            }
+
+            // Set title
+            setTitle(getResources().getString(R.string.activity_title_edit_sell_offer));
+            Button btnMakeOffer = (Button) findViewById(R.id.btnMakeOffer_MO);
+            btnMakeOffer.setText(getResources().getString(R.string.btn_submit_edited_offer));
+
+            Button btnDeleteOffer = (Button) findViewById(R.id.btnDeleteOffer);
+            btnDeleteOffer.setVisibility(View.VISIBLE);
+
+            btnDeleteOffer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Button btnDeleteOffer = (Button) findViewById(R.id.btnDeleteOffer);
+                    btnDeleteOffer.setVisibility(View.GONE);
+                    Button btnConfirmDelete = (Button) findViewById(R.id.btnConfirmDelete);
+                    btnConfirmDelete.setVisibility(View.VISIBLE);
+                }
+            });
+
+            Button btnConfirmDelete = (Button) findViewById(R.id.btnConfirmDelete);
+            btnConfirmDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Long offerID = mOldOffer.getId();
+                    // actually delete the offer
+                    new DeleteOfferAsyncTask(MakeOfferActivity.this).execute(offerID);
+
+                    // close the activity
+                    MakeOfferActivity.this.finish();
+
+                }
+            });
+        }
 
 
         // Set onclickListener
@@ -116,8 +187,15 @@ public class MakeOfferActivity extends AppCompatActivity {
         EditText etTerms = (EditText)findViewById(R.id.etTerms_MO);
         String terms = etTerms.getText().toString().trim();
 
-        //make the new SellOfferFront and return it
-        return new SellOfferFront(""+mUid, ppu, minWt, maxWt, terms, cType.toLowerCase());
+        if (mIsEditingOwnOffer) {
+            // make
+            SellOfferFront offer = new SellOfferFront("" + mUid, ppu, minWt, maxWt, terms, cType.toLowerCase());
+            offer.setId(mOldOffer.getId());
+            return offer;
+        } else {
+            //make the new SellOfferFront and return it
+            return new SellOfferFront("" + mUid, ppu, minWt, maxWt, terms, cType.toLowerCase());
+        }
     }
 
     public void reportInsertion (boolean insertionSucceeded) {
@@ -127,7 +205,7 @@ public class MakeOfferActivity extends AppCompatActivity {
             // make new Intent to send back to NewsActivity
             Intent intent = new Intent();
 
-            intent.putExtra("commodity", spinCommodityType.getSelectedItem().toString());
+            intent.putExtra(Constants.COMMODITY_KEY, spinCommodityType.getSelectedItem().toString());
 
             setResult(RESULT_OK, intent);
             // now NewsActivity knows that a new SellOffer was properly recorded
