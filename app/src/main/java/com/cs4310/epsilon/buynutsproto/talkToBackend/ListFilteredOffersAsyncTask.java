@@ -54,11 +54,18 @@ public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOf
 
             if(mFilter != null) {
 
+                String commodity = "";
+                String seller_id = "";
+                if(mFilter.getMyOwnOffersOnly()) {
+                    seller_id = mFilter.getAssociatedUserID().toString();
+                }
 
-                String seller_id = mFilter.getAssociatedUserID().toString();
-                String commodity = mFilter.getCommodity();
+                if (!mFilter.getMyOwnOffersOnly()) {
+                    commodity = mFilter.getCommodity();
+                }
                 Double min_weight = mFilter.getMinWeight();
                 Double max_weight = mFilter.getMaxWeight();
+                Log.i(Constants.ASYNC_TAG, "" + seller_id + ", " + commodity + ", " + min_weight + ", " + max_weight);
                 try {
                     return sellOfferEndpoint.fullQueryOffers(commodity, min_weight, max_weight, seller_id).execute().getItems();
                 } catch (IOException e) {

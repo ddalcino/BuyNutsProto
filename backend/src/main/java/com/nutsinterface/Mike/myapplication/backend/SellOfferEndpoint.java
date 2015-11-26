@@ -168,7 +168,7 @@ public class SellOfferEndpoint {
 
         Query<SellOffer> query = ofy().load().type(SellOffer.class).limit(limit);
 
-        if (commodity != null) {
+        if (!commodity.equals("")) {
             query = query.filter("commodity =",commodity);
         }
       /*  if(max_price != null && min_price != null) {
@@ -180,9 +180,11 @@ public class SellOfferEndpoint {
         else if (max_price != null) {
             query = query.filter("price_per_unit <=", max_price);
         }*/
-        if (seller_id != null) {
+
+        if (!seller_id.equals("")) {
             query = query.filter("seller_id =",seller_id);
     }
+        /*
         if (min_weight != null && max_weight != null) {
             query = query.filter("min_weight >=", min_weight).filter("min_weight <=", max_weight);
         }
@@ -193,8 +195,8 @@ public class SellOfferEndpoint {
         else if (max_weight != null) {
             query = query.filter("min_weight <=", max_weight);
         }
-
-        query.order("price_per_unit");
+*/
+        //query.order("price_per_unit");
         QueryResultIterator<SellOffer> queryIterator = query.iterator();
         List<SellOffer> sellOfferList = new ArrayList<SellOffer>(limit);
         while (queryIterator.hasNext()) {
