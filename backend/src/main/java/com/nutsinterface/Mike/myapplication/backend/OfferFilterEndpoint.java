@@ -27,7 +27,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
  * DO NOT deploy this code unchanged as part of a real application to real users.
  */
 @Api(
-        name = "offerFilterApi",
+        name = "offerFilterEndpoint",
         version = "v1",
         resource = "offerFilter",
         namespace = @ApiNamespace(
@@ -153,11 +153,13 @@ public class OfferFilterEndpoint {
             path="offerFilter/submit",
             httpMethod = ApiMethod.HttpMethod.POST
     )
-    public OfferFilter register(OfferFilter offerFilter) {
+    public OfferFilter submitFilter(OfferFilter offerFilter) {
         Query<OfferFilter> offerFound = ofy().load().type(OfferFilter.class);
 
-        offerFound = offerFound.filter(" =", offerFilter.getAssociatedUserID());
-        if (offerFound.count() == 0) {
+        offerFound = offerFound.filter("associatedUserID =", offerFilter.getAssociatedUserID());
+        QueryResultIterator<OfferFilter> queryIterator = offerFound.iterator();
+
+        if (!queryIterator.hasNext()) {
             /*
             String userName, String password, String name, String email, String telephone
 
@@ -166,16 +168,67 @@ public class OfferFilterEndpoint {
             ofy().save().entity(offerFilter).now();
             return ofy().load().entity(offerFilter).now();
         }
-        else if(offerFound.count() == 1) {
-            OfferFilter of = offerFound.first().safe();
-            ofy().delete().entity(of).now();
+        else {
+            OfferFilter oldOfferFilter = queryIterator.next();
+            try {
+                checkExists(oldOfferFilter.getId());
+                update(oldOfferFilter.getId(),offerFilter);
+            }
+            catch(NotFoundException ne) {
+                return null;
+            }
+            /*
+            while (queryIterator.hasNext()) {
+
+                OfferFilter q = queryIterator.next();
+                queryIterator.remove();
+                try {
+                    checkExists(q.getId());
+                    remove(q.getId());
+                }
+                catch (NotFoundException e) {
+                    return null;
+                }
+                */
+
+                //queryIterator.remove();
+                //ofy().delete().entity(q).now();
+                //queryIterator.remove();
+            }
+/*
+            //OfferFilter of = offerFound.first().safe();
+            //ofy().load().entity(of).now();
+            //ofy().delete().entity(of).now();
             ofy().save().entity(offerFilter).now();
             return ofy().load().entity(offerFilter).now();
+        */return offerFilter;
         }
 
 
-        return null;
+        //return null;
+
+    @ApiMethod(
+            name="retrieveFilter",
+            path="offerFilter/retrieve",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public OfferFilter retrieveFilter(@Named("associatedUserID") Long associatedUserID) {
+        Query<OfferFilter> offerFound = ofy().load().type(OfferFilter.class);
+        offerFound = offerFound.filter("associatedUserID =", associatedUserID);
+        QueryResultIterator<OfferFilter> queryIterator = offerFound.iterator();
+        if (queryIterator.hasNext()) {
+            OfferFilter retrieved = queryIterator.next();
+            return retrieved;
+            }
+
+        else {
+            return null;
+        }
+
+
+
+        //return null;
     }
+
 
     private void checkExists(Long Id) throws NotFoundException {
         try {

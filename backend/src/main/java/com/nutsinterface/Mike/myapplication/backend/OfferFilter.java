@@ -106,7 +106,18 @@ public class OfferFilter {
     public void setLatest(Long latest) {
         this.latest = latest;
     }
-
+/*
+    Long associatedUserID;
+    String commodity;
+    Double minWeight;
+    Double maxWeight;
+    Double minPricePerUnit;
+    Double maxPricePerUnit;
+    Boolean expired;
+    Boolean myOwnOffersOnly;
+    Long earliest;
+    Long latest;
+    */
     Double maxWeight;
     Double minPricePerUnit;
     Double maxPricePerUnit;
