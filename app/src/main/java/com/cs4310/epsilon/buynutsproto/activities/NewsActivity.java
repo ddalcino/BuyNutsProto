@@ -44,6 +44,7 @@ public class NewsActivity extends AppCompatActivity {
     static final int REQUEST_CODE_SEARCH_FILTER = 0;
     static final int REQUEST_CODE_MAKE_OFFER = 1;
     static final int REQUEST_CODE_EDIT_OFFER = 2;
+    static final int REQUEST_CODE_VIEW_OFFER = 3;
 
     // instance data members
     /**
@@ -174,10 +175,13 @@ public class NewsActivity extends AppCompatActivity {
                     Intent intent = new Intent(NewsActivity.this, ViewSellOfferActivity.class);
                     intent.putExtra(Constants.VIEW_OFFER_KEY, choice);
 
-
+                    // In this case, we will ask the ViewSellOfferActivity for
+                    // a result when it closes; this allows us to retrieve the
+                    // sellerID in the case that this user wants to see all the
+                    // other offers made by that seller
 
                     //create another activity
-                    NewsActivity.this.startActivity(intent);
+                    NewsActivity.this.startActivityForResult(intent, REQUEST_CODE_VIEW_OFFER);
                     //refer to parent reference - can't just say "this", that's the inner class
                 }
             }
@@ -208,7 +212,20 @@ public class NewsActivity extends AppCompatActivity {
             // otherwise resultCode would not be RESULT_OK or requestCode would be something else
 
             String commodity = data.getStringExtra(Constants.COMMODITY_KEY);
-            setStatusMsg("New offer for " + commodity +" inserted ok");
+            setStatusMsg("New offer for " + commodity + " inserted ok");
+        } else if (requestCode == REQUEST_CODE_VIEW_OFFER) {
+            // If we've made it to this point, the user must have clicked
+            // "View this seller's other offers", so there must be a userID in data
+            Long sellerId = data.getLongExtra(Constants.SELLER_ID_KEY, Constants.INVALID_USER_ID);
+
+            // Make a filter that has associatedSellerId and nothing else
+            mFilter = new RequestFilteredSellOffer(sellerId, "walnut", 0d, 0d, 0d, 0d, false, true);
+
+            Log.i(TAG, "NewsActivity made filter for sellerID: " + mFilter.toString());
+            setStatusMsg("Requesting seller's offers from server...");
+
+            new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);
+
         } else {
             // handle other requestCode values here
         }

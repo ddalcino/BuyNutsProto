@@ -72,5 +72,6 @@
     <string name="key_saved_password">savedPassword</string>
     <string name="key_saved_filter">savedFilter</string>
     <string name="key_saved_units_weight">savedUnitsWt</string>
+    <string name="btn_view_sellers_other_offers">View This Seller\'s Other Offers</string>
 
 </resources>

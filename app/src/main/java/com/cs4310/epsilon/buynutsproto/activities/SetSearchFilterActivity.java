@@ -20,7 +20,7 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 public class SetSearchFilterActivity extends AppCompatActivity {
 
-    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "SetSearchFilter";
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "SetSearchFil";
 
     public static final String SEARCH_FILTER_KEY = "filter";
 

@@ -15,6 +15,7 @@ public class Constants {
     static final String COMMODITY_KEY = "commodity";
     static final String EDIT_OFFER_KEY = "editSellOffer";
     static final String VIEW_OFFER_KEY = "viewSellOffer";
+    static final String SELLER_ID_KEY = "sellerId";
 
     public static final long INVALID_USER_ID = -1l;
 }
