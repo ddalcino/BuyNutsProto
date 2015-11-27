@@ -5,12 +5,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * A class that manages a SQLite database stored locally on the Android device.
  * Created by dave on 11/25/15.
  */
 public class LocalSqlHelper extends SQLiteOpenHelper {
+    /**
+     * Database version number; increment this any time you need to change
+     * the way the table is built
+     */
     public static final int DATABASE_VERSION = 2;
+    /** The name of the database */
     public static final String DATABASE_NAME = "BuyNutsStorage.db";
 
+    /**
+     * Inner class Contract: defines a contract for a table called Preferences
+     * and provides static variable names for each column of data in the table
+     */
     public static final class Contract {
         static final String
                 TABLE_NAME = "Preferences",
@@ -24,16 +34,19 @@ public class LocalSqlHelper extends SQLiteOpenHelper {
                 MIN_PPU = "minPPU",
                 MAX_PPU = "maxPPU",
                 SINGLE_SELLER_ONLY = "singleSellerOnly",
-                SINGLE_COMMODITY_ONLY = "singleCommodityOnly"
-        ;
-
+                SINGLE_COMMODITY_ONLY = "singleCommodityOnly";
     }
 
-    private static final String TEXT_TYPE = " TEXT";
-    private static final String LONG_TYPE = " INTEGER";
-    private static final String DOUBLE_TYPE = " REAL";
-    private static final String BOOLEAN_TYPE = " INTEGER";
-    private static final String COMMA_SEP = ",";
+    /** Definitions to help convert Java datatypes to SQLite datatypes */
+    private static final String
+            TEXT_TYPE = " TEXT",
+            LONG_TYPE = " INTEGER",
+            DOUBLE_TYPE = " REAL",
+            BOOLEAN_TYPE = " INTEGER",
+    /** Comma separator */
+            COMMA_SEP = ",";
+
+    /** SQL statement to create the SQL table */
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Contract.TABLE_NAME + " (" +
                     Contract._ID + LONG_TYPE + " PRIMARY KEY," +
@@ -49,9 +62,15 @@ public class LocalSqlHelper extends SQLiteOpenHelper {
                     Contract.SINGLE_COMMODITY_ONLY + BOOLEAN_TYPE +
                     " )";
 
+    /** SQL statement to delete the SQL table */
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + Contract.TABLE_NAME;
 
+    /**
+     * constructor, ensures that the database knows what version of the SQL
+     * database we're using, and uses that information to decide when to
+     * upgrade
+     */
     public LocalSqlHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -97,10 +116,11 @@ public class LocalSqlHelper extends SQLiteOpenHelper {
     }
 
     /**
-     *
-     * @param db
-     * @param oldVersion
-     * @param newVersion
+     * Called when the version you're using is lower than the version that
+     * already exists
+     * @param db         The database
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
      */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

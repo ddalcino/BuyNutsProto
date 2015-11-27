@@ -28,9 +28,12 @@ import java.util.ArrayList;
  * most of the screen.
  */
 public class NewsActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
     // constants
 
     private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "News";
+
+    private static final String DEFAULT_COMMODITY = "walnut";
 
     /**
      * This is a request code for a search filter, used to notify the
@@ -49,6 +52,7 @@ public class NewsActivity extends AppCompatActivity {
     static final int REQUEST_CODE_EDIT_OFFER = 2;
     static final int REQUEST_CODE_VIEW_OFFER = 3;
 
+    ///////////////////////////////////////////////////////////////////////////
     // instance data members
     /**
      * The user ID, which is set by the MainLoginActivity when the user logs in.
@@ -57,9 +61,10 @@ public class NewsActivity extends AppCompatActivity {
      */
     private long mUid = MainLoginActivity.INVALID_USERID;
 
+    /** Preferred units of weight */
     private String mUnitsWt;
 
-
+    /** The filter set by the user, used to the backend for SellOffers */
     private RequestFilteredSellOffer mFilter;
 
     /**
@@ -79,21 +84,39 @@ public class NewsActivity extends AppCompatActivity {
      */
     private ArrayList<SellOfferFront> mSellOffers;
 
+    ///////////////////////////////////////////////////////////////////////////
+    // methods
+
+    /**
+     * Creates the NewsActivity UI and initializes member variables; the first
+     * thing called when the app launches a NewsActivity
+     * @param savedInstanceState    Data saved from an earlier instance of this
+     *                              activity: only exists if the user hasn't
+     *                              clicked the back button
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
         //get mUid from intent
-        mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY, MainLoginActivity.INVALID_USERID);
-        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ? "Didn't receive mUid" : "Received mUid=" + mUid));
-
-        //get mListView
-        mListView = (ListView) findViewById(R.id.listView);
-        updateListView();
+        mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY,
+                MainLoginActivity.INVALID_USERID);
+        Log.i(TAG, (
+                mUid == MainLoginActivity.INVALID_USERID ?
+                        "Didn't receive mUid" :
+                        "Received mUid=" + mUid
+        ));
 
         //get mUnitsWt from sql
         mUnitsWt = LocalDataHandler.getPrefUnitsWt(this, mUid);
+
+        //get saved filter from sql
+        mFilter = LocalDataHandler.getSavedFilter(this, mUid);
+
+        //get mListView
+        mListView = (ListView) findViewById(R.id.listView);
+
 
         // set OnClickListeners:
         /**
@@ -199,24 +222,59 @@ public class NewsActivity extends AppCompatActivity {
             }
         });
 
+        // if filter is not null, retrieve offers
+        if (mFilter != null) {
+            new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);
+        }
     }
 
+    /**
+     * Runs when the user returns to this Activity from another Activity.
+     * <p>If we're returning from SetSearchFilterActivity, this method will
+     * retrieve the search filter, save it, and run ListFilteredOffersAsyncTask</p>
+     * <p>If we're returning from MakeOfferActivity after making a new offer,
+     * this method will set the status message to reflect that the offer was
+     * inserted OK. It will not refresh the ListView.</p>
+     * <p>If we're returning from MakeOfferActivity after editing an old offer,
+     * this method will set the status message to reflect that the offer was
+     * edited OK. It will not refresh the ListView.</p>
+     * <p>If we're returning from ViewSellOffer, and the user has requested a new
+     * search filter from that activity, this method saves that filter and
+     * runs ListFilteredOffersAsyncTask</p>
+     *
+     * <p>Any time this activity needs to launch a new Activity, it calls
+     * '.startActivityForResult()', and sends it an integer requestCode. When
+     * that activity ends (either because it called '.finish()' on its own, or
+     * because the user clicked the back button), this method is called, and it
+     * automatically receives these parameters:</p>
+     * @param requestCode   The same requestCode that this Activity sent to the
+     *                      new Activity when it was launched
+     * @param resultCode    Equal to Activity.RESULT_OK if the other Activity
+     *                      successfully sent data back to this Activity,
+     *                      otherwise it's something else
+     * @param data          An intent that holds any data sent to this Activity
+     *                      from the other Activity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         Log.i(TAG, "NewsActivity.onActivityResult()");
 
-        if(resultCode == Activity.RESULT_OK) {
-            String unitsWt = data.getStringExtra(Constants.PREF_UNITS_WT);
-            if (unitsWt != null) {
-                mUnitsWt = unitsWt;
-            } else {
-                mUnitsWt = LocalDataHandler.getPrefUnitsWt(this, mUid);
-            }
-        }
-
+        // If we don't have data from the other activity, don't do anything here
         if(resultCode != Activity.RESULT_OK) {
             Log.i(TAG, "didn't get an intent from activity");
-        } else if(requestCode == REQUEST_CODE_SEARCH_FILTER) {
+            return;
+        }
+
+        //Set units of weight
+        String unitsWt = data.getStringExtra(Constants.PREF_UNITS_WT);
+        if (unitsWt != null) {
+            mUnitsWt = unitsWt;
+        } else {
+            mUnitsWt = LocalDataHandler.getPrefUnitsWt(this, mUid);
+        }
+
+        // If we're coming back from SetSearchFilterActivity
+        if(requestCode == REQUEST_CODE_SEARCH_FILTER) {
             // now we know that a SetSearchFilterActivity has sent us this intent
             Log.i(TAG, "successfully obtained intent from SetSearchFilterActivity");
             // we can retrieve info from intent 'data' here
@@ -228,25 +286,45 @@ public class NewsActivity extends AppCompatActivity {
 
             new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);
 
-            //Toast.makeText(this, mFilter.toString(), Toast.LENGTH_SHORT).show();
+            // Save the filter to SQL
+            LocalDataHandler.saveLocalFilter(this, mFilter, mUid);
+
+        // If we're coming back from MakeOfferActivity
         } else if (requestCode == REQUEST_CODE_MAKE_OFFER) {
             // The only way to get here is if the user made an offer successfully;
             // otherwise resultCode would not be RESULT_OK or requestCode would be something else
 
             String commodity = data.getStringExtra(Constants.COMMODITY_KEY);
-            setStatusMsg("New offer for " + commodity + " inserted ok");
+            setStatusMsg("New offer for " + commodity +
+                    " inserted ok; click 'Refresh' to see it");
+
+        // If we're coming back from MakeOfferActivity
+        } else if (requestCode == REQUEST_CODE_EDIT_OFFER) {
+            // The only way to get here is if the user made an offer successfully;
+            // otherwise resultCode would not be RESULT_OK or requestCode would be something else
+
+            String commodity = data.getStringExtra(Constants.COMMODITY_KEY);
+            setStatusMsg("Old offer for " + commodity +
+                    " edited ok; click 'Refresh' to see it");
+
+        // If we're coming back from ViewSellOfferActivity
         } else if (requestCode == REQUEST_CODE_VIEW_OFFER) {
             // If we've made it to this point, the user must have clicked
             // "View this seller's other offers", so there must be a userID in data
-            Long sellerId = data.getLongExtra(Constants.SELLER_ID_KEY, Constants.INVALID_USER_ID);
+            Long sellerId = data.getLongExtra(Constants.SELLER_ID_KEY,
+                    Constants.INVALID_USER_ID);
 
             // Make a filter that has associatedSellerId and nothing else
-            mFilter = new RequestFilteredSellOffer(sellerId, "walnut", 0d, 0d, 0d, 0d, false, true);
+            mFilter = new RequestFilteredSellOffer(sellerId, DEFAULT_COMMODITY,
+                    0d, 0d, 0d, 0d, false, true);
 
             Log.i(TAG, "NewsActivity made filter for sellerID: " + mFilter.toString());
             setStatusMsg("Requesting seller's offers from server...");
 
             new ListFilteredOffersAsyncTask(NewsActivity.this).execute(mFilter);
+
+            // Save the filter to SQL
+            LocalDataHandler.saveLocalFilter(this, mFilter, mUid);
 
         } else {
             // handle other requestCode values here
@@ -279,13 +357,17 @@ public class NewsActivity extends AppCompatActivity {
 
     /**
      * Displays a message in the status bar at the bottom of the screen.
-     * @param statusMsg The message to display
+     * @param statusMsg     The message to display
      */
     public void setStatusMsg(String statusMsg) {
         TextView tv = (TextView) findViewById(R.id.tvStatus_News);
         tv.setText(statusMsg);
     }
 
+    /**
+     * Causes the activity not to lose all data if the user reorients the screen
+     * @param newConfig     The new Configuration
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
