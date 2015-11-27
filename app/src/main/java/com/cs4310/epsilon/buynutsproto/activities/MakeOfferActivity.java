@@ -24,17 +24,38 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
  * it to the backend
  */
 public class MakeOfferActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
 
+    /** A tag for logs, specific to this class */
     private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "MakeOffer";
 
 
+    ///////////////////////////////////////////////////////////////////////////
+    // instance data members
+
+    /** Stores the current user's userID */
     private long mUid;
+    /**
+     * Remembers whether or not the user is making a new offer, or editing an
+     * offer that has already been posted
+     */
     private boolean mIsEditingOwnOffer;
+    /** If we're editing an old offer, this holds what the old offer was */
     private SellOfferFront mOldOffer;
 
-    Spinner spinUnitWt;
-    Spinner spinCommodityType;
+    /** Spinner objects that let the user select units and commodity type */
+    Spinner spinUnitWt,
+            spinCommodityType;
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
+    /**
+     * Entry point of the activity: builds the UI
+     * @param savedInstanceState    data from the previous instance, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +77,8 @@ public class MakeOfferActivity extends AppCompatActivity {
         //get mUid from intent
         Intent intent = this.getIntent();
         mUid = intent.getLongExtra(Constants.USER_ID_KEY,
-                MainLoginActivity.INVALID_USERID);
-        Log.i(TAG, (mUid == MainLoginActivity.INVALID_USERID ?
+                Constants.INVALID_USER_ID);
+        Log.i(TAG, (mUid == Constants.INVALID_USER_ID ?
                 "Didn't receive mUid" : "Received mUid=" + mUid));
 
         // Look for a SellOfferFront passed in arguments
@@ -134,9 +155,6 @@ public class MakeOfferActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //create SellOfferFront
                 SellOfferFront newOffer = getSellOfferFromUI();
-//                Toast.makeText(MakeOfferActivity.this,
-//                        "SellOfferFront is: " + newOffer,
-//                        Toast.LENGTH_LONG).show();
                 if (newOffer != null) {
                     new MakeOfferAsyncTask(MakeOfferActivity.this).execute(newOffer);
                 }

@@ -28,15 +28,32 @@ import java.util.List;
  * Created by Mike on 11/5/2015.
  */
 public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void, List<SellOffer>> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "ListFilteredOfr";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static SellOfferEndpoint sellOfferEndpoint = null;
+    /** The Activity that called this AsyncTask */
     private Context context;
+    /**
+     * The filter to send to the backend. It exists as a member variable
+     * instead of a local variable because the onPostExecute method needs
+     * access to it, and we can't pass it directly without a lot of trouble.
+     */
     private RequestFilteredSellOffer mFilter = null;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
     public ListFilteredOffersAsyncTask(Context context) {
         this.context = context;
     }
@@ -78,14 +95,8 @@ public class ListFilteredOffersAsyncTask extends AsyncTask<RequestFilteredSellOf
                 }
             }
         return null;
-/*
-        } catch (IOException e) {
-            Log.d(TAG, e.getMessage());
-            return Collections.EMPTY_LIST;
-        }
-        */
-
     }
+
     @Override
     protected void onPostExecute(List<SellOffer> result) {
         ArrayList<SellOfferFront> sellOffers = new ArrayList<SellOfferFront>();

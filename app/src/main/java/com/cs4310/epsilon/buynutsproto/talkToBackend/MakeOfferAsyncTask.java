@@ -23,14 +23,26 @@ import java.io.IOException;
  * Created by Mike on 11/5/2015.
  */
 public class MakeOfferAsyncTask extends AsyncTask<SellOfferFront, Void, Boolean> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "MakeOffer";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static SellOfferEndpoint sellOfferEndpoint = null;
+    /** The Activity that called this AsyncTask */
     private Context context;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
     public MakeOfferAsyncTask(Context context) {
         this.context = context;
     }

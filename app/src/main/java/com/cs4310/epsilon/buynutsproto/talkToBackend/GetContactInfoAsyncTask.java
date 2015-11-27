@@ -38,14 +38,27 @@ import java.util.List;
  * Created by Dave on 11/13/2015.
  */
 public class GetContactInfoAsyncTask extends AsyncTask<Long, Void, ArrayList<String>> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "GetContactInfo";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static NutsUserApi contactInfoEndpoint = null;
+
+    /** The Activity that called this AsyncTask */
     private Context context;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
     public GetContactInfoAsyncTask(Context context) {
         this.context = context;
     }

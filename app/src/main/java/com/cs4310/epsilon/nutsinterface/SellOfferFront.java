@@ -7,12 +7,6 @@ import android.os.Parcelable;
 import com.cs4310.epsilon.buynutsproto.activities.Constants;
 import com.nutsinterface.mike.myapplication.backend.sellOfferEndpoint.model.SellOffer;
 
-// Used to convert between backend objects and frontend objects
-
-//import com.googlecode.objectify.annotation.Entity;
-//import com.googlecode.objectify.annotation.Id;
-//import com.googlecode.objectify.annotation.Index;
-
 /**
  * Holds all pertinent data that a user or seller could want regarding an
  * offer to sell a commodity. Meant to be made by sellers, and read by buyers.

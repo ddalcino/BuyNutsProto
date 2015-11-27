@@ -22,14 +22,26 @@ import java.util.List;
  * Created by Dave on 11/24/2015.
  */
 public class DeleteOfferAsyncTask extends AsyncTask<Long, Void, Boolean> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "DeleteOffer";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static SellOfferEndpoint sellOfferEndpoint = null;
+    /** The Activity that called this AsyncTask */
     private Context context;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
     public DeleteOfferAsyncTask(Context context) {
         this.context = context;
     }

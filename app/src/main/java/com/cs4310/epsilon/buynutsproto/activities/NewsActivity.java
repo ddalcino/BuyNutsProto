@@ -31,35 +31,47 @@ public class NewsActivity extends AppCompatActivity {
     ///////////////////////////////////////////////////////////////////////////
     // constants
 
+    /** A tag for logs, specific to this class */
     private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "News";
-
+    /**
+     * The default choice for a commodity; used if the activity absolutely
+     * must create a RequestFilteredSellOffer but has no commodity choice
+     * to do so. Without this, the constructor would fail.
+     */
     private static final String DEFAULT_COMMODITY = "walnut";
 
     /**
-     * This is a request code for a search filter, used to notify the
-     * NewsActivity which activity is sending it data. For example, this
-     * activity starts a new SetSearchFilterActivity when the user clicks
-     * "Set Search Filter" (using startActivityForResult), and it sends that
-     * activity this request code in an intent. When that activity finishes,
-     * the method onActivityResult() will be called, and that method needs some
-     * means of figuring out what sequence of events occurred before the start
-     * of that method. This request code is used to tell that method that the
-     * user clicked on "Set Search Filter" to cause this sequence of events,
-     * so the method can respond appropriately to the data passed in the intent.
+     * <p>
+     * These are request codes, used to notify the NewsActivity which activity
+     * is sending it data.
+     * </p><p>
+     * For example, this activity starts a new SetSearchFilterActivity when the
+     * user clicks "Set Search Filter" (using startActivityForResult), and it
+     * sends that activity the request code REQUEST_CODE_SEARCH_FILTER in an
+     * intent. When that activity finishes, the method onActivityResult() will
+     * be called, and that method needs some means of figuring out what
+     * sequence of events occurred before the start of that method.
+     * </p><p>
+     * The request code is used to tell onActivityResult() which button the
+     * user clicked on to cause this sequence of events, so the method can
+     * respond appropriately to the data passed in the intent.
+     * </p>
      */
-    static final int REQUEST_CODE_SEARCH_FILTER = 0;
-    static final int REQUEST_CODE_MAKE_OFFER = 1;
-    static final int REQUEST_CODE_EDIT_OFFER = 2;
-    static final int REQUEST_CODE_VIEW_OFFER = 3;
+    static final int
+            REQUEST_CODE_SEARCH_FILTER = 0,
+            REQUEST_CODE_MAKE_OFFER = 1,
+            REQUEST_CODE_EDIT_OFFER = 2,
+            REQUEST_CODE_VIEW_OFFER = 3;
 
     ///////////////////////////////////////////////////////////////////////////
     // instance data members
+
     /**
      * The user ID, which is set by the MainLoginActivity when the user logs in.
      * This value is initialized by default to an invalid user ID, so the
      * program will know if the user reached this point in error.
      */
-    private long mUid = MainLoginActivity.INVALID_USERID;
+    private long mUid = Constants.INVALID_USER_ID;
 
     /** Preferred units of weight */
     private String mUnitsWt;
@@ -85,7 +97,7 @@ public class NewsActivity extends AppCompatActivity {
     private ArrayList<SellOfferFront> mSellOffers;
 
     ///////////////////////////////////////////////////////////////////////////
-    // methods
+    // member methods
 
     /**
      * Creates the NewsActivity UI and initializes member variables; the first
@@ -101,9 +113,9 @@ public class NewsActivity extends AppCompatActivity {
 
         //get mUid from intent
         mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY,
-                MainLoginActivity.INVALID_USERID);
+                Constants.INVALID_USER_ID);
         Log.i(TAG, (
-                mUid == MainLoginActivity.INVALID_USERID ?
+                mUid == Constants.INVALID_USER_ID ?
                         "Didn't receive mUid" :
                         "Received mUid=" + mUid
         ));

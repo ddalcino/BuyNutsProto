@@ -24,18 +24,19 @@ import com.cs4310.epsilon.buynutsproto.talkToBackend.LoginAsyncTask;
  * activity.
  */
 public class MainLoginActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
 
-    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "MainLoginActivity";
+    /** A tag for logs, specific to this class */
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "MainLogin";
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
 
     /**
-     * The minimum valid user id.
+     * Entry point of the activity: builds the UI
+     * @param savedInstanceState    data from the previous instance, if any
      */
-    static final long MIN_USERID = 0;
-    /**
-     * Used to denote that a user id is invalid
-     */
-    static final long INVALID_USERID = -1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

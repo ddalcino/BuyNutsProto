@@ -17,16 +17,26 @@ import java.io.IOException;
  * Created by Mike on 11/25/2015.
  */
 public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSellOffer> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "GetFilter";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static OfferFilterEndpoint offerFilterEndpoint = null;
+
+    /** The Activity that called this AsyncTask */
     private Context context;
-    //private static RequestFilteredSellOffer requestFilteredSellOffer = null;
-    //private static OfferFilter offerFilter = null;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
 
     public GetFilterAsyncTask(Context context) {
             this.context = context;
@@ -37,8 +47,6 @@ public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSel
                 return null;
             }
             Long associatedUserID = params[0];
-
-
 
             if (offerFilterEndpoint == null) {
                 OfferFilterEndpoint.Builder builder = new OfferFilterEndpoint.Builder(

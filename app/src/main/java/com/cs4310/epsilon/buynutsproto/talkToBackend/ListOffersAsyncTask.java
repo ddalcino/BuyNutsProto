@@ -23,14 +23,26 @@ import java.util.List;
  * Created by Mike on 11/5/2015.
  */
 public class ListOffersAsyncTask extends AsyncTask<Long, Void, List<SellOffer>> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "ListOffers";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static SellOfferEndpoint sellOfferEndpoint = null;
+    /** The Activity that called this AsyncTask */
     private Context context;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
     public ListOffersAsyncTask(Context context) {
         this.context = context;
     }

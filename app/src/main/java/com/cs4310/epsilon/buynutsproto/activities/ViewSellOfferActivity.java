@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cs4310.epsilon.buynutsproto.R;
 import com.cs4310.epsilon.buynutsproto.talkToBackend.GetContactInfoAsyncTask;
@@ -17,8 +18,20 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
  * An activity used to provide a detailed look at a SellOfferFront object.
  */
 public class ViewSellOfferActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
+    /** A tag for logs, specific to this class */
     private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "ViewSellOfr";
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
+    /**
+     * Entry point of the activity: builds the UI
+     * @param savedInstanceState    data from the previous instance, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +48,8 @@ public class ViewSellOfferActivity extends AppCompatActivity {
             weightUnits = "lb";
         }
 
-        double unitConversion = UnitsWt.unitConversion(UnitsWt.Type.LB, UnitsWt.toType(weightUnits));
-
-
-
-        //String weightUnits = "lbs";
+        double unitConversion = UnitsWt.unitConversion(
+                UnitsWt.Type.LB, UnitsWt.toType(weightUnits));
 
         TextView tvCommod = (TextView) findViewById(R.id.tvCommod_VSO);
         tvCommod.setText(sellOffer.getCommodityPretty());
@@ -72,10 +82,10 @@ public class ViewSellOfferActivity extends AppCompatActivity {
                 try {
                     Long sellerId = Long.parseLong(sellOffer.getSellerId());
 
-                    // Start an AsyncTask that gets seller contact info and passes it into the next activity
+                    // Start an AsyncTask that gets seller contact info
+                    // and passes it into the next activity
                     new GetContactInfoAsyncTask(ViewSellOfferActivity.this).execute(sellerId);
 
-                    //startActivity(new Intent(ViewSellOfferActivity.this, ContactSellerActivity.class));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -105,9 +115,12 @@ public class ViewSellOfferActivity extends AppCompatActivity {
                     // Close down the activity and send the user back to NewsActivity
                     ViewSellOfferActivity.this.finish();
 
-                    //startActivity(new Intent(ViewSellOfferActivity.this, ContactSellerActivity.class));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
+                    Log.i(TAG, "Seller ID is not a valid Long");
+                    Toast.makeText(ViewSellOfferActivity.this,
+                            "Cannot determine who this seller is",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

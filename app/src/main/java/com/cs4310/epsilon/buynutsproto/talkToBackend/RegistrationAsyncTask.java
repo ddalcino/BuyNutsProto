@@ -23,14 +23,26 @@ import java.io.IOException;
  * Created by dave on 11/20/15.
  */
 public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "Registration";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // data members
+
+    /** An Endpoint, used to communicate with the backend */
     private static NutsUserApi nutsUserEndpoint = null;
+    /** The Activity that called this AsyncTask */
     private Context context;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
     public RegistrationAsyncTask(Context context) {
         this.context = context;
     }

@@ -21,24 +21,39 @@ import com.cs4310.epsilon.nutsinterface.UnitsWt;
 
 
 public class SetSearchFilterActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
 
+    /** A tag for logs, specific to this class */
     private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "SetSearchFil";
 
     public static final String SEARCH_FILTER_KEY = "filter";
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // instance data members
 
     /**
      * Spinner objects used to obtain commodity type and weight unit type from
      * the user
      */
     private Spinner spinCommodityType, spinUnitWt;
+    /** The user's id */
     private long mUid;
 
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
+    /**
+     * Entry point of the activity: builds the UI
+     * @param savedInstanceState    data from the previous instance, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_search_filter);
 
-        mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY, MainLoginActivity.INVALID_USERID);
+        mUid = this.getIntent().getLongExtra(Constants.USER_ID_KEY, Constants.INVALID_USER_ID);
 
 
         spinUnitWt = (Spinner) findViewById(R.id.spinnerWeightUnits_SF);
@@ -65,10 +80,6 @@ public class SetSearchFilterActivity extends AppCompatActivity {
 
                 // If we have a real RequestFilteredSellOffer object, send it to the server
                 if(newFilter != null) {
-//                   Toast.makeText(
-//                            SetSearchFilterActivity.this.getApplicationContext(),
-//                            "RequestFilteredSellOffer is: " + newFilter.toString(),
-//                            Toast.LENGTH_LONG).show();
                     Log.i(TAG, "SetSearchFilterActivity made filter: " + newFilter.toString());
 
                     // make new Intent to send back to NewsActivity
@@ -212,6 +223,16 @@ public class SetSearchFilterActivity extends AppCompatActivity {
                 expiredOffersOnly, myOwnOffersOnly);
     }
 
+    /**
+     * Turns on or off most of the UI; should be called in response to a check
+     * button.
+     * Turns off (or on) the text fields for min and max PPU, min and max
+     * weight, and the spinners for commodity type and weight units.
+     * @param active                Whether to turn everything on or off
+     * @param affectCommodityType   If this is false, the spinner for commodity
+     *                              type will not be affected; otherwise, it
+     *                              will be changed just like the other widgets
+     */
     public void setControlsActive(boolean active, boolean affectCommodityType) {
         EditText etMinPPU = (EditText) findViewById(R.id.etMinPPU_SF);
         EditText etMaxPPU = (EditText) findViewById(R.id.etMaxPPU_SF);
@@ -230,6 +251,11 @@ public class SetSearchFilterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Set the units of weight spinner to a given commodity type
+     * @param chosenUnits   The string representation of the units you would
+     *                      like to choose
+     */
     public void setUnitsSelection(String chosenUnits) {
         String[] unitTypes = getResources().getStringArray(R.array.array_wt_units);
         for (int i = 0; i < unitTypes.length; i++) {

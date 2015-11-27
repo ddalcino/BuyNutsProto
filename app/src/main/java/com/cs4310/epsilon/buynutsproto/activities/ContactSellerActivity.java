@@ -13,15 +13,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ContactSellerActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
 
-    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "ContactSeller";
+    /** A tag for logs, specific to this class */
+    private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "ContactSellr";
 
+    ///////////////////////////////////////////////////////////////////////////
     // instance data members
 
-    String mPhoneNumber;
-    String mSellerName;
-    String mEmailAddress;
+    /** Strings that store the seller's contact info */
+    String  mPhoneNumber,
+            mSellerName,
+            mEmailAddress;
 
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
+    /**
+     * Entry point of the activity: builds the UI
+     * @param savedInstanceState    data from the previous instance, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

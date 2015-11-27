@@ -63,7 +63,7 @@ public class RequestFilteredSellOffer implements Parcelable {
     }
 
     /**
-     *
+     * Constructor that fills in all the parameters EXCEPT latest
      * @param associatedUserID
      * @param commodity
      * @param minWeight
@@ -79,16 +79,16 @@ public class RequestFilteredSellOffer implements Parcelable {
                                     Double minPricePerUnit, Double maxPricePerUnit,
                                     Boolean expired, Boolean myOwnOffersOnly,
                                     Long earliest) {
-        this.associatedUserID = associatedUserID;
-        this.commodity = commodity;
-        this.minWeight = minWeight;
-        this.maxWeight = maxWeight;
-        this.minPricePerUnit = minPricePerUnit;
-        this.maxPricePerUnit = maxPricePerUnit;
-        this.expired = expired;
-        this.myOwnOffersOnly = myOwnOffersOnly;
-        this.earliest = earliest;
-        this.latest = INVALID_TIME;
+        this(   associatedUserID,
+                commodity,
+                minWeight,
+                maxWeight,
+                minPricePerUnit,
+                maxPricePerUnit,
+                expired,
+                myOwnOffersOnly,
+                earliest,
+                INVALID_TIME);
     }
 
     /**
@@ -106,20 +106,21 @@ public class RequestFilteredSellOffer implements Parcelable {
                                     Double minWeight, Double maxWeight,
                                     Double minPricePerUnit, Double maxPricePerUnit,
                                     Boolean expired, Boolean myOwnOffersOnly) {
-        this.associatedUserID = associatedUserID;
-        this.commodity = commodity;
-        this.minWeight = minWeight;
-        this.maxWeight = maxWeight;
-        this.minPricePerUnit = minPricePerUnit;
-        this.maxPricePerUnit = maxPricePerUnit;
-        this.expired = expired;
-        this.myOwnOffersOnly = myOwnOffersOnly;
+        this(   associatedUserID,
+                commodity,
+                minWeight,
+                maxWeight,
+                minPricePerUnit,
+                maxPricePerUnit,
+                expired,
+                myOwnOffersOnly,
+                INVALID_TIME,
+                INVALID_TIME);
 
         //default for earliest: 1 week ago
         Calendar oneWeekAgo = Calendar.getInstance();
         oneWeekAgo.add(Calendar.DAY_OF_MONTH, -7);
         this.earliest = oneWeekAgo.getTimeInMillis();
-        this.latest = INVALID_TIME;
     }
 
     //    public RequestFilteredSellOffer(Long userID, Double minWeight, Double maxWeight,

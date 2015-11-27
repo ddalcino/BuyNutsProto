@@ -13,35 +13,53 @@ import com.nutsinterface.mike.myapplication.backend.offerFilterEndpoint.model.Of
 import java.io.IOException;
 
 /**
+ * <p>
  * An AsyncTask that sends the backend a RequestFilteredSellOffer
  * object, with the expectation that the server will remember those filter
  * settings and use them each time it receives a request for SellOffers
  * and the user has the userID associated with that filter.
- *
- * TODO: This class uses a StubEndpoint and won't do anything for real until a real endpoint is created!
- *
+ * </p><p>
+ * Typical usage:
+ * </p><p>
+ * new SetFilterAsyncTask(CallerActivity.this).execute(requestFilteredSellOffer);
+ * </p>
  * Created by dave on 11/13/15.
  */
 public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void, String> {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
+
     /**
      * Tag used in logs; starts with the same prefix as all other AsyncTasks
      * in the project, but with a suffix unique to this class
      */
     private static final String TAG = Constants.ASYNC_TAG_PREFIX + "SetFilter";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // member variables
+
+    /** The JavaEndpoint we're communicating with; this one stores filters */
     private static OfferFilterEndpoint offerFilterEndpoint = null;
+    /** The Activity that spawned this AsyncTask */
     private Context context;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
+    /**
+     * Constructor
+     * @param context   The Activity that spawned this AsyncTask
+     */
     public SetFilterAsyncTask(Context context) {
         this.context = context;
     }
+
     @Override
     protected String doInBackground(RequestFilteredSellOffer... params) {
         if (params == null || params[0] == null) {
             return "SetFilter Failed";
         }
         RequestFilteredSellOffer newFilter = params[0];
-
-
 
         if (offerFilterEndpoint == null) {
             OfferFilterEndpoint.Builder builder = new OfferFilterEndpoint.Builder(
@@ -50,18 +68,7 @@ public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void
             ).setRootUrl(Constants.BACKEND_URL);
 
             offerFilterEndpoint = builder.build();
-        }/*
-        Long associatedUserID;
-        String commodity;
-        Double minWeight;
-        Double maxWeight;
-        Double minPricePerUnit;
-        Double maxPricePerUnit;
-        Boolean expired;
-        Boolean myOwnOffersOnly;
-        Long earliest;
-        Long latest;
-        */
+        }
 
         OfferFilter offerFilter = new OfferFilter();
         offerFilter.setAssociatedUserID(newFilter.getAssociatedUserID());

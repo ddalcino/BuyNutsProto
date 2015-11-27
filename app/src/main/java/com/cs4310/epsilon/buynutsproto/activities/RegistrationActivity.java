@@ -13,9 +13,19 @@ import com.cs4310.epsilon.buynutsproto.talkToBackend.RegistrationAsyncTask;
 import com.cs4310.epsilon.nutsinterface.UserFront;
 
 public class RegistrationActivity extends AppCompatActivity {
+    ///////////////////////////////////////////////////////////////////////////
+    // constants
 
+    /** A tag for logs, specific to this class */
     private static final String TAG = Constants.TAG_ACTIVITY_PREFIX + "Registration";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // member methods
+
+    /**
+     * Entry point of the activity: builds the UI
+     * @param savedInstanceState    data from the previous instance, if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +37,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * An event handler for the Register button; runst when the Register
+     * button is clicked
+     * @param view  The widget that called this event handler
+     */
     public void onClickRegisterButton(View view) {
         try {
             //et2Username holds user input for Username on Registration Activity Screen
