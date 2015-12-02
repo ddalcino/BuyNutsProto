@@ -73,7 +73,7 @@ public class DeleteOfferAsyncTask extends AsyncTask<Long, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
 
-        Toast.makeText(context, "Deleted offer", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Deleted offer", Toast.LENGTH_SHORT).show();
 
         //NewsActivity newsActivity = (NewsActivity) context;
         if (result) {
