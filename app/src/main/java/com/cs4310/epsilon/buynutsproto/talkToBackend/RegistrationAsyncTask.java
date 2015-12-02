@@ -97,12 +97,13 @@ public class RegistrationAsyncTask extends AsyncTask<UserFront, Void, Long> {
         RegistrationActivity registrationActivity = (RegistrationActivity) context;
 
         if (resultId != Constants.INVALID_UID) {
-            Toast.makeText(registrationActivity, "Id assigned="+resultId,
+            Toast.makeText(registrationActivity, "Registration successful!",
                     Toast.LENGTH_LONG).show();
             Log.i(TAG, "Id assigned=" + resultId);
+            registrationActivity.finish();
 
         } else {
-            Toast.makeText(registrationActivity, "No Id assigned",
+            Toast.makeText(registrationActivity, "Registration failed",
                     Toast.LENGTH_LONG).show();
             Log.i(TAG, "No Id assigned");
 
