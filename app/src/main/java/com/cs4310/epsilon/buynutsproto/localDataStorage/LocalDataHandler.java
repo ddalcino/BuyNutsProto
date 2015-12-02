@@ -163,14 +163,18 @@ public class LocalDataHandler {
                 null                                    // The sort order
         );
 
-        String result;
+        String result = null;
         if (c.getCount() > 0) {
             c.moveToFirst();
 
             result = c.getString(c.getColumnIndex(LocalSqlHelper.Contract.UNITS_WEIGHT));
-        } else {
+            Log.i(TAG, "Units retrieved = " + result);
+        }
+
+        if (result == null) {
             // return default
             result = "lb";
+            Log.i(TAG, "Units set by default = " + result);
         }
 
         // release all open resources
