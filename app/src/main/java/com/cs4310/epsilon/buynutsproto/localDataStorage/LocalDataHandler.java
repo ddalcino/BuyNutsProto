@@ -205,8 +205,24 @@ public class LocalDataHandler {
 
         // Gets the data repository in read mode
         SQLiteDatabase dbRead = mDbHelper.getReadableDatabase();
-        // Check number of entries in table
-        Long numEntries = DatabaseUtils.queryNumEntries(dbRead, LocalSqlHelper.Contract.TABLE_NAME);
+
+//        // Check number of entries in table
+//        Long numEntries = DatabaseUtils.queryNumEntries(dbRead, LocalSqlHelper.Contract.TABLE_NAME);
+
+        // Check number of entries in table with Self_UID = mUid
+        Cursor c = dbRead.query(
+                LocalSqlHelper.Contract.TABLE_NAME,     // The table to query
+                new String[] { LocalSqlHelper.Contract.UNITS_WEIGHT }, // The columns to return
+                LocalSqlHelper.Contract.SELF_UID + "=?",    // The columns for the WHERE clause
+                new String[] { String.valueOf(mUid) },      // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                null                                    // The sort order
+        );
+
+        int numEntries = c.getCount();
+        c.close();
+
 
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -250,6 +266,8 @@ public class LocalDataHandler {
         // release all open resources
         dbRead.close();
         mDbHelper.close();
+
+        Log.i(TAG, "Saved "+ numRowsAffected +" filter to SQL for mUid=" + mUid);
 
         return numRowsAffected;
     }
