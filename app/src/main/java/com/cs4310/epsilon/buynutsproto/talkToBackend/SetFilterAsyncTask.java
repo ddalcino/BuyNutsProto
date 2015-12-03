@@ -2,15 +2,12 @@ package com.cs4310.epsilon.buynutsproto.talkToBackend;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.cs4310.epsilon.nutsinterface.RequestFilteredSellOffer;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.nutsinterface.mike.myapplication.backend.offerFilterEndpoint.OfferFilterEndpoint;
 import com.nutsinterface.mike.myapplication.backend.offerFilterEndpoint.model.OfferFilter;
-
-import java.io.IOException;
 
 /**
  * <p>
@@ -82,14 +79,15 @@ public class SetFilterAsyncTask extends AsyncTask<RequestFilteredSellOffer, Void
         offerFilter.setEarliest(newFilter.getEarliest());
         offerFilter.setLatest(newFilter.getLatest());
 
-        try {
-            offerFilter = offerFilterEndpoint.submitFilter(offerFilter).execute();
+        /*try {
+            //offerFilter = offerFilterEndpoint.submitFilter(offerFilter).execute();
             Log.i(TAG, "offerFilter on commodity : " + offerFilter.getCommodity());
             return("Complete");
         } catch (IOException e) {
             e.printStackTrace();
             return "SetFilterEndpoint Failed\n" + e.getLocalizedMessage();
-        }
+        }*/
+        return("Complete");
     }
     /*
     @Override
