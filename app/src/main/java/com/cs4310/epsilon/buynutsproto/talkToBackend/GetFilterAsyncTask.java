@@ -15,6 +15,7 @@ import java.io.IOException;
 
 /**
  * Created by Mike on 11/25/2015.
+ * Merry Christmas
  */
 public class GetFilterAsyncTask extends AsyncTask<Long, Void, RequestFilteredSellOffer> {
     ///////////////////////////////////////////////////////////////////////////
